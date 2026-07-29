@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>3D Mario Shooter Prototype</title>
+  <style>
+    body { margin: 0; overflow: hidden; font-family: sans-serif; }
+    #ui {
+      position: absolute; top: 10px; left: 10px; color: white;
+      background: rgba(0,0,0,0.7); padding: 15px; border-radius: 8px;
+    }
+    input, button { margin: 5px 0; padding: 8px; }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+</head>
+<body>
+
+  <div id="ui">
+    <h3>Mario Shooter Lobby</h3>
+    <div>My Room Code: <b id="my-id">Generating...</b></div>
+    <hr>
+    <input type="text" id="join-id" placeholder="Enter Friend's Code">
+    <button onclick="connectToPeer()">Join Room</button>
+    <div id="status">Status: Disconnected</div>
+  </div>
+
+  <script>
+    // --- 1. GAME SETUP ---
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x110022); // Rainbow Road space background vibe
+
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // Light
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(10, 20, 15);
+    scene.add(light);
+    scene.add(new THREE.AmbientLight(0x666666));
+
+    // --- 2. MAP & PLAYER CREATION ---
+    // Ground (Placeholder Rainbow Road Platform)
+    const roadGeo = new THREE.BoxGeometry(40, 1, 200);
+    const roadMat = new THREE.MeshStandardMaterial({ color: 0xff00ff, wireframe: true });
+    const road = new THREE.Mesh(roadGeo, roadMat);
+    road.position.set(0, -1, 0);
+    scene.add(road);
+
+    // Local Player (3rd Person Character)
+    const playerGeo = new THREE.BoxGeometry(1, 2, 1);
+    const playerMat = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+    const player = new THREE.Mesh(playerGeo, playerMat);
+    player.position.y = 1;
+    scene.add(player);
+
+    // --- 3. CONTROLS & SHOOTING ---
+    const keys = {};
+    window.addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
+    window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
+
+    const bullets = [];
+    window.addEventListener('click', () => {
+      // Shoot a "Green Shell" projectile forward
+      const bulletGeo = new THREE.SphereGeometry(0.3, 8, 8);
+      const bulletMat = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+      const bullet = new THREE.Mesh(bulletGeo, bulletMat);
+      
+      bullet.position.copy(player.position);
+      bullet.position.y += 0.5;
+      
+      // Calculate forward direction
+      const dir = new THREE.Vector3(0, 0, -1).applyQuaternion(player.quaternion);
+      bullet.userData = { velocity: dir.multiplyScalar(0.8) };
+      
+      scene.add(bullet);
+      bullets.push(bullet);
+    });
+
+    function updatePlayer() {
+      const speed = 0.15;
+      if (keys['w']) player.translateZ(-speed);
+      if (keys['s']) player.translateZ(speed);
+      if (keys['a']) player.rotation.y += 0.05;
+      if (keys['d']) player.rotation.y -= 0.05;
+
+      // 3rd Person Camera Position (Behind & Above player)
+      const relativeCameraOffset = new THREE.Vector3(0, 4, 8);
+      const cameraOffset = relativeCameraOffset.applyMatrix4(player.matrixWorld);
+      camera.position.x = cameraOffset.x;
+      camera.position.y = cameraOffset.y;
+      camera.position.z = cameraOffset.z;
+      camera.lookAt(player.position);
+    }
+
+    // --- 4. MULTIPLAYER (PeerJS) ---
+    const peer = new Peer(); // Generates random unique ID
+    let conn = null;
+    let remotePlayer = null;
+
+    peer.on('open', id => {
+      document.getElementById('my-id').innerText = id;
+    });
+
+    // Handle Incoming Connection
+    peer.on('connection', c => {
+      conn = c;
+      setupConnection();
+    });
+
+    // Join Another Room
+    function connectToPeer() {
+      const friendId = document.getElementById('join-id').value;
+      conn = peer.connect(friendId);
+      setupConnection();
+    }
+
+    function setupConnection() {
+      document.getElementById('status').innerText = "Status: Connected!";
+      
+      // Spawn Remote Player Model
+      if (!remotePlayer) {
+        const remoteGeo = new THREE.BoxGeometry(1, 2, 1);
+        const remoteMat = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+        remotePlayer = new THREE.Mesh(remoteGeo, remoteMat);
+        scene.add(remotePlayer);
+      }
+
+      conn.on('data', data => {
+        // Update remote player position received over network
+        if (remotePlayer && data.position) {
+          remotePlayer.position.set(data.position.x, data.position.y, data.position.z);
+          remotePlayer.rotation.y = data.rotationY;
+        }
+      });
+    }
+
+    function syncMultiplayer() {
+      if (conn && conn.open) {
+        conn.send({
+          position: { x: player.position.x, y: player.position.y, z: player.position.z },
+          rotationY: player.rotation.y
+        });
+      }
+    }
+
+    // --- 5. GAME LOOP ---
+    function animate() {
+      requestAnimationFrame(animate);
+
+      updatePlayer();
+      syncMultiplayer();
+
+      // Update bullets
+      bullets.forEach((b, index) => {
+        b.position.add(b.userData.velocity);
+        // Remove old bullets
+        if (b.position.length() > 200) {
+          scene.remove(b);
+          bullets.splice(index, 1);
+        }
+      });
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  </script>
+</body>
+</html>
