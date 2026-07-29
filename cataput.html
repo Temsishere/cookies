@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catapult_Workshop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+<style>
+  :root{
+    --blueprint: #14304a;
+    --blueprint-deep: #0d2136;
+    --grid-line: rgba(163, 202, 224, 0.16);
+    --grid-line-strong: rgba(163, 202, 224, 0.3);
+    --parchment: #f3e9d3;
+    --parchment-dark: #e2d2ac;
+    --ink: #23324a;
+    --brass: #cf9a4b;
+    --brass-dark: #a5772f;
+    --iron: #5c6774;
+    --iron-dark: #414a55;
+    --rope: #a8462f;
+    --rope-dark: #7d3120;
+    --sky-top: #6fb8dc;
+    --sky-bottom: #d7ecf7;
+    --field-1: #5f9142;
+    --field-2: #4a7433;
+    --stone: #9a9c9e;
+    --stone-dark: #6c6e70;
+    --white: #ffffff;
+    --danger: #b5402f;
+    --ok: #4f8f5b;
+  }
+
+  *{ box-sizing: border-box; }
+  html, body{
+    margin:0; padding:0; height:100%; overflow:hidden;
+    background: var(--blueprint-deep);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+  }
+  h1,h2,h3,.display{ font-family: 'Cinzel', serif; }
+  .mono{ font-family: 'IBM Plex Mono', monospace; }
+  button{ font-family: 'Inter', sans-serif; cursor: pointer; }
+  input[type="range"]{ accent-color: var(--brass); }
+
+  #app{ position:relative; width:100vw; height:100vh; }
+
+  /* ---------------- Topbar ---------------- */
+  #topbar{
+    position:absolute; top:0; left:0; right:0; height:56px;
+    background: var(--ink);
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 0 18px;
+    z-index: 50;
+    border-bottom: 3px solid var(--brass);
+  }
+  #topbar .brand{
+    color: var(--parchment);
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    display:flex; align-items:center; gap:10px;
+  }
+  #topbar .brand .tag{
+    font-family:'Inter',sans-serif;
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--blueprint-deep);
+    background: var(--brass);
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+  #topbar .topbtns{ display:flex; gap: 8px; }
+  .top-btn{
+    background: transparent;
+    border: 2px solid rgba(243,233,211,0.35);
+    color: var(--parchment);
+    font-weight: 700;
+    font-size: 0.82rem;
+    padding: 8px 14px;
+    border-radius: 8px;
+    transition: all 0.15s ease;
+  }
+  .top-btn:hover{ border-color: var(--brass); color: var(--brass); }
+  .top-btn:focus-visible{ outline: 2px solid var(--brass); outline-offset:2px; }
+
+  /* ---------------- Build View ---------------- */
+  #buildView{
+    position:absolute; inset:0; top:56px;
+    display:flex;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  #launchView{
+    position:absolute; inset:0; top:56px;
+    display:none;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .view-hidden{ opacity:0; pointer-events:none; }
+  .slide-out-left{ transform: translateX(-4%); }
+  .slide-in-right{ transform: translateX(4%); }
+
+  #palette{
+    width: 208px;
+    flex-shrink:0;
+    background: var(--parchment);
+    border-right: 3px solid var(--brass-dark);
+    padding: 16px 14px;
+    overflow-y:auto;
+  }
+  #palette h3{
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--brass-dark);
+    margin: 14px 0 8px;
+    border-bottom: 2px solid var(--parchment-dark);
+    padding-bottom: 6px;
+  }
+  #palette h3:first-child{ margin-top:0; }
+  .tool-btn{
+    width:100%;
+    display:flex; align-items:center; gap:10px;
+    background: var(--white);
+    border: 2px solid var(--parchment-dark);
+    border-radius: 10px;
+    padding: 10px 10px;
+    margin-bottom: 8px;
+    font-weight: 700;
+    font-size: 0.86rem;
+    color: var(--ink);
+    text-align:left;
+    transition: all 0.12s ease;
+  }
+  .tool-btn .swatch{
+    width:22px; height:22px; border-radius:6px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-size: 0.8rem;
+  }
+  .tool-btn:hover{ border-color: var(--brass); transform: translateX(2px); }
+  .tool-btn.active{
+    background: var(--ink);
+    color: var(--parchment);
+    border-color: var(--ink);
+  }
+  .tool-btn:focus-visible{ outline: 2px solid var(--rope); outline-offset:1px; }
+  .hint-box{
+    background: rgba(207,154,75,0.16);
+    border: 1px dashed var(--brass-dark);
+    border-radius: 8px;
+    padding: 9px 10px;
+    font-size: 0.76rem;
+    line-height:1.4;
+    color: var(--ink);
+    margin-top: 10px;
+  }
+  .template-btn{
+    width:100%;
+    background: var(--iron);
+    color: var(--white);
+    border:none;
+    border-radius: 8px;
+    padding: 9px 8px;
+    font-weight: 700;
+    font-size: 0.78rem;
+    margin-bottom: 7px;
+  }
+  .template-btn:hover{ background: var(--iron-dark); }
+  .danger-btn{
+    width:100%;
+    background: transparent;
+    color: var(--danger);
+    border: 2px solid var(--danger);
+    border-radius: 8px;
+    padding: 8px;
+    font-weight: 700;
+    font-size: 0.78rem;
+  }
+  .danger-btn:hover{ background: var(--danger); color: var(--white); }
+
+  #canvasWrap{
+    flex:1;
+    position:relative;
+    background: var(--blueprint);
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+  #buildCanvas, #launchCanvas{
+    display:block;
+    width:100%; height:100%;
+  }
+  #buildHint{
+    position:absolute; top:12px; left:50%; transform:translateX(-50%);
+    background: rgba(20,48,74,0.88);
+    color: var(--parchment);
+    font-size: 0.8rem;
+    font-weight:600;
+    padding: 7px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--brass);
+    pointer-events:none;
+    z-index: 5;
+  }
+
+  #properties{
+    width: 236px;
+    flex-shrink:0;
+    background: var(--parchment);
+    border-left: 3px solid var(--brass-dark);
+    padding: 16px 14px;
+    display:flex; flex-direction:column;
+  }
+  #properties h3{
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--brass-dark);
+    margin: 0 0 10px;
+    border-bottom: 2px solid var(--parchment-dark);
+    padding-bottom: 6px;
+  }
+  #propBody{ flex:1; overflow-y:auto; }
+  .prop-empty{
+    font-size: 0.82rem;
+    color: #7a6f57;
+    font-weight:600;
+    line-height:1.5;
+  }
+  .prop-name{
+    font-weight: 800;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .prop-row{ margin-bottom: 16px; }
+  .prop-row label{
+    display:flex; justify-content:space-between;
+    font-size: 0.78rem; font-weight:700;
+    margin-bottom: 5px;
+    color: var(--ink);
+  }
+  .prop-row label .val{ color: var(--rope); font-family:'IBM Plex Mono',monospace; }
+  .prop-row input[type="range"]{ width:100%; }
+  .holder-btn{
+    width:100%;
+    background: var(--brass);
+    color: var(--blueprint-deep);
+    border:none;
+    border-radius:8px;
+    padding: 9px;
+    font-weight:800;
+    font-size: 0.8rem;
+    margin-top: 4px;
+  }
+  .holder-btn.is-holder{ background: var(--rope); color: var(--white); }
+  .delete-btn{
+    width:100%;
+    background: transparent;
+    border: 2px solid var(--danger);
+    color: var(--danger);
+    border-radius:8px;
+    padding: 8px;
+    font-weight:700;
+    font-size: 0.78rem;
+    margin-top: 10px;
+  }
+  .delete-btn:hover{ background: var(--danger); color: var(--white); }
+
+  #fireBtn{
+    margin-top: 12px;
+    width:100%;
+    background: var(--rope);
+    color: var(--white);
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    font-family:'Cinzel', serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: 0.03em;
+    box-shadow: 0 5px 0 var(--rope-dark);
+    transition: transform 0.1s ease;
+  }
+  #fireBtn:hover{ transform: translateY(-2px); }
+  #fireBtn:active{ transform: translateY(3px); box-shadow: 0 2px 0 var(--rope-dark); }
+  #fireBtn:disabled{ background: #999; box-shadow: 0 5px 0 #777; cursor:not-allowed; }
+  #fireWarning{
+    font-size: 0.74rem;
+    color: var(--danger);
+    font-weight:700;
+    margin-top: 6px;
+    min-height: 16px;
+    text-align:center;
+  }
+
+  /* ---------------- Launch View ---------------- */
+  #launchCanvasWrap{ position:relative; width:100%; height:100%; overflow:hidden; }
+  #launchHud{
+    position:absolute; top:14px; left:14px;
+    background: rgba(20,48,74,0.85);
+    border: 1px solid var(--brass);
+    color: var(--parchment);
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 0.86rem;
+    font-weight: 700;
+    z-index: 5;
+  }
+  #launchHud .dist-num{ font-family:'IBM Plex Mono',monospace; color: var(--brass); font-size:1.1rem; }
+  #launchControls{
+    position:absolute; top:14px; right:14px;
+    display:flex; gap:8px;
+    z-index: 5;
+  }
+  .launch-ctrl-btn{
+    background: rgba(20,48,74,0.85);
+    border: 1px solid var(--brass);
+    color: var(--parchment);
+    padding: 9px 14px;
+    border-radius: 8px;
+    font-weight:700;
+    font-size: 0.8rem;
+  }
+  .launch-ctrl-btn:hover{ background: var(--brass); color: var(--blueprint-deep); }
+
+  #resultsOverlay{
+    position:absolute; left:50%; bottom:26px; transform: translateX(-50%) translateY(20px);
+    background: var(--parchment);
+    border: 3px solid var(--brass-dark);
+    border-radius: 16px;
+    padding: 18px 24px;
+    min-width: 320px;
+    max-width: 92vw;
+    text-align:center;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+    opacity:0; pointer-events:none;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    z-index: 8;
+  }
+  #resultsOverlay.visible{ opacity:1; transform: translateX(-50%) translateY(0); pointer-events:auto; }
+  #resultsOverlay .rdist{
+    font-family:'Cinzel', serif;
+    font-weight: 700;
+    font-size: 1.7rem;
+    color: var(--ink);
+  }
+  #resultsOverlay .rdist span{ color: var(--rope); font-family:'IBM Plex Mono',monospace; }
+  #resultsOverlay .rhit{
+    font-weight: 700;
+    color: var(--ok);
+    font-size: 0.9rem;
+    margin-top: 4px;
+  }
+  #resultsOverlay .saverow{
+    display:flex; gap:8px; margin-top: 14px; justify-content:center; flex-wrap:wrap;
+  }
+  #resultsOverlay input[type="text"]{
+    font-family:'Inter',sans-serif;
+    font-weight:700;
+    padding: 9px 12px;
+    border-radius: 8px;
+    border: 2px solid var(--parchment-dark);
+    outline:none;
+    width: 160px;
+  }
+  #resultsOverlay input:focus-visible{ outline: 2px solid var(--brass-dark); }
+  .save-btn{
+    background: var(--ok);
+    color: var(--white);
+    border:none;
+    border-radius:8px;
+    padding: 9px 16px;
+    font-weight:700;
+  }
+  .again-row{
+    display:flex; gap:8px; margin-top: 10px; justify-content:center;
+  }
+  .again-btn{
+    background: var(--iron);
+    color: var(--white);
+    border:none;
+    border-radius:8px;
+    padding: 9px 14px;
+    font-weight:700;
+    font-size: 0.82rem;
+  }
+  .again-btn:hover{ background: var(--iron-dark); }
+  .again-btn.rebuild{ background: var(--brass); color: var(--blueprint-deep); }
+  .again-btn.rebuild:hover{ background: var(--brass-dark); color: var(--white); }
+
+  /* ---------------- Leaderboard modal ---------------- */
+  #lbOverlay{
+    position: fixed; inset:0;
+    background: rgba(13,33,54,0.6);
+    display:none;
+    align-items:center; justify-content:center;
+    z-index: 100;
+  }
+  #lbOverlay.visible{ display:flex; }
+  #lbModal{
+    background: var(--parchment);
+    border: 3px solid var(--brass-dark);
+    border-radius: 18px;
+    padding: 22px 26px;
+    width: 360px;
+    max-width: 90vw;
+    max-height: 80vh;
+    display:flex; flex-direction:column;
+  }
+  #lbModal h2{
+    margin:0 0 4px;
+    font-size: 1.4rem;
+    color: var(--ink);
+  }
+  #lbModal .sub{
+    font-size: 0.78rem;
+    color: #7a6f57;
+    font-weight:600;
+    margin-bottom: 14px;
+  }
+  #lbList{ overflow-y:auto; flex:1; }
+  .lb-row{
+    display:flex; align-items:center; gap:10px;
+    padding: 8px 4px;
+    border-bottom: 1px solid var(--parchment-dark);
+  }
+  .lb-rank{
+    font-family:'Cinzel',serif;
+    font-weight:700;
+    color: var(--brass-dark);
+    width: 26px;
+  }
+  .lb-nm{ flex:1; font-weight:700; }
+  .lb-dst{ font-family:'IBM Plex Mono',monospace; font-weight:700; color: var(--rope); }
+  .lb-empty{ font-size: 0.82rem; color:#7a6f57; font-weight:600; padding: 10px 4px; }
+  #lbClose{
+    margin-top: 14px;
+    width:100%;
+    background: var(--ink);
+    color: var(--parchment);
+    border:none;
+    border-radius:10px;
+    padding: 10px;
+    font-weight:700;
+  }
+
+  @media (max-width: 880px){
+    #palette, #properties{ width: 160px; }
+    .tool-btn{ font-size: 0.76rem; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    #buildView, #launchView, #resultsOverlay{ transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <div id="topbar">
+    <div class="brand"><span>⚙ Catapult Workshop</span><span class="tag">physics sandbox</span></div>
+    <div class="topbtns">
+      <button class="top-btn" onclick="openLeaderboard()">🏆 Leaderboard</button>
+      <button class="top-btn" id="modeLabel">Mode: Build</button>
+    </div>
+  </div>
+
+  <!-- ===================== BUILD VIEW ===================== -->
+  <div id="buildView">
+    <div id="palette">
+      <h3>Structure</h3>
+      <button class="tool-btn" data-tool="anchor" onclick="selectTool('anchor')">
+        <span class="swatch" style="background:var(--iron)">📌</span> Anchor Point
+      </button>
+      <button class="tool-btn" data-tool="joint" onclick="selectTool('joint')">
+        <span class="swatch" style="background:var(--stone)">⚫</span> Weight / Joint
+      </button>
+
+      <h3>Connectors</h3>
+      <button class="tool-btn" data-tool="linkage" onclick="selectTool('linkage')">
+        <span class="swatch" style="background:#8a5a34">▬</span> Linkage (rigid)
+      </button>
+      <button class="tool-btn" data-tool="elastic" onclick="selectTool('elastic')">
+        <span class="swatch" style="background:var(--rope)">〜</span> Elastic Band
+      </button>
+      <button class="tool-btn" data-tool="pulley" onclick="selectTool('pulley')">
+        <span class="swatch" style="background:var(--brass)">◎</span> Pulley
+      </button>
+
+      <h3>Select</h3>
+      <button class="tool-btn active" data-tool="select" onclick="selectTool('select')">
+        <span class="swatch" style="background:var(--ink)">↖</span> Select / Drag
+      </button>
+      <div class="hint-box">Click a node with a Weight/Joint to edit its mass. Any node can be marked as the <b>rock holder</b> from its property panel. Tip: for a lever arm that pivots on an anchor without wobbling, connect both ends of the arm to <em>each other</em> too, forming a rigid triangle.</div>
+
+      <h3>Templates</h3>
+      <button class="template-btn" onclick="loadTemplate('trebuchet')">Load Trebuchet</button>
+      <button class="template-btn" onclick="loadTemplate('slingshot')">Load Slingshot</button>
+      <button class="danger-btn" onclick="clearAll(true)" style="margin-top:6px;">Clear Canvas</button>
+    </div>
+
+    <div id="canvasWrap">
+      <canvas id="buildCanvas"></canvas>
+      <div id="buildHint">Pick a tool, then click the canvas to build.</div>
+    </div>
+
+    <div id="properties">
+      <h3>Properties</h3>
+      <div id="propBody">
+        <div class="prop-empty">Select or place a component to edit its values here.</div>
+      </div>
+      <div class="prop-row" style="margin-top:14px; border-top:2px solid var(--parchment-dark); padding-top:12px;">
+        <label>Release Angle (rigid arms) <span class="val" id="relVal">80°</span></label>
+        <input type="range" min="10" max="170" step="5" value="80" oninput="updateReleaseAngle(this.value)">
+      </div>
+      <button id="fireBtn" onclick="tryFire()">🔥 FIRE!</button>
+      <div id="fireWarning"></div>
+    </div>
+  </div>
+
+  <!-- ===================== LAUNCH VIEW ===================== -->
+  <div id="launchView" class="view-hidden slide-in-right">
+    <div id="launchCanvasWrap">
+      <canvas id="launchCanvas"></canvas>
+      <div id="launchHud">Distance: <span class="dist-num mono" id="hudDist">—</span></div>
+      <div id="launchControls">
+        <button class="launch-ctrl-btn" onclick="releaseNow()">Release Now</button>
+        <button class="launch-ctrl-btn" onclick="rebuildFromLaunch()">🔧 Back to Workshop</button>
+      </div>
+
+      <div id="resultsOverlay">
+        <div class="rdist">Distance: <span id="resDist">0</span> m</div>
+        <div class="rhit" id="resHit" style="display:none;">🏰 Castle Hit!</div>
+        <div class="saverow">
+          <input type="text" id="resName" maxlength="16" placeholder="Your name">
+          <button class="save-btn" onclick="saveScore()">Save Score</button>
+        </div>
+        <div class="again-row">
+          <button class="again-btn" onclick="fireAgain()">↻ Fire Again</button>
+          <button class="again-btn rebuild" onclick="rebuildFromLaunch()">🔧 Rebuild</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== LEADERBOARD MODAL ===================== -->
+  <div id="lbOverlay" onclick="if(event.target===this) closeLeaderboard()">
+    <div id="lbModal">
+      <h2>🏆 Leaderboard</h2>
+      <div class="sub">Farthest rock throws, saved on this device.</div>
+      <div id="lbList"></div>
+      <button id="lbClose" onclick="closeLeaderboard()">Close</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* =========================================================================
+   CATAPULT WORKSHOP — physics sandbox
+   Build mode: place Anchors / Joints (weights), connect with Linkages,
+   Elastic Bands, or Pulleys. Mark any node as the Rock Holder.
+   Launch mode: Matter.js simulates the throw against a castle & field.
+   ========================================================================= */
+
+const { Engine, Composite, Bodies, Body, Constraint, Events, Vector } = Matter;
+
+// ---- World constants ----
+const PPM = 10;                 // pixels per meter (world units)
+const GROUND_Y = 480;            // world y of ground surface
+const WORLD_ORIGIN_X = 120;      // conceptual x=0m reference
+const GROUND_LEFT = -400;
+const GROUND_RIGHT = 6200;
+const CASTLE_DIST_M = 130;       // meters from origin to castle
+const NONE_MASK = { category: 0x0001, mask: 0 }; // structural parts: no collisions
+
+// ---- Engine / world ----
+const engine = Engine.create();
+engine.world.gravity.y = 1;
+engine.world.gravity.scale = 0.00095;
+engine.constraintIterations = 6;
+engine.positionIterations = 10;
+engine.velocityIterations = 8;
+
+const groundBody = Bodies.rectangle(
+  (GROUND_LEFT+GROUND_RIGHT)/2, GROUND_Y + 40, (GROUND_RIGHT-GROUND_LEFT), 80,
+  { isStatic:true, label:'ground', friction:0.9 }
+);
+Composite.add(engine.world, groundBody);
+
+// ---- Data model ----
+let nodes = [];        // {id, type:'anchor'|'joint', body, mass, isHolder}
+let connections = [];  // {id, type:'linkage'|'elastic'|'pulley', aId, bId, constraint, value}
+let nextId = 1;
+function genId(){ return 'n' + (nextId++); }
+
+let currentTool = 'select';
+let pendingFirstNode = null;   // for connector tools
+let selected = null;           // {kind:'node'|'connection', id}
+let draggingNode = null;
+let mode = 'build';            // 'build' | 'launch'
+
+// ---- Canvas setup ----
+const buildCanvas = document.getElementById('buildCanvas');
+const buildCtx = buildCanvas.getContext('2d');
+const launchCanvas = document.getElementById('launchCanvas');
+const launchCtx = launchCanvas.getContext('2d');
+
+function fitCanvas(canvas){
+  const rect = canvas.parentElement.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  canvas.style.width = rect.width+'px';
+  canvas.style.height = rect.height+'px';
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  return { w: rect.width, h: rect.height };
+}
+let buildSize = fitCanvas(buildCanvas);
+let launchSize = fitCanvas(launchCanvas);
+window.addEventListener('resize', () => {
+  buildSize = fitCanvas(buildCanvas);
+  launchSize = fitCanvas(launchCanvas);
+});
+
+// Build camera is fixed; launch camera pans/zooms.
+const buildCamera = { x: 220, y: 330, zoom: 1 };
+const launchCamera = { x: 220, y: 260, zoom: 1 };
+let launchCameraTarget = { x: 220, y: 260, zoom: 1 };
+
+function worldToScreen(camera, size, x, y){
+  return {
+    x: (x - camera.x) * camera.zoom + size.w/2,
+    y: (y - camera.y) * camera.zoom + size.h/2
+  };
+}
+function screenToWorld(camera, size, sx, sy){
+  return {
+    x: (sx - size.w/2)/camera.zoom + camera.x,
+    y: (sy - size.h/2)/camera.zoom + camera.y
+  };
+}
+
+// =========================================================================
+// NODE / CONNECTION CREATION
+// =========================================================================
+function createAnchor(x, y){
+  const body = Bodies.circle(x, y, 11, {
+    isStatic: true, label:'anchor', collisionFilter: NONE_MASK
+  });
+  Composite.add(engine.world, body);
+  const node = { id: genId(), type:'anchor', body, mass:0, isHolder:false };
+  nodes.push(node);
+  return node;
+}
+function createJoint(x, y, mass=2){
+  const body = Bodies.circle(x, y, 12, {
+    isStatic:false, frictionAir:0.005, label:'joint', collisionFilter: NONE_MASK
+  });
+  Body.setMass(body, mass);
+  Composite.add(engine.world, body);
+  const node = { id: genId(), type:'joint', body, mass, isHolder:false };
+  nodes.push(node);
+  return node;
+}
+function nodeById(id){ return nodes.find(n=>n.id===id); }
+function connectionById(id){ return connections.find(c=>c.id===id); }
+
+function createConnection(type, aId, bId, value){
+  const a = nodeById(aId), b = nodeById(bId);
+  if(!a || !b || a===b) return null;
+  const dist = Vector.magnitude(Vector.sub(b.body.position, a.body.position));
+  let constraint;
+  if(type === 'linkage'){
+    constraint = Constraint.create({ bodyA:a.body, bodyB:b.body, length:dist, stiffness:1, damping:0.15 });
+  } else if(type === 'elastic'){
+    const stiffness = value !== undefined ? value : 0.4;
+    constraint = Constraint.create({ bodyA:a.body, bodyB:b.body, length: dist*0.5, stiffness: clamp(stiffness,0.02,0.95), damping:0.05 });
+  } else if(type === 'pulley'){
+    const mechAdv = value !== undefined ? value : 2;
+    const stiffness = clamp(0.15*mechAdv, 0.15, 0.9);
+    constraint = Constraint.create({ bodyA:a.body, bodyB:b.body, length: dist*0.5, stiffness, damping:0.05 });
+  }
+  Composite.add(engine.world, constraint);
+  const conn = { id: genId(), type, aId, bId, constraint, value: value !== undefined ? value : (type==='pulley'?2:0.4) };
+  connections.push(conn);
+  return conn;
+}
+
+function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
+
+// =========================================================================
+// TOOL SELECTION / UI
+// =========================================================================
+function selectTool(tool){
+  currentTool = tool;
+  pendingFirstNode = null;
+  document.querySelectorAll('.tool-btn').forEach(b => b.classList.toggle('active', b.dataset.tool===tool));
+  const hint = document.getElementById('buildHint');
+  const hints = {
+    anchor: 'Click the canvas to place a fixed Anchor Point.',
+    joint: 'Click the canvas to place a Weight / Joint node.',
+    linkage: 'Click a node, then a second node, to connect them with a rigid Linkage.',
+    elastic: 'Click a node, then a second node, to connect them with an Elastic Band.',
+    pulley: 'Click a node, then a second node, to connect them with a Pulley.',
+    select: 'Click a node or connector to edit it. Drag nodes to reposition.'
+  };
+  hint.textContent = hints[tool] || '';
+}
+selectTool('select');
+
+// =========================================================================
+// BUILD CANVAS INTERACTION
+// =========================================================================
+function hitTestNode(wx, wy){
+  let best=null, bestD=18;
+  for(const n of nodes){
+    const d = Math.hypot(n.body.position.x-wx, n.body.position.y-wy);
+    if(d < bestD){ bestD=d; best=n; }
+  }
+  return best;
+}
+function hitTestConnection(wx, wy){
+  let best=null, bestD=8;
+  for(const c of connections){
+    const a = nodeById(c.aId).body.position, b = nodeById(c.bId).body.position;
+    const d = pointSegDist(wx,wy,a.x,a.y,b.x,b.y);
+    if(d<bestD){ bestD=d; best=c; }
+  }
+  return best;
+}
+function pointSegDist(px,py,x1,y1,x2,y2){
+  const dx=x2-x1, dy=y2-y1;
+  const len2 = dx*dx+dy*dy;
+  let t = len2===0 ? 0 : ((px-x1)*dx+(py-y1)*dy)/len2;
+  t = clamp(t,0,1);
+  const cx=x1+t*dx, cy=y1+t*dy;
+  return Math.hypot(px-cx, py-cy);
+}
+
+buildCanvas.addEventListener('mousedown', (e) => {
+  const rect = buildCanvas.getBoundingClientRect();
+  const sx = e.clientX-rect.left, sy = e.clientY-rect.top;
+  const w = screenToWorld(buildCamera, buildSize, sx, sy);
+
+  if(currentTool === 'anchor'){
+    createAnchor(w.x, w.y);
+    return;
+  }
+  if(currentTool === 'joint'){
+    createJoint(w.x, w.y, 2);
+    return;
+  }
+  if(currentTool === 'linkage' || currentTool === 'elastic' || currentTool === 'pulley'){
+    const hit = hitTestNode(w.x, w.y);
+    if(!hit) return;
+    if(!pendingFirstNode){
+      pendingFirstNode = hit.id;
+    } else if(pendingFirstNode !== hit.id){
+      const conn = createConnection(currentTool, pendingFirstNode, hit.id);
+      pendingFirstNode = null;
+      selectElement('connection', conn.id);
+    }
+    return;
+  }
+  // select tool
+  const hitN = hitTestNode(w.x, w.y);
+  if(hitN){
+    selectElement('node', hitN.id);
+    if(hitN.type !== 'anchor' || true){ draggingNode = hitN; }
+    return;
+  }
+  const hitC = hitTestConnection(w.x, w.y);
+  if(hitC){ selectElement('connection', hitC.id); return; }
+  selectElement(null,null);
+});
+buildCanvas.addEventListener('mousemove', (e) => {
+  if(!draggingNode || mode!=='build') return;
+  const rect = buildCanvas.getBoundingClientRect();
+  const sx = e.clientX-rect.left, sy = e.clientY-rect.top;
+  const w = screenToWorld(buildCamera, buildSize, sx, sy);
+  Body.setPosition(draggingNode.body, {x:w.x, y:w.y});
+  Body.setVelocity(draggingNode.body, {x:0,y:0});
+});
+window.addEventListener('mouseup', () => { draggingNode=null; });
+
+document.addEventListener('keydown', (e) => {
+  if(mode!=='build') return;
+  if((e.key==='Delete' || e.key==='Backspace') && selected){
+    e.preventDefault();
+    deleteSelected();
+  }
+  if(e.key==='Escape'){ pendingFirstNode=null; selectTool('select'); }
+});
+
+function selectElement(kind, id){
+  selected = kind ? {kind, id} : null;
+  renderProperties();
+}
+
+// =========================================================================
+// PROPERTIES PANEL
+// =========================================================================
+function renderProperties(){
+  const body = document.getElementById('propBody');
+  if(!selected){
+    body.innerHTML = '<div class="prop-empty">Select or place a component to edit its values here.</div>';
+    return;
+  }
+  if(selected.kind==='node'){
+    const n = nodeById(selected.id);
+    if(!n){ selected=null; return renderProperties(); }
+    let html = `<div class="prop-name">${n.type==='anchor'?'📌 Anchor Point':'⚫ Weight / Joint'}</div>`;
+    if(n.type==='joint'){
+      html += `
+        <div class="prop-row">
+          <label>Mass <span class="val" id="massVal">${n.mass.toFixed(1)} kg</span></label>
+          <input type="range" min="0.5" max="50" step="0.5" value="${n.mass}" oninput="updateNodeMass('${n.id}', this.value)">
+        </div>`;
+    }
+    if(n.type !== 'anchor'){
+      html += `<button class="holder-btn ${n.isHolder?'is-holder':''}" onclick="toggleHolder('${n.id}')">${n.isHolder ? '🪨 This is the Rock Holder' : 'Set as Rock Holder'}</button>`;
+    }
+    html += `<button class="delete-btn" onclick="deleteSelected()">Delete</button>`;
+    body.innerHTML = html;
+    return;
+  }
+  if(selected.kind==='connection'){
+    const c = connectionById(selected.id);
+    if(!c){ selected=null; return renderProperties(); }
+    const labels = { linkage:'▬ Linkage (rigid)', elastic:'〜 Elastic Band', pulley:'◎ Pulley' };
+    let html = `<div class="prop-name">${labels[c.type]}</div>`;
+    if(c.type==='elastic'){
+      html += `
+        <div class="prop-row">
+          <label>Elastic Value <span class="val" id="elVal">${c.value.toFixed(2)}</span></label>
+          <input type="range" min="0.02" max="0.95" step="0.01" value="${c.value}" oninput="updateConnValue('${c.id}', this.value)">
+        </div>`;
+    } else if(c.type==='pulley'){
+      html += `
+        <div class="prop-row">
+          <label>Mechanical Advantage <span class="val" id="paVal">${c.value.toFixed(1)}×</span></label>
+          <input type="range" min="1" max="5" step="0.5" value="${c.value}" oninput="updateConnValue('${c.id}', this.value)">
+        </div>`;
+    } else {
+      html += `<div class="prop-empty">Rigid linkages hold their length fixed — no tuning needed.</div>`;
+    }
+    html += `<button class="delete-btn" onclick="deleteSelected()">Delete</button>`;
+    body.innerHTML = html;
+  }
+}
+function updateNodeMass(id, val){
+  const n = nodeById(id); if(!n) return;
+  n.mass = parseFloat(val);
+  Body.setMass(n.body, n.mass);
+  const el = document.getElementById('massVal'); if(el) el.textContent = n.mass.toFixed(1)+' kg';
+}
+function updateConnValue(id, val){
+  const c = connectionById(id); if(!c) return;
+  c.value = parseFloat(val);
+  if(c.type==='elastic'){
+    c.constraint.stiffness = clamp(c.value, 0.02, 0.95);
+    const el = document.getElementById('elVal'); if(el) el.textContent = c.value.toFixed(2);
+  } else if(c.type==='pulley'){
+    c.constraint.stiffness = clamp(0.15*c.value, 0.15, 0.9);
+    const el = document.getElementById('paVal'); if(el) el.textContent = c.value.toFixed(1)+'×';
+  }
+}
+function toggleHolder(id){
+  const n = nodeById(id); if(!n) return;
+  const makingHolder = !n.isHolder;
+  nodes.forEach(x => x.isHolder=false);
+  if(makingHolder) n.isHolder = true;
+  renderProperties();
+}
+function updateReleaseAngle(val){
+  releaseAngleDeg = parseFloat(val);
+  const el = document.getElementById('relVal'); if(el) el.textContent = releaseAngleDeg+'°';
+}
+function deleteSelected(){
+  if(!selected) return;
+  if(selected.kind==='node'){
+    const n = nodeById(selected.id);
+    connections = connections.filter(c => {
+      if(c.aId===n.id || c.bId===n.id){ Composite.remove(engine.world, c.constraint); return false; }
+      return true;
+    });
+    Composite.remove(engine.world, n.body);
+    nodes = nodes.filter(x=>x.id!==n.id);
+  } else {
+    const c = connectionById(selected.id);
+    Composite.remove(engine.world, c.constraint);
+    connections = connections.filter(x=>x.id!==c.id);
+  }
+  selected=null;
+  renderProperties();
+}
+
+// =========================================================================
+// TEMPLATES
+// =========================================================================
+function clearAll(confirmFirst){
+  if(confirmFirst && !confirm('Clear the whole canvas?')) return;
+  nodes.forEach(n=>Composite.remove(engine.world, n.body));
+  connections.forEach(c=>Composite.remove(engine.world, c.constraint));
+  nodes=[]; connections=[]; selected=null; pendingFirstNode=null;
+  renderProperties();
+}
+function loadTemplate(name){
+  clearAll(false);
+  if(name==='trebuchet'){
+    const gA = createAnchor(120, GROUND_Y-10);
+    const gB = createAnchor(280, GROUND_Y-10);
+    const pivot = createAnchor(200, 300);
+    const shortEnd = createJoint(150, 340, 34);
+    const longEnd = createJoint(340, 260, 1.5);
+    longEnd.isHolder = true;
+    createConnection('linkage', gA.id, pivot.id);
+    createConnection('linkage', gB.id, pivot.id);
+    createConnection('linkage', pivot.id, shortEnd.id);
+    createConnection('linkage', pivot.id, longEnd.id);
+    createConnection('linkage', shortEnd.id, longEnd.id); // closes the triangle so the beam swings as one rigid lever
+  } else if(name==='slingshot'){
+    const apex = createAnchor(220, 300);
+    const holder = createJoint(160, 400, 2);
+    holder.isHolder = true;
+    createConnection('elastic', apex.id, holder.id, 0.55);
+  }
+  selectTool('select');
+}
+loadTemplate('trebuchet');
+
+// =========================================================================
+// GRAPH HELPERS
+// =========================================================================
+function adjacency(){
+  const map = {};
+  nodes.forEach(n => map[n.id]=[]);
+  connections.forEach(c => { map[c.aId].push({to:c.bId, conn:c}); map[c.bId].push({to:c.aId, conn:c}); });
+  return map;
+}
+function nearestAnchorFrom(startId){
+  const adj = adjacency();
+  const visited = new Set([startId]);
+  const queue = [startId];
+  while(queue.length){
+    const cur = queue.shift();
+    const n = nodeById(cur);
+    if(n.type==='anchor') return n;
+    for(const edge of adj[cur]){
+      if(!visited.has(edge.to)){ visited.add(edge.to); queue.push(edge.to); }
+    }
+  }
+  return null;
+}
+function directConnectionsOf(nodeId){
+  return connections.filter(c=>c.aId===nodeId || c.bId===nodeId);
+}
+
+// =========================================================================
+// LAUNCH LOGIC
+// =========================================================================
+let rockBody=null, rockConstraint=null;
+let snapshot=null;
+let launchState = null; // {pivot, driveConn, initialAngle, released, landed, distanceM, castleHit, startFrame}
+let castleBlocks = [];
+let releaseAngleDeg = 80;
+
+function findHolder(){ return nodes.find(n=>n.isHolder); }
+
+function tryFire(){
+  const warn = document.getElementById('fireWarning');
+  warn.textContent='';
+  const holder = findHolder();
+  if(!holder){ warn.textContent='Mark a node as the Rock Holder first.'; return; }
+  const anchorNear = nearestAnchorFrom(holder.id);
+  if(!anchorNear){ warn.textContent='Connect your structure to an Anchor Point.'; return; }
+
+  // snapshot for rebuild
+  snapshot = nodes.map(n => ({ id:n.id, x:n.body.position.x, y:n.body.position.y }));
+
+  goToLaunchView();
+  startSimulation(holder, anchorNear);
+}
+
+function goToLaunchView(){
+  mode='launch';
+  document.getElementById('modeLabel').textContent = 'Mode: Launch';
+  const bv = document.getElementById('buildView');
+  const lv = document.getElementById('launchView');
+  bv.classList.add('view-hidden','slide-out-left');
+  lv.style.display='flex';
+  lv.classList.add('view-hidden','slide-in-right');
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
+      lv.classList.remove('view-hidden','slide-in-right');
+      launchSize = fitCanvas(launchCanvas);
+    });
+  });
+  document.getElementById('resultsOverlay').classList.remove('visible');
+  document.getElementById('hudDist').textContent = '—';
+}
+function backToBuildView(){
+  mode='build';
+  document.getElementById('modeLabel').textContent = 'Mode: Build';
+  const bv = document.getElementById('buildView');
+  const lv = document.getElementById('launchView');
+  lv.classList.add('view-hidden','slide-in-right');
+  bv.classList.remove('view-hidden','slide-out-left');
+  setTimeout(()=>{ lv.style.display='none'; }, 260);
+  buildSize = fitCanvas(buildCanvas);
+}
+
+function buildCastle(){
+  castleBlocks.forEach(b=>Composite.remove(engine.world, b));
+  castleBlocks=[];
+  const cx = WORLD_ORIGIN_X + CASTLE_DIST_M*PPM;
+  const blockW=44, blockH=30;
+  const rows=4, cols=3;
+  for(let r=0;r<rows;r++){
+    for(let c=0;c<cols;c++){
+      const bx = cx + (c-1)*(blockW+2);
+      const by = GROUND_Y - blockH/2 - r*(blockH+2);
+      const blk = Bodies.rectangle(bx,by,blockW,blockH,{ label:'castle', friction:0.8, density:0.004 });
+      Composite.add(engine.world, blk);
+      castleBlocks.push(blk);
+    }
+  }
+}
+buildCastle();
+
+function startSimulation(holder, anchorNear){
+  const drivingConns = directConnectionsOf(holder.id).filter(c=>c.type==='elastic'||c.type==='pulley');
+  const driveConn = drivingConns[0] || null;
+
+  const rockR = 11;
+  rockBody = Bodies.circle(holder.body.position.x, holder.body.position.y - rockR - 12, rockR, {
+    label:'rock', friction:0.6, restitution:0.25, density:0.006
+  });
+  Composite.add(engine.world, rockBody);
+  rockConstraint = Constraint.create({ bodyA:holder.body, bodyB:rockBody, length:0, stiffness:1, damping:0 });
+  Composite.add(engine.world, rockConstraint);
+
+  const initialAngle = Math.atan2(
+    holder.body.position.y - anchorNear.body.position.y,
+    holder.body.position.x - anchorNear.body.position.x
+  );
+
+  launchState = {
+    holder, pivot:anchorNear, driveConn,
+    initialAngle, released:false, landed:false,
+    distanceM:0, castleHit:false, frame:0
+  };
+
+  Events.on(engine, 'collisionStart', onCollision);
+  runningLaunch = true;
+}
+
+function angleDiffDeg(a,b){
+  let d = (a-b) * 180/Math.PI;
+  while(d>180) d-=360;
+  while(d<-180) d+=360;
+  return Math.abs(d);
+}
+
+function onCollision(ev){
+  if(!launchState || launchState.landed) return;
+  for(const pair of ev.pairs){
+    const labels = [pair.bodyA.label, pair.bodyB.label];
+    if(labels.includes('rock') && (labels.includes('ground')||labels.includes('castle'))){
+      finalizeLanding(labels.includes('castle'));
+      return;
+    }
+  }
+}
+function finalizeLanding(castleHit){
+  if(!launchState || launchState.landed) return;
+  launchState.landed = true;
+  launchState.castleHit = castleHit;
+  const distPx = rockBody.position.x - WORLD_ORIGIN_X;
+  launchState.distanceM = Math.max(0, distPx/PPM);
+  showResults();
+}
+
+function releaseNow(){
+  if(!launchState || launchState.released) return;
+  doRelease();
+}
+function doRelease(){
+  if(!rockConstraint) return;
+  Composite.remove(engine.world, rockConstraint);
+  rockConstraint = null;
+  launchState.released = true;
+}
+
+let runningLaunch=false;
+function launchTick(){
+  if(!runningLaunch || mode!=='launch') return;
+  Engine.update(engine, 1000/60);
+  launchState.frame++;
+
+  if(launchState && !launchState.released){
+    if(launchState.driveConn){
+      const c = launchState.driveConn.constraint;
+      const a = c.bodyA.position, b = c.bodyB.position;
+      const curLen = Math.hypot(a.x-b.x, a.y-b.y);
+      if(launchState.frame > 4 && curLen <= c.length*1.1){ doRelease(); }
+    } else {
+      const holderPos = launchState.holder.body.position;
+      const pivotPos = launchState.pivot.body.position;
+      const curAngle = Math.atan2(holderPos.y-pivotPos.y, holderPos.x-pivotPos.x);
+      const swept = angleDiffDeg(curAngle, launchState.initialAngle);
+      if(swept >= releaseAngleDeg){ doRelease(); }
+    }
+  }
+
+  // camera follow
+  if(rockBody){
+    launchCameraTarget.x = clamp(rockBody.position.x, 220, GROUND_RIGHT-300);
+    const distM = Math.max(0,(rockBody.position.x-WORLD_ORIGIN_X)/PPM);
+    launchCameraTarget.zoom = clamp(1 - distM/380, 0.4, 1);
+    document.getElementById('hudDist').textContent = distM.toFixed(1)+' m';
+  }
+  launchCamera.x += (launchCameraTarget.x-launchCamera.x)*0.06;
+  launchCamera.zoom += (launchCameraTarget.zoom-launchCamera.zoom)*0.06;
+}
+
+function showResults(){
+  document.getElementById('resDist').textContent = launchState.distanceM.toFixed(1);
+  document.getElementById('resHit').style.display = launchState.castleHit ? 'block':'none';
+  document.getElementById('resultsOverlay').classList.add('visible');
+}
+
+function fireAgain(){
+  document.getElementById('resultsOverlay').classList.remove('visible');
+  restoreSnapshot();
+  const holder = findHolder();
+  const anchorNear = nearestAnchorFrom(holder.id);
+  startSimulation(holder, anchorNear);
+  launchCamera.x = 220; launchCamera.zoom = 1;
+  launchCameraTarget.x = 220; launchCameraTarget.zoom = 1;
+}
+function restoreSnapshot(){
+  if(rockBody){ Composite.remove(engine.world, rockBody); rockBody=null; }
+  if(rockConstraint){ Composite.remove(engine.world, rockConstraint); rockConstraint=null; }
+  Events.off(engine, 'collisionStart', onCollision);
+  if(snapshot){
+    snapshot.forEach(s=>{
+      const n = nodeById(s.id);
+      if(n){ Body.setPosition(n.body,{x:s.x,y:s.y}); Body.setVelocity(n.body,{x:0,y:0}); Body.setAngularVelocity(n.body,0); }
+    });
+  }
+  runningLaunch=false;
+  launchState=null;
+}
+function rebuildFromLaunch(){
+  document.getElementById('resultsOverlay').classList.remove('visible');
+  restoreSnapshot();
+  buildCastle();
+  backToBuildView();
+}
+
+// =========================================================================
+// LEADERBOARD (localStorage)
+// =========================================================================
+const LB_KEY = 'catapult-leaderboard';
+function loadLB(){
+  try{ return JSON.parse(localStorage.getItem(LB_KEY)) || []; }catch(e){ return []; }
+}
+function saveLB(list){
+  try{ localStorage.setItem(LB_KEY, JSON.stringify(list)); }catch(e){}
+}
+function renderLBList(){
+  const list = loadLB().sort((a,b)=>b.distance-a.distance).slice(0,20);
+  const el = document.getElementById('lbList');
+  if(list.length===0){ el.innerHTML = '<div class="lb-empty">No throws recorded yet — fire your first shot!</div>'; return; }
+  el.innerHTML = list.map((entry,i)=>`
+    <div class="lb-row">
+      <span class="lb-rank">#${i+1}</span>
+      <span class="lb-nm">${escapeHtml(entry.name)}</span>
+      <span class="lb-dst">${entry.distance.toFixed(1)} m</span>
+    </div>
+  `).join('');
+}
+function escapeHtml(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+function openLeaderboard(){ renderLBList(); document.getElementById('lbOverlay').classList.add('visible'); }
+function closeLeaderboard(){ document.getElementById('lbOverlay').classList.remove('visible'); }
+function saveScore(){
+  const nameInput = document.getElementById('resName');
+  const name = (nameInput.value.trim() || 'Anonymous').slice(0,16);
+  const list = loadLB();
+  list.push({ name, distance: launchState.distanceM, date: Date.now() });
+  saveLB(list);
+  nameInput.value='';
+  openLeaderboard();
+}
+
+// =========================================================================
+// RENDERING — BUILD VIEW
+// =========================================================================
+function drawBuild(){
+  const {w,h} = buildSize;
+  buildCtx.clearRect(0,0,w,h);
+
+  // ground line
+  const g1 = worldToScreen(buildCamera, buildSize, GROUND_LEFT, GROUND_Y);
+  const g2 = worldToScreen(buildCamera, buildSize, GROUND_RIGHT, GROUND_Y);
+  buildCtx.strokeStyle = 'rgba(163,202,224,0.55)';
+  buildCtx.lineWidth = 2;
+  buildCtx.setLineDash([6,5]);
+  buildCtx.beginPath(); buildCtx.moveTo(g1.x,g1.y); buildCtx.lineTo(g2.x,g2.y); buildCtx.stroke();
+  buildCtx.setLineDash([]);
+
+  drawConnections(buildCtx, buildCamera, buildSize);
+  drawNodes(buildCtx, buildCamera, buildSize);
+
+  if(pendingFirstNode){
+    const n = nodeById(pendingFirstNode);
+    if(n){
+      const p = worldToScreen(buildCamera, buildSize, n.body.position.x, n.body.position.y);
+      buildCtx.beginPath(); buildCtx.arc(p.x,p.y,20,0,7);
+      buildCtx.strokeStyle='#ffd966'; buildCtx.lineWidth=3; buildCtx.stroke();
+    }
+  }
+}
+
+function drawConnections(ctx, cam, size){
+  connections.forEach(c=>{
+    const a = nodeById(c.aId).body.position, b = nodeById(c.bId).body.position;
+    const p1 = worldToScreen(cam,size,a.x,a.y), p2 = worldToScreen(cam,size,b.x,b.y);
+    const isSel = selected && selected.kind==='connection' && selected.id===c.id;
+    ctx.lineWidth = isSel ? 6 : 4;
+    if(c.type==='linkage'){
+      ctx.strokeStyle = isSel ? '#ffd966' : '#8a5a34';
+      ctx.setLineDash([]);
+    } else if(c.type==='elastic'){
+      ctx.strokeStyle = isSel ? '#ffd966' : '#a8462f';
+      ctx.setLineDash([2,6]);
+      ctx.lineCap='round';
+    } else {
+      ctx.strokeStyle = isSel ? '#ffd966' : '#cf9a4b';
+      ctx.setLineDash([1,5]);
+    }
+    ctx.beginPath(); ctx.moveTo(p1.x,p1.y); ctx.lineTo(p2.x,p2.y); ctx.stroke();
+    ctx.setLineDash([]);
+    if(c.type==='pulley'){
+      const mx=(p1.x+p2.x)/2, my=(p1.y+p2.y)/2;
+      ctx.beginPath(); ctx.arc(mx,my,7,0,7);
+      ctx.fillStyle='#cf9a4b'; ctx.fill();
+      ctx.strokeStyle='#7a5522'; ctx.lineWidth=2; ctx.stroke();
+    }
+  });
+}
+function drawNodes(ctx, cam, size){
+  nodes.forEach(n=>{
+    const p = worldToScreen(cam,size,n.body.position.x,n.body.position.y);
+    const isSel = selected && selected.kind==='node' && selected.id===n.id;
+    if(n.type==='anchor'){
+      ctx.beginPath(); ctx.arc(p.x,p.y,9*cam.zoom,0,7);
+      ctx.fillStyle = '#5c6774'; ctx.fill();
+      ctx.strokeStyle = isSel ? '#ffd966' : '#2c333b'; ctx.lineWidth=3; ctx.stroke();
+      ctx.beginPath(); ctx.arc(p.x,p.y,3*cam.zoom,0,7); ctx.fillStyle='#c9d3da'; ctx.fill();
+    } else {
+      const r = (10 + Math.min(n.mass,50)*0.5) * cam.zoom;
+      ctx.beginPath(); ctx.arc(p.x,p.y,r,0,7);
+      ctx.fillStyle = n.isHolder ? '#a8462f' : '#9a9c9e';
+      ctx.fill();
+      ctx.strokeStyle = isSel ? '#ffd966' : '#41474d'; ctx.lineWidth=3; ctx.stroke();
+      if(n.isHolder){
+        ctx.fillStyle='#fff'; ctx.font='bold '+(11*cam.zoom)+'px Inter';
+        ctx.textAlign='center'; ctx.textBaseline='middle';
+        ctx.fillText('🪨', p.x, p.y);
+      }
+    }
+  });
+}
+
+// =========================================================================
+// RENDERING — LAUNCH VIEW
+// =========================================================================
+function drawLaunch(){
+  const {w,h} = launchSize;
+  const ctx = launchCtx;
+  ctx.clearRect(0,0,w,h);
+
+  // sky
+  const skyGrad = ctx.createLinearGradient(0,0,0,h*0.7);
+  skyGrad.addColorStop(0,'#6fb8dc'); skyGrad.addColorStop(1,'#d7ecf7');
+  ctx.fillStyle = skyGrad; ctx.fillRect(0,0,w,h);
+
+  // distant hills (parallax-ish, purely decorative)
+  const hillOffset = -launchCamera.x*0.08;
+  ctx.fillStyle = '#a8c98a';
+  ctx.beginPath();
+  ctx.moveTo(0, h*0.62);
+  for(let x=0;x<=w;x+=40){
+    ctx.lineTo(x, h*0.62 - 18*Math.sin((x+hillOffset)*0.01));
+  }
+  ctx.lineTo(w,h); ctx.lineTo(0,h); ctx.closePath(); ctx.fill();
+
+  // field
+  const groundScreen = worldToScreen(launchCamera, launchSize, 0, GROUND_Y).y;
+  const fieldGrad = ctx.createLinearGradient(0,groundScreen,0,h);
+  fieldGrad.addColorStop(0,'#5f9142'); fieldGrad.addColorStop(1,'#3f6329');
+  ctx.fillStyle = fieldGrad;
+  ctx.fillRect(0, groundScreen, w, h-groundScreen);
+  ctx.strokeStyle='rgba(0,0,0,0.15)'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(0,groundScreen); ctx.lineTo(w,groundScreen); ctx.stroke();
+
+  // distance markers every 10m
+  ctx.fillStyle='rgba(255,255,255,0.85)';
+  ctx.font='11px "IBM Plex Mono", monospace';
+  ctx.textAlign='center';
+  for(let m=0; m<=500; m+=10){
+    const wx = WORLD_ORIGIN_X + m*PPM;
+    const p = worldToScreen(launchCamera, launchSize, wx, GROUND_Y);
+    if(p.x<-30||p.x>w+30) continue;
+    ctx.fillRect(p.x-1, p.y-6, 2, 6);
+    if(m%50===0){ ctx.fillText(m+'m', p.x, p.y+18); }
+  }
+
+  // origin flag
+  const originP = worldToScreen(launchCamera, launchSize, WORLD_ORIGIN_X, GROUND_Y);
+  drawFlag(ctx, originP.x, originP.y, '#4f8f5b');
+
+  // landing flag
+  if(launchState && launchState.landed){
+    const lp = worldToScreen(launchCamera, launchSize, WORLD_ORIGIN_X+launchState.distanceM*PPM, GROUND_Y);
+    drawFlag(ctx, lp.x, lp.y, '#a8462f');
+  }
+
+  // castle blocks
+  castleBlocks.forEach(b=>{
+    const p = worldToScreen(launchCamera, launchSize, b.position.x, b.position.y);
+    ctx.save();
+    ctx.translate(p.x,p.y); ctx.rotate(b.angle);
+    ctx.fillStyle='#9a9c9e';
+    ctx.fillRect(-22*launchCamera.zoom,-15*launchCamera.zoom,44*launchCamera.zoom,30*launchCamera.zoom);
+    ctx.strokeStyle='#6c6e70'; ctx.lineWidth=2; ctx.strokeRect(-22*launchCamera.zoom,-15*launchCamera.zoom,44*launchCamera.zoom,30*launchCamera.zoom);
+    ctx.restore();
+  });
+
+  // structure
+  drawConnections(ctx, launchCamera, launchSize);
+  drawNodes(ctx, launchCamera, launchSize);
+
+  // rock
+  if(rockBody){
+    const p = worldToScreen(launchCamera, launchSize, rockBody.position.x, rockBody.position.y);
+    ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(rockBody.angle);
+    ctx.beginPath(); ctx.arc(0,0,11*launchCamera.zoom,0,7);
+    ctx.fillStyle='#6b6b6b'; ctx.fill();
+    ctx.strokeStyle='#3a3a3a'; ctx.lineWidth=2; ctx.stroke();
+    ctx.restore();
+  }
+}
+function drawFlag(ctx,x,y,color){
+  ctx.strokeStyle='#4a3423'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x,y-34); ctx.stroke();
+  ctx.fillStyle=color;
+  ctx.beginPath(); ctx.moveTo(x,y-34); ctx.lineTo(x+18,y-28); ctx.lineTo(x,y-22); ctx.closePath(); ctx.fill();
+}
+
+// =========================================================================
+// MAIN LOOP
+// =========================================================================
+function mainLoop(){
+  if(mode==='build') drawBuild();
+  else { launchTick(); drawLaunch(); }
+  requestAnimationFrame(mainLoop);
+}
+requestAnimationFrame(mainLoop);
+renderProperties();
+</script>
+
+</body>
+</html>

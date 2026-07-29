@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Elite Gaming PCs</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+
+font-family:Inter,sans-serif;
+background:#090909;
+color:white;
+overflow-x:hidden;
+
+}
+
+/* ========================= */
+/* Animated Background */
+/* ========================= */
+
+.background{
+
+position:fixed;
+inset:0;
+overflow:hidden;
+z-index:-2;
+
+}
+
+.glow{
+
+position:absolute;
+width:700px;
+height:700px;
+border-radius:50%;
+filter:blur(120px);
+opacity:.25;
+animation:float 18s ease-in-out infinite;
+
+}
+
+.red{
+
+background:#ff3030;
+top:-250px;
+left:-150px;
+
+}
+
+.purple{
+
+background:#7030ff;
+bottom:-250px;
+right:-180px;
+animation-delay:-6s;
+
+}
+
+.cyan{
+
+background:#00bfff;
+top:35%;
+left:45%;
+animation-delay:-10s;
+
+}
+
+@keyframes float{
+
+0%{transform:translate(0,0);}
+25%{transform:translate(80px,-60px);}
+50%{transform:translate(-50px,70px);}
+75%{transform:translate(70px,40px);}
+100%{transform:translate(0,0);}
+
+}
+
+.gridlines{
+
+position:fixed;
+inset:0;
+
+background:
+linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+
+background-size:60px 60px;
+
+z-index:-1;
+
+}
+
+/* ========================= */
+
+header{
+
+padding:110px 30px 90px;
+text-align:center;
+
+}
+
+header h1{
+
+font-family:Orbitron,sans-serif;
+font-size:64px;
+
+background:linear-gradient(90deg,#ffffff,#ff5d5d,#b85cff,#63d6ff);
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+letter-spacing:2px;
+
+}
+
+header p{
+
+max-width:900px;
+margin:25px auto;
+color:#c5c5c5;
+font-size:20px;
+line-height:1.7;
+
+}
+
+/* ========================= */
+
+.container{
+
+width:min(1450px,94%);
+margin:auto;
+
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+gap:40px;
+
+padding-bottom:80px;
+
+}
+
+/* ========================= */
+
+.card{
+
+position:relative;
+
+background:rgba(22,22,28,.72);
+
+border:1px solid rgba(255,255,255,.08);
+
+border-radius:22px;
+
+overflow:hidden;
+
+backdrop-filter:blur(20px);
+
+transition:.4s;
+
+}
+
+.card::before{
+
+content:"";
+
+position:absolute;
+inset:-120%;
+
+background:
+conic-gradient(
+from 180deg,
+transparent,
+rgba(255,80,80,.5),
+transparent,
+rgba(0,190,255,.4),
+transparent);
+
+animation:spin 8s linear infinite;
+
+opacity:0;
+
+transition:.4s;
+
+}
+
+.card:hover::before{
+
+opacity:1;
+
+}
+
+.card::after{
+
+content:"";
+
+position:absolute;
+inset:2px;
+
+background:#111118;
+
+border-radius:20px;
+
+z-index:0;
+
+}
+
+@keyframes spin{
+
+100%{
+transform:rotate(360deg);
+}
+
+}
+
+.content{
+
+position:relative;
+z-index:2;
+
+}
+
+.card:hover{
+
+transform:translateY(-12px);
+
+box-shadow:
+
+0 20px 60px rgba(255,60,60,.25),
+0 20px 70px rgba(80,130,255,.20);
+
+}
+
+.image{
+
+height:240px;
+
+overflow:hidden;
+
+background:black;
+
+}
+
+.image img{
+
+width:100%;
+height:100%;
+object-fit:cover;
+
+transition:1s;
+
+}
+
+.card:hover img{
+
+transform:scale(1.08);
+
+}
+
+.info{
+
+padding:24px;
+
+}
+
+.brand{
+
+color:#79d4ff;
+
+text-transform:uppercase;
+
+font-size:13px;
+
+letter-spacing:3px;
+
+margin-bottom:10px;
+
+}
+
+h2{
+
+font-family:Orbitron,sans-serif;
+
+font-size:28px;
+
+margin-bottom:16px;
+
+}
+
+.description{
+
+color:#b8b8b8;
+
+line-height:1.7;
+
+}
+
+.specs{
+
+margin-top:20px;
+
+display:flex;
+
+flex-wrap:wrap;
+
+gap:10px;
+
+}
+
+.spec{
+
+background:#1b2435;
+
+padding:8px 14px;
+
+border-radius:999px;
+
+font-size:14px;
+
+color:#8fd6ff;
+
+}
+
+/* ========================= */
+
+footer{
+
+text-align:center;
+
+padding:70px;
+
+color:#777;
+
+font-size:15px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="background">
+
+<div class="glow red"></div>
+<div class="glow purple"></div>
+<div class="glow cyan"></div>
+
+</div>
+
+<div class="gridlines"></div>
+
+<header>
+
+<h1>ELITE GAMING PCS</h1>
+
+<p>
+Explore premium gaming desktops featuring cutting-edge processors,
+powerful NVIDIA RTX graphics, advanced cooling, and striking modern designs.
+</p>
+
+</header>
+
+<div class="container">
+
+<div class="card">
+<div class="content">
+
+<div class="image">
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Computer_tower.jpg">
+</div>
+
+<div class="info">
+
+<div class="brand">ASUS</div>
+
+<h2>ROG Series</h2>
+
+<div class="description">
+High-performance gaming systems engineered for enthusiasts with premium airflow,
+RGB lighting, and flagship graphics.
+</div>
+
+<div class="specs">
+
+<div class="spec">RTX 5080</div>
+<div class="spec">DDR5</div>
+<div class="spec">PCIe 5.0</div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+<div class="card">
+<div class="content">
+
+<div class="image">
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Computer-case.jpg">
+</div>
+
+<div class="info">
+
+<div class="brand">Alienware</div>
+
+<h2>Aurora</h2>
+
+<div class="description">
+Iconic gaming desktops with futuristic industrial design and excellent thermal performance.
+</div>
+
+<div class="specs">
+
+<div class="spec">Intel Core Ultra</div>
+<div class="spec">Liquid Cooling</div>
+<div class="spec">RTX Graphics</div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+<div class="card">
+<div class="content">
+
+<div class="image">
+<img src="https://upload.wikimedia.org/wikipedia/commons/e/e5/Computer_case.jpg">
+</div>
+
+<div class="info">
+
+<div class="brand">MSI</div>
+
+<h2>Infinite</h2>
+
+<div class="description">
+Built for smooth 4K gaming, streaming, and demanding creative workloads.
+</div>
+
+<div class="specs">
+
+<div class="spec">RTX 5070 Ti</div>
+<div class="spec">DDR5</div>
+<div class="spec">Wi-Fi 7</div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+<div class="card">
+<div class="content">
+
+<div class="image">
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Desktop_computer.jpg">
+</div>
+
+<div class="info">
+
+<div class="brand">Lenovo Legion</div>
+
+<h2>Tower Series</h2>
+
+<div class="description">
+Minimal exterior with powerful internals designed for competitive gaming.
+</div>
+
+<div class="specs">
+
+<div class="spec">Ryzen 9</div>
+<div class="spec">RTX 5080</div>
+<div class="spec">32GB RAM</div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+<div class="card">
+<div class="content">
+
+<div class="image">
+<img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Desktop-PC.jpg">
+</div>
+
+<div class="info">
+
+<div class="brand">HP Omen</div>
+
+<h2>45L</h2>
+
+<div class="description">
+Purpose-built desktop featuring efficient airflow and premium gaming hardware.
+</div>
+
+<div class="specs">
+
+<div class="spec">Intel</div>
+<div class="spec">ARGB</div>
+<div class="spec">RTX</div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+<div class="card">
+<div class="content">
+
+<div class="image">
+<img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/PC-Tower.jpg">
+</div>
+
+<div class="info">
+
+<div class="brand">Acer Predator</div>
+
+<h2>Orion</h2>
+
+<div class="description">
+Aggressive styling meets enthusiast-grade performance for immersive gaming.
+</div>
+
+<div class="specs">
+
+<div class="spec">RTX 5080</div>
+<div class="spec">RGB</div>
+<div class="spec">DDR5</div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+
+<footer>
+
+Premium Gaming Desktop Showcase
+
+</footer>
+
+</body>
+</html>

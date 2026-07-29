@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pixel Dodge</title>
+<style>
+body{
+    margin:0;
+    background:#111;
+    overflow:hidden;
+}
+canvas{
+    display:block;
+    margin:auto;
+    background:#000;
+    image-rendering:pixelated;
+}
+#msg{
+    position:absolute;
+    top:10px;
+    left:50%;
+    transform:translateX(-50%);
+    color:white;
+    font-family:Arial,sans-serif;
+}
+</style>
+</head>
+<body>
+
+<div id="msg">Arrow Keys to Move</div>
+<canvas id="game" width="800" height="600"></canvas>
+
+<script>
+
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
+
+const player={
+    x:400,
+    y:300,
+    r:8,
+    speed:4,
+    flicker:0
+};
+
+const keys={};
+const pixels=[];
+
+let score=0;
+let gameOver=false;
+
+addEventListener("keydown",e=>{
+    keys[e.key]=true;
+    if(gameOver && e.key===" "){
+        restart();
+    }
+});
+
+addEventListener("keyup",e=>{
+    keys[e.key]=false;
+});
+
+function spawn(){
+
+    let side=Math.floor(Math.random()*4);
+    let x,y,vx,vy;
+
+    switch(side){
+
+        case 0:
+            x=Math.random()*canvas.width;
+            y=-6;
+            break;
+
+        case 1:
+            x=canvas.width+6;
+            y=Math.random()*canvas.height;
+            break;
+
+        case 2:
+            x=Math.random()*canvas.width;
+            y=canvas.height+6;
+            break;
+
+        default:
+            x=-6;
+            y=Math.random()*canvas.height;
+    }
+
+    let dx=player.x-x;
+    let dy=player.y-y;
+
+    let len=Math.hypot(dx,dy);
+
+    let speed=2+Math.random()*2;
+
+    vx=dx/len*speed;
+    vy=dy/len*speed;
+
+    pixels.push({
+        x,y,vx,vy,size:6
+    });
+
+}
+
+function restart(){
+
+    pixels.length=0;
+
+    player.x=400;
+    player.y=300;
+    player.flicker=0;
+
+    score=0;
+    gameOver=false;
+
+}
+
+function update(){
+
+    if(gameOver)return;
+
+    if(keys["ArrowLeft"]) player.x-=player.speed;
+    if(keys["ArrowRight"]) player.x+=player.speed;
+    if(keys["ArrowUp"]) player.y-=player.speed;
+    if(keys["ArrowDown"]) player.y+=player.speed;
+
+    player.x=Math.max(player.r,Math.min(canvas.width-player.r,player.x));
+    player.y=Math.max(player.r,Math.min(canvas.height-player.r,player.y));
+
+    if(Math.random()<0.06) spawn();
+
+    for(let i=pixels.length-1;i>=0;i--){
+
+        let p=pixels[i];
+
+        p.x+=p.vx;
+        p.y+=p.vy;
+
+        let d=Math.hypot(player.x-p.x,player.y-p.y);
+
+        if(d<player.r+p.size){
+
+            if(player.flicker>0){
+
+                gameOver=true;
+
+            }else{
+
+                player.flicker=60;
+
+            }
+
+        }
+
+        if(
+            p.x<-20||
+            p.x>820||
+            p.y<-20||
+            p.y>620
+        ){
+            pixels.splice(i,1);
+            score++;
+        }
+
+    }
+
+    if(player.flicker>0)
+        player.flicker--;
+
+}
+
+function draw(){
+
+    ctx.fillStyle="#000";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    ctx.fillStyle="red";
+
+    for(let p of pixels){
+
+        ctx.fillRect(
+            Math.round(p.x),
+            Math.round(p.y),
+            p.size,
+            p.size
+        );
+
+    }
+
+    if(player.flicker===0 || Math.floor(player.flicker/4)%2==0){
+
+        ctx.fillStyle="deepskyblue";
+
+        ctx.beginPath();
+        ctx.arc(player.x,player.y,player.r,0,Math.PI*2);
+        ctx.fill();
+
+    }
+
+    ctx.fillStyle="white";
+    ctx.font="18px Arial";
+    ctx.fillText("Score: "+score,10,24);
+
+    if(gameOver){
+
+        ctx.fillStyle="white";
+        ctx.font="40px Arial";
+        ctx.textAlign="center";
+        ctx.fillText("GAME OVER",400,280);
+
+        ctx.font="20px Arial";
+        ctx.fillText("Press SPACE to Restart",400,320);
+
+        ctx.textAlign="left";
+
+    }
+
+}
+
+function loop(){
+
+    update();
+    draw();
+
+    requestAnimationFrame(loop);
+
+}
+
+loop();
+
+</script>
+
+</body>
+</html>
