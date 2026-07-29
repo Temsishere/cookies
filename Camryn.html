@@ -1,1 +1,1165 @@
+<!DOCTYPE html>
+<html>
+<head>
 
+<title>Stompy Stomp 🐰💗</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+background:#ffd8eb;
+font-family:"Comic Sans MS", Arial, sans-serif;
+overflow:hidden;
+}
+
+
+/* GAME WINDOW */
+
+#game{
+
+width:900px;
+max-width:100%;
+
+height:450px;
+
+margin:20px auto;
+
+position:relative;
+
+overflow:hidden;
+
+background:
+linear-gradient(
+#ffc6df,
+#fff0f8
+);
+
+border-radius:30px;
+
+border-bottom:80px solid #ff9fc8;
+
+box-shadow:
+0 15px 30px rgba(255,80,150,.3);
+
+}
+
+
+/* SCORE */
+
+#score{
+
+position:absolute;
+
+top:15px;
+left:20px;
+
+font-size:22px;
+
+font-weight:bold;
+
+color:#d94f8a;
+
+z-index:20;
+
+}
+
+
+
+/* CLOUD */
+
+.cloud{
+
+position:absolute;
+
+font-size:60px;
+
+opacity:.8;
+
+animation:
+cloudMove 20s linear infinite;
+
+}
+
+
+@keyframes cloudMove{
+
+from{
+left:100%;
+}
+
+to{
+left:-150px;
+}
+
+}
+
+
+
+
+/* BUNNY */
+
+#bunny{
+
+position:absolute;
+
+left:120px;
+
+bottom:70px;
+
+width:70px;
+
+height:65px;
+
+background:white;
+
+border-radius:50%;
+
+z-index:10;
+
+box-shadow:
+0 5px 12px rgba(0,0,0,.15);
+
+animation:
+run 0.25s infinite alternate;
+
+}
+
+
+
+/* bunny running */
+
+@keyframes run{
+
+from{
+transform:translateY(0);
+}
+
+to{
+transform:translateY(-5px);
+}
+
+}
+
+
+/* ears */
+
+.ear{
+
+position:absolute;
+
+width:20px;
+
+height:50px;
+
+background:white;
+
+border-radius:50%;
+
+top:-40px;
+
+}
+
+
+.ear.left{
+left:12px;
+}
+
+
+.ear.right{
+right:12px;
+}
+
+
+.innerEar{
+
+position:absolute;
+
+width:10px;
+
+height:32px;
+
+background:#ff9fc8;
+
+border-radius:50%;
+
+left:5px;
+
+top:8px;
+
+}
+
+
+
+/* face */
+
+.eye{
+
+position:absolute;
+
+width:9px;
+
+height:9px;
+
+background:#333;
+
+border-radius:50%;
+
+top:28px;
+
+}
+
+
+.eye.left{
+left:18px;
+}
+
+
+.eye.right{
+right:18px;
+}
+
+
+
+.nose{
+
+position:absolute;
+
+width:9px;
+
+height:7px;
+
+background:#ff7fae;
+
+border-radius:50%;
+
+top:40px;
+
+left:31px;
+
+}
+
+
+
+.cheek{
+
+position:absolute;
+
+width:14px;
+
+height:8px;
+
+background:#ffb6d9;
+
+border-radius:50%;
+
+top:42px;
+
+}
+
+
+.cheek.left{
+left:7px;
+}
+
+
+.cheek.right{
+right:7px;
+
+}
+
+
+
+
+.tail{
+
+position:absolute;
+
+width:28px;
+
+height:28px;
+
+background:white;
+
+border-radius:50%;
+
+right:-20px;
+
+bottom:10px;
+
+}
+
+
+
+
+/* ducking */
+
+.duck{
+
+height:40px!important;
+
+width:80px!important;
+
+animation:none!important;
+
+}
+
+
+
+/* jump animation disabled while airborne */
+
+.jumping{
+
+animation:none!important;
+
+}
+
+
+
+
+/* SPIKES */
+
+.spike{
+
+position:absolute;
+
+bottom:70px;
+
+font-size:60px;
+
+color:#ff6f9f;
+
+text-shadow:
+0 5px #c94d78;
+
+}
+
+
+
+
+/* BLUE BIRD */
+
+.bird{
+
+position:absolute;
+
+width:50px;
+
+height:38px;
+
+background:#55c9ff;
+
+border-radius:50%;
+
+z-index:5;
+
+animation:
+birdFloat .3s infinite alternate;
+
+}
+
+
+
+@keyframes birdFloat{
+
+from{
+transform:translateY(0);
+}
+
+to{
+transform:translateY(-8px);
+}
+
+}
+
+
+
+/* bird wing */
+
+.bird:before{
+
+content:"";
+
+position:absolute;
+
+width:30px;
+
+height:16px;
+
+background:#9de4ff;
+
+border-radius:50%;
+
+top:-5px;
+
+left:8px;
+
+}
+
+
+
+
+/* bird eye */
+
+.bird:after{
+
+content:"";
+
+position:absolute;
+
+width:7px;
+
+height:7px;
+
+background:black;
+
+border-radius:50%;
+
+right:10px;
+
+top:10px;
+
+}
+
+
+
+
+/* ground */
+
+#ground{
+
+position:absolute;
+
+bottom:0;
+
+height:70px;
+
+width:100%;
+
+background:#ff9fc8;
+
+}
+
+
+
+/* GAME OVER */
+
+#gameOver{
+
+display:none;
+
+position:absolute;
+
+top:140px;
+
+width:100%;
+
+text-align:center;
+
+background:#fff0f7;
+
+padding:25px;
+
+font-size:35px;
+
+color:#d94f8a;
+
+z-index:50;
+
+}
+
+
+
+/* BUTTONS */
+
+
+button{
+
+padding:12px 25px;
+
+border:none;
+
+border-radius:20px;
+
+background:#ff78b4;
+
+color:white;
+
+font-size:18px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+margin:5px;
+
+}
+
+
+button:hover{
+
+background:#ff4f98;
+
+}
+
+
+
+.controls{
+
+text-align:center;
+
+}
+
+
+
+
+/* fullscreen */
+
+#game:fullscreen{
+
+width:100vw;
+
+height:100vh;
+
+border-radius:0;
+
+margin:0;
+
+}
+
+
+</style>
+</head>
+
+
+<body>
+
+
+<div id="game">
+
+
+<div id="score">
+Score: 0
+</div>
+
+
+<div class="cloud" style="top:40px">
+☁️
+</div>
+
+
+
+<div id="bunny">
+
+
+<div class="ear left">
+<div class="innerEar"></div>
+</div>
+
+
+<div class="ear right">
+<div class="innerEar"></div>
+</div>
+
+
+<div class="eye left"></div>
+
+<div class="eye right"></div>
+
+
+<div class="nose"></div>
+
+
+<div class="cheek left"></div>
+
+<div class="cheek right"></div>
+
+
+<div class="tail"></div>
+
+
+</div>
+
+
+
+
+<div id="gameOver">
+
+GAME OVER 🐰💔
+
+<br><br>
+
+<button onclick="restart()">
+Play Again
+</button>
+
+</div>
+
+
+
+<div id="ground"></div>
+
+
+</div>
+
+
+
+<div class="controls">
+
+<button onclick="jump()">
+🐰 Jump
+</button>
+
+<button onclick="duck()">
+🌸 Duck
+</button>
+
+<button onclick="fullscreenGame()">
+⛶ Fullscreen
+</button>
+
+</div>
+<script>
+
+
+// ============================
+// GAME VARIABLES
+// ============================
+
+const bunny = document.getElementById("bunny");
+const game = document.getElementById("game");
+const scoreText = document.getElementById("score");
+const gameOver = document.getElementById("gameOver");
+
+
+let score = 0;
+
+let highScore =
+localStorage.getItem("stompyHigh") || 0;
+
+
+let speed = 7;
+
+let playing = true;
+
+
+// Bunny physics
+
+let bunnyY = 0;
+
+let velocity = 0;
+
+let gravity = 0.8;
+
+let jumping = false;
+
+const groundHeight = 70;
+
+
+
+// ============================
+// CONTROLS
+// ============================
+
+
+document.addEventListener(
+"keydown",
+function(e){
+
+
+if(e.code === "Space" ||
+e.code === "ArrowUp"){
+
+jump();
+
+}
+
+
+if(e.code === "ArrowDown"){
+
+duck();
+
+}
+
+
+if(e.code === "KeyR"){
+
+restart();
+
+}
+
+
+});
+
+
+
+
+
+function jump(){
+
+if(!jumping && playing){
+
+velocity = 15;
+
+jumping = true;
+
+bunny.classList.add("jumping");
+
+}
+
+}
+
+
+
+
+
+function duck(){
+
+if(!playing)return;
+
+
+bunny.classList.add("duck");
+
+
+setTimeout(()=>{
+
+bunny.classList.remove("duck");
+
+},400);
+
+
+}
+
+
+
+
+
+// ============================
+// BUNNY PHYSICS
+// ============================
+
+
+function physics(){
+
+
+if(!playing)return;
+
+
+
+bunnyY += velocity;
+
+
+velocity -= gravity;
+
+
+
+if(bunnyY <= 0){
+
+bunnyY = 0;
+
+velocity = 0;
+
+jumping = false;
+
+bunny.classList.remove("jumping");
+
+}
+
+
+
+bunny.style.bottom =
+(groundHeight + bunnyY) + "px";
+
+
+
+requestAnimationFrame(physics);
+
+
+}
+
+
+physics();
+
+
+
+
+
+// ============================
+// OBSTACLES
+// ============================
+
+
+function spawnObstacle(){
+
+
+if(!playing)return;
+
+
+
+let obstacle =
+document.createElement("div");
+
+
+
+let isBird =
+Math.random() > 0.65;
+
+
+
+if(isBird){
+
+
+obstacle.className="bird";
+
+
+// random bird height
+
+if(Math.random()>0.5){
+
+obstacle.style.bottom="170px";
+
+}
+else{
+
+obstacle.style.bottom="240px";
+
+}
+
+
+
+}
+
+else{
+
+
+obstacle.className="spike";
+
+
+// 1-3 spikes
+
+let amount =
+Math.floor(Math.random()*3)+1;
+
+
+obstacle.innerHTML =
+"▲".repeat(amount);
+
+
+
+}
+
+
+
+obstacle.style.left="900px";
+
+
+game.appendChild(obstacle);
+
+
+
+let position = 900;
+
+
+
+let movement =
+setInterval(()=>{
+
+
+if(!playing){
+
+clearInterval(movement);
+
+return;
+
+}
+
+
+
+position -= speed;
+
+
+obstacle.style.left =
+position+"px";
+
+
+
+if(checkCollision(obstacle)){
+
+endGame();
+
+}
+
+
+
+if(position < -150){
+
+
+obstacle.remove();
+
+clearInterval(movement);
+
+
+}
+
+
+},20);
+
+
+
+}
+
+
+
+
+// fair spacing between obstacles
+
+function obstacleLoop(){
+
+
+if(!playing)return;
+
+
+
+spawnObstacle();
+
+
+
+let delay =
+1800 + Math.random()*1400;
+
+
+setTimeout(
+obstacleLoop,
+delay
+);
+
+
+}
+
+
+
+
+
+// ============================
+// COLLISION
+// ============================
+
+
+function checkCollision(obstacle){
+
+
+let bunnyBox =
+bunny.getBoundingClientRect();
+
+
+let obstacleBox =
+obstacle.getBoundingClientRect();
+
+
+
+// forgiving hitbox
+
+return(
+
+bunnyBox.left + 15 <
+obstacleBox.right &&
+
+
+bunnyBox.right - 15 >
+obstacleBox.left &&
+
+
+bunnyBox.top + 15 <
+obstacleBox.bottom &&
+
+
+bunnyBox.bottom - 10 >
+obstacleBox.top
+
+);
+
+
+}
+
+
+
+
+
+// ============================
+// SCORE
+// ============================
+
+
+function scoreLoop(){
+
+
+if(!playing)return;
+
+
+
+score++;
+
+
+scoreText.innerHTML =
+
+"Score: " + score +
+" | Best: " + highScore;
+
+
+
+if(score % 500 === 0){
+
+speed += .5;
+
+}
+
+
+
+requestAnimationFrame(scoreLoop);
+
+
+}
+
+
+
+
+
+
+// ============================
+// GAME OVER
+// ============================
+
+
+function endGame(){
+
+
+playing = false;
+
+
+if(score > highScore){
+
+
+highScore = score;
+
+
+localStorage.setItem(
+"stompyHigh",
+highScore
+);
+
+
+}
+
+
+
+gameOver.style.display="block";
+
+
+}
+
+
+
+
+
+// ============================
+// RESTART
+// ============================
+
+
+function restart(){
+
+
+
+document.querySelectorAll(
+".spike,.bird"
+)
+.forEach(
+e=>e.remove()
+);
+
+
+
+score = 0;
+
+speed = 7;
+
+
+playing = true;
+
+
+bunnyY = 0;
+
+velocity = 0;
+
+
+jumping = false;
+
+
+bunny.style.bottom =
+groundHeight+"px";
+
+
+
+gameOver.style.display="none";
+
+
+
+obstacleLoop();
+
+scoreLoop();
+
+
+}
+
+
+
+
+
+// ============================
+// FULLSCREEN
+// ============================
+
+
+function fullscreenGame(){
+
+
+if(!document.fullscreenElement){
+
+
+game.requestFullscreen();
+
+
+}
+
+else{
+
+
+document.exitFullscreen();
+
+
+}
+
+
+}
+
+
+
+
+
+// START GAME
+
+obstacleLoop();
+
+scoreLoop();
+
+
+
+</script>
+
+
+</body>
+</html>
