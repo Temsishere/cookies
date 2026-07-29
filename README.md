@@ -24,12 +24,10 @@ List of pages:
 - [PCs for Gaming](pcs2.html)
 - [My Cool Website](coolwebsite.html)
 - [Raqeebat's page](Raqy.html)
-
-## Buy some RAM here!!!!!
-- [RAM Listings](ramprices.html)
+- Buy some RAM here!!!!!  [RAM Listings](ramprices.html)
 
 [These pages on GitHub](https://github.com/mambelli/cookies)
 
 by VALOR JROTC 2026 cohort
 
-![image](images/FNALVALORJROTC-QR.png alt="QR code" width="100")
+<img src="images/FNALVALORJROTC-QR.png alt="QR code of this page" width="100" />
