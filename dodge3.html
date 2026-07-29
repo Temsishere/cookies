@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Pixel Dodge+</title>
+<style>
+body{margin:0;background:#111;overflow:hidden}
+canvas{display:block;margin:auto;background:#000;image-rendering:pixelated}
+</style>
+</head>
+<body>
+<canvas id="c" width="800" height="600"></canvas>
+
+<script>
+const c=document.getElementById("c"),x=c.getContext("2d");
+
+const audio=new(window.AudioContext||window.webkitAudioContext)();
+function beep(f,d){
+ let o=audio.createOscillator(),g=audio.createGain();
+ o.frequency.value=f;
+ o.type="square";
+ o.connect(g);g.connect(audio.destination);
+ g.gain.value=.05;
+ o.start();
+ g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+d);
+ o.stop(audio.currentTime+d);
+}
+
+const p={x:400,y:300,r:8,hp:3,max:3,inv:0};
+const keys={},pix=[],parts=[];
+let score=0,regen=0,over=false;
+
+onkeydown=e=>{
+keys[e.key]=1;
+if(audio.state=="suspended")audio.resume();
+if(over&&e.key==" "){
+pix.length=parts.length=0;
+p.x=400;p.y=300;p.hp=3;p.inv=0;
+score=0;regen=0;over=false;
+}
+};
+onkeyup=e=>keys[e.key]=0;
+
+function spawn(){
+let s=Math.floor(Math.random()*4),px,py;
+if(s==0){px=Math.random()*800;py=-8;}
+if(s==1){px=808;py=Math.random()*600;}
+if(s==2){px=Math.random()*800;py=608;}
+if(s==3){px=-8;py=Math.random()*600;}
+let dx=p.x-px,dy=p.y-py,l=Math.hypot(dx,dy);
+let sp=2+Math.random()*2+score/500;
+pix.push({x:px,y:py,vx:dx/l*sp,vy:dy/l*sp,s:6,c:`hsl(${Math.random()*360},100%,60%)`});
+}
+
+function burst(px,py,col){
+for(let i=0;i<14;i++){
+parts.push({
+x:px,y:py,
+vx:(Math.random()-.5)*5,
+vy:(Math.random()-.5)*5,
+l:30,
+c:col
+});
+}
+}
+
+function update(){
+
+if(over)return;
+
+if(keys.ArrowLeft)p.x-=4;
+if(keys.ArrowRight)p.x+=4;
+if(keys.ArrowUp)p.y-=4;
+if(keys.ArrowDown)p.y+=4;
+
+p.x=Math.max(8,Math.min(792,p.x));
+p.y=Math.max(8,Math.min(592,p.y));
+
+if(Math.random()<.08)spawn();
+
+regen++;
+if(regen>360&&p.hp<p.max){
+p.hp++;
+regen=0;
+beep(650,.06);
+}
+
+if(p.inv>0)p.inv--;
+
+for(let i=pix.length-1;i>=0;i--){
+let q=pix[i];
+q.x+=q.vx;
+q.y+=q.vy;
+
+if(Math.hypot(q.x-p.x,q.y-p.y)<p.r+q.s){
+
+burst(q.x,q.y,q.c);
+pix.splice(i,1);
+
+if(!p.inv){
+p.hp--;
+p.inv=60;
+regen=0;
+beep(220,.12);
+
+if(p.hp<=0){
+over=true;
+beep(100,.4);
+}
+}
+continue;
+}
+
+if(q.x<-20||q.x>820||q.y<-20||q.y>620){
+pix.splice(i,1);
+score++;
+}
+}
+
+for(let i=parts.length-1;i>=0;i--){
+let a=parts[i];
+a.x+=a.vx;
+a.y+=a.vy;
+a.vx*=.96;
+a.vy*=.96;
+a.l--;
+if(a.l<=0)parts.splice(i,1);
+}
+}
+
+function draw(){
+
+x.fillStyle="rgba(0,0,0,.22)";
+x.fillRect(0,0,800,600);
+
+for(let g=0;g<800;g+=20){
+x.fillStyle="rgba(255,255,255,.02)";
+x.fillRect(g,0,1,600);
+}
+for(let g=0;g<600;g+=20){
+x.fillRect(0,g,800,1);
+}
+
+for(let q of pix){
+x.fillStyle=q.c;
+x.fillRect(q.x,q.y,q.s,q.s);
+}
+
+for(let a of parts){
+x.fillStyle=a.c;
+x.fillRect(a.x,a.y,3,3);
+}
+
+if(p.inv==0||Math.floor(p.inv/4)%2==0){
+x.fillStyle="deepskyblue";
+x.beginPath();
+x.arc(p.x,p.y,p.r,0,7);
+x.fill();
+
+x.fillStyle="rgba(100,220,255,.3)";
+x.beginPath();
+x.arc(p.x,p.y,18,0,7);
+x.fill();
+}
+
+x.fillStyle="#fff";
+x.font="16px monospace";
+x.fillText("Score "+score,10,20);
+
+x.fillText("HP",10,45);
+
+for(let i=0;i<p.max;i++){
+x.fillStyle=i<p.hp?"lime":"#333";
+x.fillRect(45+i*18,33,14,14);
+}
+
+if(over){
+x.fillStyle="rgba(0,0,0,.65)";
+x.fillRect(0,0,800,600);
+
+x.fillStyle="#ff5555";
+x.font="42px monospace";
+x.textAlign="center";
+x.fillText("GAME OVER",400,270);
+
+x.fillStyle="#fff";
+x.font="20px monospace";
+x.fillText("Press SPACE",400,315);
+x.textAlign="left";
+}
+}
+
+(function loop(){
+update();
+draw();
+requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
