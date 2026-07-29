@@ -24,6 +24,8 @@ List of pages:
 - [PCs for Gaming](pcs2.html)
 - [My Cool Website](coolwebsite.html)
 - [Raqeebat's page](Raqy.html)
+- [MAGAME](MAGAME.html)
+  
 
 ## Buy some RAM here!!!!!
 - [RAM Listings](ramprices.html)
