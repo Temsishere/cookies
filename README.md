@@ -30,7 +30,7 @@ List of pages:
 - [MAGAME](MAGAME.html)
 - Buy some RAM here!!!!!  [RAM Listings](ramprices.html)
 - [Very cool Dino Game](DinosaurGame.html)
-- [CrazyCortz](CrazyCortez.html)
+- [CrazyCortez](CrazyCortez.html)
 
 ## Dodge3 dropped!
 - [Dodge 3!!](dodge3.html)
