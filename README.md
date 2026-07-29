@@ -29,4 +29,4 @@ List of pages:
 
 by VALOR JROTC 2026 cohort
 
-![image](images/FNALVALORJROTC-QR.png)
+![image](images/FNALVALORJROTC-QR.png alt="QR code" width="100")
