@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Find a 7-Eleven</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #222;
+        }
+
+        header {
+            background-color: #008163;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+
+        nav {
+            background-color: #f58220;
+            padding: 12px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .hero {
+            background-color: white;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .hero h2 {
+            color: #008163;
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            margin-bottom: 25px;
+            font-size: 18px;
+        }
+
+        .search-box {
+            display: flex;
+            justify-content: center;
+            max-width: 650px;
+            margin: auto;
+        }
+
+        .search-box input {
+            width: 75%;
+            padding: 14px;
+            border: 2px solid #008163;
+            border-radius: 6px 0 0 6px;
+            font-size: 16px;
+        }
+
+        .search-box button {
+            padding: 14px 22px;
+            border: none;
+            background-color: #f58220;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 0 6px 6px 0;
+            cursor: pointer;
+        }
+
+        .search-box button:hover {
+            background-color: #d96b0d;
+        }
+
+        #message {
+            margin-top: 18px;
+            font-weight: bold;
+            color: #008163;
+        }
+
+        .locations {
+            padding: 40px 20px;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .locations h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #008163;
+        }
+
+        .store-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .store-card {
+            background-color: white;
+            width: 300px;
+            padding: 22px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .store-card h3 {
+            color: #f58220;
+            margin-bottom: 12px;
+        }
+
+        .store-card p {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .directions-button {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 10px 16px;
+            background-color: #008163;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .directions-button:hover {
+            background-color: #005f49;
+        }
+
+        footer {
+            background-color: #222;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 600px) {
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-box input {
+                width: 100%;
+                border-radius: 6px;
+                margin-bottom: 10px;
+            }
+
+            .search-box button {
+                border-radius: 6px;
+            }
+
+            nav a {
+                display: block;
+                margin: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Find a 7-Eleven</h1>
+        <p>Locate snacks, drinks, fuel, and more near you.</p>
+    </header>
+
+    <nav>
+        <a href="#search">Store Finder</a>
+        <a href="#locations">Nearby Stores</a>
+        <a href="#about">About</a>
+    </nav>
+
+    <main>
+        <section class="hero" id="search">
+            <h2>Find Your Nearest Store</h2>
+
+            <p>
+                Enter your city, state, or ZIP code to search for a nearby
+                7-Eleven location.
+            </p>
+
+            <div class="search-box">
+                <input
+                    type="text"
+                    id="locationInput"
+                    placeholder="Enter city, state, or ZIP code"
+                >
+
+                <button onclick="findStore()">Search</button>
+            </div>
+
+            <p id="message"></p>
+        </section>
+
+        <section class="locations" id="locations">
+            <h2>Example Nearby Locations</h2>
+
+            <div class="store-container">
+                <article class="store-card">
+                    <h3>7-Eleven Downtown</h3>
+
+                    <p><strong>Address:</strong> 123 Main Street</p>
+                    <p><strong>Hours:</strong> Open 24 hours</p>
+                    <p><strong>Services:</strong> Snacks, drinks, coffee, and fuel</p>
+
+                    <a
+                        class="directions-button"
+                        href="https://www.google.com/maps/search/7-Eleven"
+                        target="_blank"
+                    >
+                        Get Directions
+                    </a>
+                </article>
+
+                <article class="store-card">
+                    <h3>7-Eleven West Side</h3>
+
+                    <p><strong>Address:</strong> 456 West Avenue</p>
+                    <p><strong>Hours:</strong> Open 24 hours</p>
+                    <p><strong>Services:</strong> ATM, hot food, drinks, and fuel</p>
+
+                    <a
+                        class="directions-button"
+                        href="https://www.google.com/maps/search/7-Eleven"
+                        target="_blank"
+                    >
+                        Get Directions
+                    </a>
+                </article>
+
+                <article class="store-card">
+                    <h3>7-Eleven North Plaza</h3>
+
+                    <p><strong>Address:</strong> 789 North Road</p>
+                    <p><strong>Hours:</strong> Open 24 hours</p>
+                    <p><strong>Services:</strong> Coffee, snacks, groceries, and ATM</p>
+
+                    <a
+                        class="directions-button"
+                        href="https://www.google.com/maps/search/7-Eleven"
+                        target="_blank"
+                    >
+                        Get Directions
+                    </a>
+                </article>
+            </div>
+        </section>
+
+        <section class="hero" id="about">
+            <h2>About This Page</h2>
+
+            <p>
+                This sample store-finder page helps users search for nearby
+                7-Eleven locations and open directions in Google Maps.
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Store Finder Project</p>
+        <p>This is an educational project and is not an official 7-Eleven website.</p>
+    </footer>
+
+    <script>
+        function findStore() {
+            const locationInput = document
+                .getElementById("locationInput")
+                .value
+                .trim();
+
+            const message = document.getElementById("message");
+
+            if (locationInput === "") {
+                message.textContent =
+                    "Please enter a city, state, or ZIP code.";
+
+                return;
+            }
+
+            message.textContent =
+                "Searching for 7-Eleven stores near " +
+                locationInput +
+                "...";
+
+            const mapSearch =
+                "https://www.google.com/maps/search/7-Eleven+near+" +
+                encodeURIComponent(locationInput);
+
+            setTimeout(function () {
+                window.open(mapSearch, "_blank");
+            }, 800);
+        }
+
+        document
+            .getElementById("locationInput")
+            .addEventListener("keydown", function (event) {
+                if (event.key === "Enter") {
+                    findStore();
+                }
+            });
+    </script>
+
+</body>
+</html>
