@@ -28,3 +28,5 @@ List of pages:
 [These pages on GitHub](https://github.com/mambelli/cookies)
 
 by VALOR JROTC 2026 cohort
+
+![image](images/FNALVALORJROTC-QR.png)
