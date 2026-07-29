@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Playable Chess Hub</title>
+  <title>Chess vs Stockfish AI</title>
   
   <!-- Chessboard.js CSS -->
   <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
@@ -81,12 +81,12 @@
       width: 36px;
       height: 36px;
       border-radius: 4px;
-      background-color: #38bdf8;
+      background-color: #e11d48;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: bold;
-      color: #161512;
+      color: #ffffff;
     }
 
     .timer {
@@ -194,29 +194,29 @@
 <body>
 
   <header>
-    <a href="#" class="logo">ChessHub</a>
+    <a href="#" class="logo">ChessHub vs Stockfish</a>
   </header>
 
   <div class="container">
     <div class="board-container">
       
-      <!-- Black Player -->
+      <!-- AI Opponent -->
       <div class="player-card">
         <div class="player-info">
-          <div class="avatar">B</div>
-          <span>Black Player</span>
+          <div class="avatar">SF</div>
+          <span>Stockfish Engine</span>
         </div>
         <div id="black-timer" class="timer">05:00</div>
       </div>
 
-      <!-- Chessboard Container -->
+      <!-- Chessboard -->
       <div id="myBoard"></div>
 
-      <!-- White Player -->
+      <!-- Human Player -->
       <div class="player-card">
         <div class="player-info">
-          <div class="avatar" style="background-color: #81b64c;">W</div>
-          <span>White Player</span>
+          <div class="avatar" style="background-color: #81b64c;">YOU</div>
+          <span>You (White)</span>
         </div>
         <div id="white-timer" class="timer active">05:00</div>
       </div>
@@ -225,7 +225,7 @@
 
     <!-- Game Control Panel -->
     <div class="game-panel">
-      <div class="panel-header" id="status">White to move</div>
+      <div class="panel-header" id="status">Your turn (White)</div>
       <div class="move-history" id="move-history"></div>
       <div class="panel-actions">
         <button class="btn btn-primary" onclick="resetGame()">Restart Game</button>
@@ -233,7 +233,7 @@
     </div>
   </div>
 
-  <!-- Dependencies: jQuery, Chess.js (rules), Chessboard.js (UI) -->
+  <!-- Dependencies -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
   <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
@@ -242,11 +242,45 @@
     let board = null;
     let game = new Chess();
     
-    // Timer Variables (5 minutes each = 300 seconds)
     let whiteTime = 300;
     let blackTime = 300;
     let timerInterval = null;
     let gameStarted = false;
+
+    // Load Stockfish Engine from CDN via Web Worker
+    let stockfish = new Worker('https://cdnjs.cloudflare.com/ajax/libs/stockfish.js/10.0.2/stockfish.js');
+
+    // Initialize Stockfish options
+    stockfish.postMessage('uci');
+    stockfish.postMessage('ucinewgame');
+
+    // Listen to Stockfish engine messages
+    stockfish.onmessage = function(event) {
+      let line = event.data;
+
+      // Look for the "bestmove" engine output line
+      if (line.startsWith('bestmove')) {
+        let parts = line.split(' ');
+        let bestMove = parts[1];
+
+        if (bestMove) {
+          let source = bestMove.substring(0, 2);
+          let target = bestMove.substring(2, 4);
+          let promotion = bestMove.length > 4 ? bestMove.substring(4, 5) : 'q';
+
+          game.move({
+            from: source,
+            to: target,
+            promotion: promotion
+          });
+
+          board.position(game.fen());
+          updateStatus();
+          updateMoveHistory();
+          updateTimerHighlight();
+        }
+      }
+    };
 
     function formatTime(seconds) {
       let min = Math.floor(seconds / 60);
@@ -263,18 +297,18 @@
         if (game.turn() === 'w') {
           whiteTime--;
           $('#white-timer').text(formatTime(whiteTime));
-          if (whiteTime <= 0) handleTimeOut('Black');
+          if (whiteTime <= 0) handleTimeOut('Stockfish');
         } else {
           blackTime--;
           $('#black-timer').text(formatTime(blackTime));
-          if (blackTime <= 0) handleTimeOut('White');
+          if (blackTime <= 0) handleTimeOut('You');
         }
       }, 1000);
     }
 
     function handleTimeOut(winner) {
       clearInterval(timerInterval);
-      $('#status').text(`Game Over! ${winner} wins on time.`);
+      $('#status').text(`Game Over! ${winner} win(s) on time.`);
     }
 
     function updateTimerHighlight() {
@@ -287,28 +321,35 @@
       }
     }
 
+    function requestStockfishMove() {
+      if (game.game_over()) return;
+
+      // Pass the current position (FEN) to Stockfish
+      stockfish.postMessage('position fen ' + game.fen());
+
+      // Search depth = 10 moves ahead (hard difficulty)
+      // Increase to depth 15 for extreme difficulty
+      stockfish.postMessage('go depth 10');
+    }
+
     function onDragStart(source, piece, position, orientation) {
       if (game.game_over()) return false;
 
-      // Only allow picking up pieces for the player whose turn it is
-      if ((game.turn() === 'w' && piece.search(/^b/) !== -1) ||
-          (game.turn() === 'b' && piece.search(/^w/) !== -1)) {
+      // Only allow White pieces to be dragged
+      if (game.turn() === 'b' || piece.search(/^b/) !== -1) {
         return false;
       }
     }
 
     function onDrop(source, target) {
-      // See if the move is legal according to chess rules
       let move = game.move({
         from: source,
         to: target,
-        promotion: 'q' // Auto promote to Queen for simplicity
+        promotion: 'q'
       });
 
-      // Illegal move
       if (move === null) return 'snapback';
 
-      // Start clock on first move
       if (!gameStarted) {
         gameStarted = true;
         startTimer();
@@ -317,6 +358,9 @@
       updateStatus();
       updateMoveHistory();
       updateTimerHighlight();
+
+      // Ask Stockfish for a response move
+      requestStockfishMove();
     }
 
     function onSnapEnd() {
@@ -325,18 +369,23 @@
 
     function updateStatus() {
       let status = '';
-      let moveColor = game.turn() === 'b' ? 'Black' : 'White';
 
       if (game.in_checkmate()) {
-        status = `Game over, ${moveColor} is in checkmate.`;
+        let winner = game.turn() === 'b' ? 'You win!' : 'Stockfish wins!';
+        status = `Game over! Checkmate — ${winner}`;
         clearInterval(timerInterval);
       } else if (game.in_draw()) {
         status = 'Game over, drawn position.';
         clearInterval(timerInterval);
       } else {
-        status = `${moveColor} to move`;
+        if (game.turn() === 'w') {
+          status = 'Your turn (White)';
+        } else {
+          status = 'Stockfish is calculating...';
+        }
+        
         if (game.in_check()) {
-          status += `, ${moveColor} is in check!`;
+          status += ' — Check!';
         }
       }
 
@@ -373,10 +422,12 @@
       gameStarted = false;
       clearInterval(timerInterval);
 
+      stockfish.postMessage('ucinewgame');
+
       $('#white-timer').text(formatTime(whiteTime)).addClass('active');
       $('#black-timer').text(formatTime(blackTime)).removeClass('active');
       $('#move-history').empty();
-      $('#status').text('White to move');
+      $('#status').text('Your turn (White)');
     }
 
     // Initialize Chessboard
