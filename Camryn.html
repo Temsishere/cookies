@@ -11,18 +11,25 @@ box-sizing:border-box;
 }
 
 body{
+
 margin:0;
+
 background:#ffd8eb;
+
 font-family:"Comic Sans MS", Arial, sans-serif;
+
 overflow:hidden;
+
 }
 
 
-/* GAME WINDOW */
+
+/* GAME */
 
 #game{
 
 width:900px;
+
 max-width:100%;
 
 height:450px;
@@ -35,18 +42,19 @@ overflow:hidden;
 
 background:
 linear-gradient(
-#ffc6df,
-#fff0f8
+#ffc7df,
+#fff2f8
 );
 
 border-radius:30px;
 
-border-bottom:80px solid #ff9fc8;
+border-bottom:75px solid #ff9fc8;
 
 box-shadow:
 0 15px 30px rgba(255,80,150,.3);
 
 }
+
 
 
 /* SCORE */
@@ -56,6 +64,7 @@ box-shadow:
 position:absolute;
 
 top:15px;
+
 left:20px;
 
 font-size:22px;
@@ -70,7 +79,7 @@ z-index:20;
 
 
 
-/* CLOUD */
+/* CLOUDS */
 
 .cloud{
 
@@ -81,27 +90,69 @@ font-size:60px;
 opacity:.8;
 
 animation:
-cloudMove 20s linear infinite;
+cloudMove linear infinite;
 
 }
+
+
+.cloud1{
+
+top:40px;
+
+animation-duration:18s;
+
+}
+
+
+.cloud2{
+
+top:100px;
+
+font-size:45px;
+
+animation-duration:25s;
+
+animation-delay:5s;
+
+}
+
+
+.cloud3{
+
+top:70px;
+
+font-size:35px;
+
+animation-duration:30s;
+
+animation-delay:10s;
+
+}
+
 
 
 @keyframes cloudMove{
 
 from{
+
 left:100%;
+
 }
 
 to{
-left:-150px;
+
+left:-200px;
+
 }
 
 }
+
 
 
 
 
 /* BUNNY */
+
 
 #bunny{
 
@@ -125,28 +176,40 @@ box-shadow:
 0 5px 12px rgba(0,0,0,.15);
 
 animation:
-run 0.25s infinite alternate;
+run .25s infinite alternate;
 
 }
 
 
-
-/* bunny running */
 
 @keyframes run{
 
 from{
+
 transform:translateY(0);
+
 }
 
 to{
+
 transform:translateY(-5px);
-}
 
 }
 
+}
 
-/* ears */
+
+
+.jumping{
+
+animation:none!important;
+
+}
+
+
+
+
+/* EARS */
 
 .ear{
 
@@ -166,13 +229,18 @@ top:-40px;
 
 
 .ear.left{
+
 left:12px;
+
 }
 
 
 .ear.right{
+
 right:12px;
+
 }
+
 
 
 .innerEar{
@@ -195,7 +263,8 @@ top:8px;
 
 
 
-/* face */
+/* FACE */
+
 
 .eye{
 
@@ -215,12 +284,16 @@ top:28px;
 
 
 .eye.left{
+
 left:18px;
+
 }
 
 
 .eye.right{
+
 right:18px;
+
 }
 
 
@@ -263,11 +336,14 @@ top:42px;
 
 
 .cheek.left{
+
 left:7px;
+
 }
 
 
 .cheek.right{
+
 right:7px;
 
 }
@@ -296,7 +372,8 @@ bottom:10px;
 
 
 
-/* ducking */
+/* DUCK */
+
 
 .duck{
 
@@ -310,18 +387,9 @@ animation:none!important;
 
 
 
-/* jump animation disabled while airborne */
-
-.jumping{
-
-animation:none!important;
-
-}
-
-
-
 
 /* SPIKES */
+
 
 .spike{
 
@@ -341,7 +409,8 @@ text-shadow:
 
 
 
-/* BLUE BIRD */
+/* BIRD */
+
 
 .bird{
 
@@ -358,27 +427,10 @@ border-radius:50%;
 z-index:5;
 
 animation:
-birdFloat .3s infinite alternate;
+birdMove .3s infinite alternate;
 
 }
 
-
-
-@keyframes birdFloat{
-
-from{
-transform:translateY(0);
-}
-
-to{
-transform:translateY(-8px);
-}
-
-}
-
-
-
-/* bird wing */
 
 .bird:before{
 
@@ -402,9 +454,6 @@ left:8px;
 
 
 
-
-/* bird eye */
-
 .bird:after{
 
 content:"";
@@ -427,26 +476,26 @@ top:10px;
 
 
 
+@keyframes birdMove{
 
-/* ground */
+from{
 
-#ground{
+transform:translateY(0);
 
-position:absolute;
+}
 
-bottom:0;
+to{
 
-height:70px;
+transform:translateY(-8px);
 
-width:100%;
-
-background:#ff9fc8;
+}
 
 }
 
 
 
 /* GAME OVER */
+
 
 #gameOver{
 
@@ -471,6 +520,7 @@ color:#d94f8a;
 z-index:50;
 
 }
+
 
 
 
@@ -500,11 +550,13 @@ margin:5px;
 }
 
 
+
 button:hover{
 
 background:#ff4f98;
 
 }
+
 
 
 
@@ -514,10 +566,6 @@ text-align:center;
 
 }
 
-
-
-
-/* fullscreen */
 
 #game:fullscreen{
 
@@ -533,6 +581,7 @@ margin:0;
 
 
 </style>
+
 </head>
 
 
@@ -547,10 +596,17 @@ Score: 0
 </div>
 
 
-<div class="cloud" style="top:40px">
+<div class="cloud cloud1">
 ☁️
 </div>
 
+<div class="cloud cloud2">
+☁️
+</div>
+
+<div class="cloud cloud3">
+☁️
+</div>
 
 
 <div id="bunny">
@@ -586,7 +642,6 @@ Score: 0
 
 
 
-
 <div id="gameOver">
 
 GAME OVER 🐰💔
@@ -601,9 +656,6 @@ Play Again
 
 
 
-<div id="ground"></div>
-
-
 </div>
 
 
@@ -614,26 +666,42 @@ Play Again
 🐰 Jump
 </button>
 
+
 <button onclick="duck()">
 🌸 Duck
 </button>
+
 
 <button onclick="fullscreenGame()">
 ⛶ Fullscreen
 </button>
 
+
 </div>
 <script>
 
 
-// ============================
-// GAME VARIABLES
-// ============================
+// ===============================
+// ELEMENTS
+// ===============================
+
 
 const bunny = document.getElementById("bunny");
+
 const game = document.getElementById("game");
-const scoreText = document.getElementById("score");
-const gameOver = document.getElementById("gameOver");
+
+const scoreText =
+document.getElementById("score");
+
+const gameOver =
+document.getElementById("gameOver");
+
+
+
+
+// ===============================
+// GAME VARIABLES
+// ===============================
 
 
 let score = 0;
@@ -647,23 +715,173 @@ let speed = 7;
 let playing = true;
 
 
-// Bunny physics
+
+// bunny physics
 
 let bunnyY = 0;
 
 let velocity = 0;
 
-let gravity = 0.8;
+let gravity = .8;
 
 let jumping = false;
 
-const groundHeight = 70;
+let groundHeight = 70;
 
 
 
-// ============================
+// ===============================
+// SOUND SYSTEM
+// ===============================
+
+
+let audioContext;
+
+
+
+function startAudio(){
+
+if(!audioContext){
+
+audioContext =
+new(window.AudioContext ||
+window.webkitAudioContext)();
+
+}
+
+}
+
+
+
+
+function playSound(type){
+
+startAudio();
+
+
+let oscillator =
+audioContext.createOscillator();
+
+
+let gain =
+audioContext.createGain();
+
+
+oscillator.connect(gain);
+
+gain.connect(audioContext.destination);
+
+
+
+if(type==="jump"){
+
+oscillator.frequency.value=600;
+
+}
+
+
+if(type==="hit"){
+
+oscillator.frequency.value=120;
+
+}
+
+
+
+gain.gain.value=.12;
+
+
+oscillator.start();
+
+
+oscillator.stop(
+audioContext.currentTime+.15
+);
+
+
+}
+
+
+
+
+
+// ===============================
+// SIMPLE MUSIC
+// ===============================
+
+
+let musicPlaying=false;
+
+
+function playMusic(){
+
+if(musicPlaying)
+return;
+
+
+musicPlaying=true;
+
+
+function note(){
+
+
+if(!playing)
+return;
+
+
+startAudio();
+
+
+let osc =
+audioContext.createOscillator();
+
+
+let gain =
+audioContext.createGain();
+
+
+
+osc.connect(gain);
+
+gain.connect(audioContext.destination);
+
+
+
+osc.frequency.value =
+220 + Math.random()*100;
+
+
+gain.gain.value=.025;
+
+
+osc.start();
+
+
+osc.stop(
+audioContext.currentTime+.4
+);
+
+
+
+setTimeout(note,1200);
+
+
+}
+
+
+note();
+
+
+}
+
+
+
+
+
+// ===============================
 // CONTROLS
-// ============================
+// ===============================
+
 
 
 document.addEventListener(
@@ -671,22 +889,22 @@ document.addEventListener(
 function(e){
 
 
-if(e.code === "Space" ||
-e.code === "ArrowUp"){
+if(e.code==="Space" ||
+e.code==="ArrowUp"){
 
 jump();
 
 }
 
 
-if(e.code === "ArrowDown"){
+if(e.code==="ArrowDown"){
 
 duck();
 
 }
 
 
-if(e.code === "KeyR"){
+if(e.code==="KeyR"){
 
 restart();
 
@@ -701,33 +919,55 @@ restart();
 
 function jump(){
 
+
 if(!jumping && playing){
 
-velocity = 15;
 
-jumping = true;
+velocity = 14;
 
-bunny.classList.add("jumping");
+
+jumping=true;
+
+
+bunny.classList.add(
+"jumping"
+);
+
+
+playSound("jump");
+
+
+playMusic();
+
 
 }
 
-}
 
+}
 
 
 
 
 function duck(){
 
-if(!playing)return;
+
+if(!playing)
+return;
 
 
-bunny.classList.add("duck");
+bunny.classList.add(
+"duck"
+);
+
 
 
 setTimeout(()=>{
 
-bunny.classList.remove("duck");
+
+bunny.classList.remove(
+"duck"
+);
+
 
 },400);
 
@@ -738,15 +978,17 @@ bunny.classList.remove("duck");
 
 
 
-// ============================
-// BUNNY PHYSICS
-// ============================
+
+// ===============================
+// JUMP PHYSICS
+// ===============================
 
 
 function physics(){
 
 
-if(!playing)return;
+if(!playing)
+return;
 
 
 
@@ -759,24 +1001,33 @@ velocity -= gravity;
 
 if(bunnyY <= 0){
 
-bunnyY = 0;
 
-velocity = 0;
+bunnyY=0;
 
-jumping = false;
 
-bunny.classList.remove("jumping");
+velocity=0;
+
+
+jumping=false;
+
+
+bunny.classList.remove(
+"jumping"
+);
+
 
 }
 
 
 
 bunny.style.bottom =
-(groundHeight + bunnyY) + "px";
+(groundHeight+bunnyY)+"px";
 
 
 
-requestAnimationFrame(physics);
+requestAnimationFrame(
+physics
+);
 
 
 }
@@ -788,15 +1039,16 @@ physics();
 
 
 
-// ============================
-// OBSTACLES
-// ============================
+// ===============================
+// CREATE OBSTACLES
+// ===============================
 
 
 function spawnObstacle(){
 
 
-if(!playing)return;
+if(!playing)
+return;
 
 
 
@@ -806,7 +1058,7 @@ document.createElement("div");
 
 
 let isBird =
-Math.random() > 0.65;
+Math.random()>.65;
 
 
 
@@ -816,19 +1068,26 @@ if(isBird){
 obstacle.className="bird";
 
 
-// random bird height
 
-if(Math.random()>0.5){
+// lower birds for ducking
 
-obstacle.style.bottom="170px";
+if(Math.random()>.5){
+
+
+obstacle.style.bottom =
+"95px";
+
 
 }
+
 else{
 
-obstacle.style.bottom="240px";
+
+obstacle.style.bottom =
+"180px";
+
 
 }
-
 
 
 }
@@ -839,10 +1098,10 @@ else{
 obstacle.className="spike";
 
 
-// 1-3 spikes
 
 let amount =
 Math.floor(Math.random()*3)+1;
+
 
 
 obstacle.innerHTML =
@@ -861,17 +1120,27 @@ game.appendChild(obstacle);
 
 
 
-let position = 900;
+moveObstacle(obstacle);
+
+
+}
 
 
 
-let movement =
-setInterval(()=>{
+
+function moveObstacle(obstacle){
+
+
+let position=900;
+
+
+
+let timer=setInterval(()=>{
 
 
 if(!playing){
 
-clearInterval(movement);
+clearInterval(timer);
 
 return;
 
@@ -879,7 +1148,8 @@ return;
 
 
 
-position -= speed;
+position-=speed;
+
 
 
 obstacle.style.left =
@@ -889,7 +1159,9 @@ position+"px";
 
 if(checkCollision(obstacle)){
 
+
 endGame();
+
 
 }
 
@@ -900,27 +1172,28 @@ if(position < -150){
 
 obstacle.remove();
 
-clearInterval(movement);
+
+clearInterval(timer);
 
 
 }
+
 
 
 },20);
 
 
-
 }
 
 
 
 
-// fair spacing between obstacles
 
 function obstacleLoop(){
 
 
-if(!playing)return;
+if(!playing)
+return;
 
 
 
@@ -928,25 +1201,20 @@ spawnObstacle();
 
 
 
-let delay =
-1800 + Math.random()*1400;
-
-
 setTimeout(
+
 obstacleLoop,
-delay
+
+1800+
+Math.random()*1200
+
 );
 
 
 }
-
-
-
-
-
-// ============================
+  // ===============================
 // COLLISION
-// ============================
+// ===============================
 
 
 function checkCollision(obstacle){
@@ -989,27 +1257,34 @@ obstacleBox.top
 
 
 
-// ============================
+// ===============================
 // SCORE
-// ============================
+// ===============================
 
 
 function scoreLoop(){
 
 
-if(!playing)return;
+if(!playing)
+return;
 
 
 
 score++;
 
 
+
 scoreText.innerHTML =
 
-"Score: " + score +
-" | Best: " + highScore;
+"Score: " +
+score +
+" | Best: " +
+highScore;
 
 
+
+
+// increase difficulty
 
 if(score % 500 === 0){
 
@@ -1019,7 +1294,11 @@ speed += .5;
 
 
 
-requestAnimationFrame(scoreLoop);
+
+
+requestAnimationFrame(
+scoreLoop
+);
 
 
 }
@@ -1028,16 +1307,24 @@ requestAnimationFrame(scoreLoop);
 
 
 
-
-// ============================
+// ===============================
 // GAME OVER
-// ============================
+// ===============================
 
 
 function endGame(){
 
 
-playing = false;
+if(!playing)
+return;
+
+
+
+playing=false;
+
+
+playSound("hit");
+
 
 
 if(score > highScore){
@@ -1056,7 +1343,9 @@ highScore
 
 
 
-gameOver.style.display="block";
+gameOver.style.display =
+"block";
+
 
 
 }
@@ -1065,9 +1354,11 @@ gameOver.style.display="block";
 
 
 
-// ============================
+
+
+// ===============================
 // RESTART
-// ============================
+// ===============================
 
 
 function restart(){
@@ -1077,26 +1368,29 @@ function restart(){
 document.querySelectorAll(
 ".spike,.bird"
 )
+
 .forEach(
-e=>e.remove()
+object=>object.remove()
 );
 
 
 
-score = 0;
-
-speed = 7;
+score=0;
 
 
-playing = true;
+speed=7;
 
 
-bunnyY = 0;
-
-velocity = 0;
+playing=true;
 
 
-jumping = false;
+
+bunnyY=0;
+
+velocity=0;
+
+jumping=false;
+
 
 
 bunny.style.bottom =
@@ -1104,7 +1398,8 @@ groundHeight+"px";
 
 
 
-gameOver.style.display="none";
+gameOver.style.display =
+"none";
 
 
 
@@ -1113,18 +1408,21 @@ obstacleLoop();
 scoreLoop();
 
 
+
 }
 
 
 
 
 
-// ============================
+
+// ===============================
 // FULLSCREEN
-// ============================
+// ===============================
 
 
 function fullscreenGame(){
+
 
 
 if(!document.fullscreenElement){
@@ -1144,22 +1442,27 @@ document.exitFullscreen();
 }
 
 
+
 }
 
 
 
 
 
+// ===============================
 // START GAME
+// ===============================
+
 
 obstacleLoop();
 
-scoreLoop();
 
+scoreLoop();
 
 
 </script>
 
 
 </body>
+
 </html>
