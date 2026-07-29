@@ -47,24 +47,6 @@
         50% { transform: translateY(-10px); }
     }
 
-    .card {
-        width: 450px;
-        padding: 40px;
-        border-radius: 20px;
-        backdrop-filter: blur(20px);
-        background: rgba(255, 255, 255, 0.15);
-        box-shadow: 0 0 40px rgba(0,0,0,0.2);
-        text-align: center;
-        color: white;
-        animation: fadeIn 1.5s ease;
-        margin-top: 40px;
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
     .clicker-container {
         margin-top: 40px;
         text-align: center;
@@ -93,7 +75,6 @@
         font-size: 1.5rem;
     }
 
-    /* Floating head */
     .floating-head {
         position: absolute;
         width: 80px;
@@ -115,7 +96,6 @@
         margin-top: 20px;
     }
 
-    /* Upgrade button */
     .upgrade-btn {
         margin-top: 25px;
         padding: 10px 20px;
@@ -147,35 +127,34 @@
 
 <div class="title">SKCUS NEHOR</div>
 
-<div class="card">
-    <h1>Welcome</h1>
-    <p>This is a clean, animated, futuristic website built with pure HTML and CSS.</p>
-</div>
-
 <div class="clicker-container">
     <h2>Rohen Clicker</h2>
 
     <button id="clickButton" class="spawn-btn">Click Me</button>
 
-    <div class="score">Clicks: <span id="scoreCount">0</span></div>
+    <div class="score">Rohens: <span id="scoreCount">0</span></div>
+
+    <div class="score">Auto‑Rohens: <span id="autoCount">0</span></div>
 
     <div id="spawnArea"></div>
 
-    <!-- Upgrade button -->
     <button id="upgradeButton" class="upgrade-btn" disabled>
         <img src="images/IMG_6401.jpg" class="upgrade-icon">
-        Buy Auto‑Click (+1/sec) — Cost: 100
+        Auto‑Rohen (+1/sec) — Cost: <span id="upgradeCost">50</span>
     </button>
 </div>
 
 <script>
     const clickButton = document.getElementById("clickButton");
     const scoreCount = document.getElementById("scoreCount");
+    const autoCount = document.getElementById("autoCount");
     const spawnArea = document.getElementById("spawnArea");
     const upgradeButton = document.getElementById("upgradeButton");
+    const upgradeCostDisplay = document.getElementById("upgradeCost");
 
     let score = 0;
     let autoClicks = 0;
+    let upgradeCost = 50;
 
     function spawnHead() {
         const head = document.createElement("img");
@@ -195,21 +174,25 @@
         scoreCount.textContent = score;
         spawnHead();
 
-        if (score >= 100) upgradeButton.disabled = false;
+        if (score >= upgradeCost) upgradeButton.disabled = false;
     });
 
     upgradeButton.addEventListener("click", () => {
-        if (score >= 100) {
-            score -= 100;
+        if (score >= upgradeCost) {
+            score -= upgradeCost;
             scoreCount.textContent = score;
 
             autoClicks++;
+            autoCount.textContent = autoClicks;
+
+            upgradeCost = Math.floor(upgradeCost * 1.025);
+            upgradeCostDisplay.textContent = upgradeCost;
+
             upgradeButton.disabled = true;
 
             setTimeout(() => {
-                if (score >= 100) upgradeButton.disabled = false;
-            }, 500);
-
+                if (score >= upgradeCost) upgradeButton.disabled = false;
+            }, 300);
         }
     });
 
@@ -219,7 +202,7 @@
             scoreCount.textContent = score;
             spawnHead();
 
-            if (score >= 100) upgradeButton.disabled = false;
+            if (score >= upgradeCost) upgradeButton.disabled = false;
         }
     }, 1000);
 </script>
