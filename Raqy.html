@@ -2,329 +2,126 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Raqeebat's Heart Catcher 💗</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Raqeebat's Pink Arcade 💗</title>
 <style>
-    * { box-sizing: border-box; }
-
-    body {
-        margin: 0;
-        min-height: 100vh;
-        font-family: "Trebuchet MS", Arial, sans-serif;
-        background: linear-gradient(135deg, #ffd6e7, #ffb6d5, #f78fbd);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-        color: #7d2450;
-    }
-
-    .game {
-        width: min(900px, 94vw);
-        height: min(700px, 92vh);
-        background: rgba(255,255,255,.72);
-        border: 4px solid #fff;
-        border-radius: 30px;
-        box-shadow: 0 15px 50px rgba(150, 40, 90, .25);
-        overflow: hidden;
-        position: relative;
-        backdrop-filter: blur(8px);
-    }
-
-    .header {
-        height: 105px;
-        padding: 18px 25px;
-        text-align: center;
-        background: rgba(255, 240, 247, .85);
-        border-bottom: 2px solid #ffc3dc;
-        position: relative;
-        z-index: 10;
-    }
-
-    h1 {
-        margin: 0;
-        font-size: clamp(28px, 5vw, 46px);
-        color: #e83e8c;
-        text-shadow: 2px 2px #fff;
-    }
-
-    .subtitle {
-        margin: 3px 0 0;
-        font-size: 14px;
-        color: #a53a6c;
-    }
-
-    .stats {
-        display: flex;
-        justify-content: space-around;
-        gap: 10px;
-        padding: 12px;
-        font-weight: bold;
-        background: #fff0f7;
-        border-bottom: 2px solid #ffc3dc;
-        position: relative;
-        z-index: 10;
-    }
-
-    .stat {
-        background: white;
-        padding: 8px 16px;
-        border-radius: 999px;
-        box-shadow: 0 3px 10px rgba(200, 60, 120, .12);
-    }
-
-    #playArea {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 165px;
-        bottom: 0;
-        overflow: hidden;
-        cursor: crosshair;
-    }
-
-    .heart {
-        position: absolute;
-        user-select: none;
-        cursor: pointer;
-        font-size: 38px;
-        animation: fall linear forwards;
-        filter: drop-shadow(0 5px 5px rgba(170, 40, 90, .2));
-        transition: transform .1s;
-    }
-
-    .heart:hover {
-        transform: scale(1.25);
-    }
-
-    @keyframes fall {
-        from { transform: translateY(-70px) rotate(-10deg); }
-        to { transform: translateY(calc(100vh + 100px)) rotate(20deg); }
-    }
-
-    .start-screen, .game-over {
-        position: absolute;
-        inset: 0;
-        z-index: 20;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        padding: 25px;
-        background: rgba(255, 232, 243, .94);
-    }
-
-    .game-over { display: none; }
-
-    .big-heart {
-        font-size: 80px;
-        animation: pulse 1.2s infinite;
-    }
-
-    @keyframes pulse {
-        50% { transform: scale(1.15); }
-    }
-
-    h2 {
-        color: #e83e8c;
-        font-size: 34px;
-        margin: 8px 0;
-    }
-
-    .instructions {
-        max-width: 500px;
-        line-height: 1.6;
-        color: #87335b;
-    }
-
-    button {
-        border: 0;
-        padding: 14px 32px;
-        border-radius: 999px;
-        background: linear-gradient(135deg, #ff4f9a, #e83e8c);
-        color: white;
-        font-size: 18px;
-        font-weight: bold;
-        cursor: pointer;
-        box-shadow: 0 7px 18px rgba(220, 45, 120, .3);
-        transition: transform .15s, box-shadow .15s;
-    }
-
-    button:hover {
-        transform: translateY(-3px) scale(1.03);
-        box-shadow: 0 10px 22px rgba(220, 45, 120, .4);
-    }
-
-    .pop {
-        position: absolute;
-        pointer-events: none;
-        font-weight: bold;
-        color: #e83e8c;
-        animation: popUp .6s ease-out forwards;
-        z-index: 30;
-    }
-
-    @keyframes popUp {
-        from { opacity: 1; transform: translateY(0) scale(1); }
-        to { opacity: 0; transform: translateY(-45px) scale(1.4); }
-    }
-
-    .footer-note {
-        margin-top: 16px;
-        font-size: 13px;
-        color: #ad4c79;
-    }
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:"Trebuchet MS",Arial,sans-serif;background:linear-gradient(135deg,#ffd6e7,#ffb6d5,#f78fbd);display:flex;justify-content:center;align-items:center;color:#7d2450;overflow:hidden}
+.arcade{width:min(950px,95vw);height:min(760px,94vh);background:rgba(255,255,255,.76);border:4px solid #fff;border-radius:30px;box-shadow:0 15px 50px rgba(150,40,90,.25);overflow:hidden;position:relative;backdrop-filter:blur(8px)}
+header{height:92px;text-align:center;padding:14px;background:rgba(255,240,247,.9);border-bottom:2px solid #ffc3dc}
+h1{margin:0;color:#e83e8c;font-size:clamp(28px,5vw,44px);text-shadow:2px 2px #fff}
+.subtitle{font-size:13px;color:#a53a6c}
+.music{position:absolute;right:16px;top:17px;border:0;border-radius:999px;padding:9px 13px;background:#fff;color:#a53a6c;font-weight:bold;cursor:pointer}
+.screen{height:calc(100% - 92px);position:relative}
+#menu{padding:30px;text-align:center;overflow:auto;height:100%}
+#menu h2{color:#e83e8c;font-size:32px;margin:8px}
+.game-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;max-width:720px;margin:25px auto}
+.game-card{border:3px solid #ffd0e2;background:#fff7fb;border-radius:22px;padding:20px;cursor:pointer;transition:.2s;box-shadow:0 5px 14px rgba(200,60,120,.12)}
+.game-card:hover{transform:translateY(-5px) scale(1.02);box-shadow:0 10px 22px rgba(200,60,120,.2)}
+.icon{font-size:48px}.game-card h3{margin:7px;color:#e83e8c}.game-card p{margin:4px;font-size:13px}
+button.play{border:0;padding:12px 25px;border-radius:999px;background:linear-gradient(135deg,#ff4f9a,#e83e8c);color:white;font-size:16px;font-weight:bold;cursor:pointer}
+.panel{display:none;height:100%;padding:18px;position:relative}
+.back{border:0;background:#fff;padding:9px 15px;border-radius:999px;color:#a53a6c;font-weight:bold;cursor:pointer;margin-bottom:10px}
+.stats{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.stat{background:#fff;padding:8px 15px;border-radius:999px;box-shadow:0 3px 10px rgba(200,60,120,.12);font-weight:bold}
+.area{height:calc(100% - 65px);border-radius:20px;background:rgba(255,240,247,.75);border:2px dashed #f4a8c8;position:relative;overflow:hidden}
+.heart{position:absolute;font-size:38px;cursor:pointer;user-select:none;animation:fall linear forwards}
+@keyframes fall{from{transform:translateY(-60px)}to{transform:translateY(800px)}}
+.message{text-align:center;padding:25px;color:#a53a6c}
+.big{font-size:70px}.center{text-align:center}
+.card{width:75px;height:95px;border:0;border-radius:14px;background:#ff70aa;color:white;font-size:35px;cursor:pointer;box-shadow:0 5px 10px #e99}
+.memory-grid{display:grid;grid-template-columns:repeat(4,75px);gap:12px;justify-content:center;padding-top:30px}
+.card.matched,.card.open{background:#fff;color:#e83e8c;border:2px solid #ff9bc2}
+.target{position:absolute;font-size:45px;cursor:pointer;user-select:none}
+.player{position:absolute;font-size:45px;bottom:12px;left:50%;transform:translateX(-50%);user-select:none}
+.coin{position:absolute;font-size:35px;cursor:pointer}
+.controls{text-align:center;margin:10px}.controls button{margin:3px;border:0;border-radius:999px;padding:9px 15px;background:#fff;color:#a53a6c;font-weight:bold;cursor:pointer}
+@media(max-width:600px){.game-grid{grid-template-columns:1fr}.memory-grid{grid-template-columns:repeat(4,58px);gap:8px}.card{width:58px;height:75px;font-size:27px}}
 </style>
 </head>
-
 <body>
-<div class="game">
+<div class="arcade">
+<header>
+<h1>💗 Raqeebat's Pink Arcade 💗</h1>
+<div class="subtitle">One game wasn't enough... so here's an arcade!</div>
+<button class="music" id="musicBtn" onclick="toggleMusic()">🎵 Music: Off</button>
+</header>
 
-    <div class="header">
-        <h1>💗 Raqeebat's Heart Catcher 💗</h1>
-        <div class="subtitle">Catch as many hearts as you can!</div>
-    </div>
+<div class="screen">
+<section id="menu">
+<h2>Choose a Game 🎀</h2>
+<p>Pick a game and try to beat your high score!</p>
+<div class="game-grid">
+<div class="game-card" onclick="openGame('hearts')"><div class="icon">💖</div><h3>Heart Catcher</h3><p>Catch falling hearts in 30 seconds.</p><button class="play">Play 💕</button></div>
+<div class="game-card" onclick="openGame('memory')"><div class="icon">🧠</div><h3>Pink Memory</h3><p>Match all the cute pairs.</p><button class="play">Play ✨</button></div>
+<div class="game-card" onclick="openGame('click')"><div class="icon">💎</div><h3>Gem Clicker</h3><p>Click the gems as fast as you can.</p><button class="play">Play 💎</button></div>
+<div class="game-card" onclick="openGame('dodge')"><div class="icon">🎀</div><h3>Ribbon Dodge</h3><p>Move Raqeebat and dodge the falling bows.</p><button class="play">Play 🎀</button></div>
+</div>
+<p>🌸 Made especially for Raqeebat 🌸</p>
+</section>
 
-    <div class="stats">
-        <div class="stat">💖 Score: <span id="score">0</span></div>
-        <div class="stat">⏰ Time: <span id="time">30</span>s</div>
-        <div class="stat">🏆 Best: <span id="best">0</span></div>
-    </div>
+<section id="hearts" class="panel">
+<button class="back" onclick="showMenu()">← Arcade</button>
+<div class="stats"><div class="stat">💖 Score: <span id="hs">0</span></div><div class="stat">⏰ Time: <span id="ht">30</span></div><div class="stat">🏆 Best: <span id="hb">0</span></div></div>
+<div id="heartArea" class="area"></div>
+</section>
 
-    <div id="playArea"></div>
+<section id="memory" class="panel">
+<button class="back" onclick="showMenu()">← Arcade</button>
+<div class="stats"><div class="stat">🧠 Moves: <span id="moves">0</span></div><div class="stat">🏆 Best: <span id="mb">0</span> moves</div></div>
+<div class="area"><div id="memoryGrid" class="memory-grid"></div><div id="memoryMsg" class="message"></div></div>
+</section>
 
-    <div class="start-screen" id="startScreen">
-        <div class="big-heart">💗</div>
-        <h2>Welcome, Raqeebat!</h2>
-        <p class="instructions">
-            Hearts are falling! Click or tap them before they disappear.
-            Every heart gives you <strong>1 point</strong>.
-            You have <strong>30 seconds</strong> to get the highest score!
-        </p>
-        <button onclick="startGame()">Start Game ✨</button>
-        <div class="footer-note">Made especially for Raqeebat 🎀</div>
-    </div>
+<section id="click" class="panel">
+<button class="back" onclick="showMenu()">← Arcade</button>
+<div class="stats"><div class="stat">💎 Gems: <span id="cs">0</span></div><div class="stat">⏰ Time: <span id="ct">15</span></div><div class="stat">🏆 Best: <span id="cb">0</span></div></div>
+<div id="clickArea" class="area"></div>
+<div class="controls"><button onclick="startClicker()">Restart 💎</button></div>
+</section>
 
-    <div class="game-over" id="gameOver">
-        <div class="big-heart">💞</div>
-        <h2>Time's Up, Raqeebat!</h2>
-        <p>You caught <strong><span id="finalScore">0</span></strong> hearts!</p>
-        <p>🏆 Best Score: <strong><span id="finalBest">0</span></strong></p>
-        <button onclick="startGame()">Play Again 💕</button>
-    </div>
-
+<section id="dodge" class="panel">
+<button class="back" onclick="showMenu()">← Arcade</button>
+<div class="stats"><div class="stat">🎀 Score: <span id="ds">0</span></div><div class="stat">🏆 Best: <span id="db">0</span></div></div>
+<div id="dodgeArea" class="area"><div id="player" class="player">🌸</div></div>
+<div class="controls"><button onclick="movePlayer(-1)">⬅️</button><button onclick="movePlayer(1)">➡️</button><button onclick="startDodge()">Restart 🎀</button></div>
+</section>
+</div>
 </div>
 
 <script>
-let score = 0;
-let timeLeft = 30;
-let best = Number(localStorage.getItem("raqeebatBest")) || 0;
-let gameRunning = false;
-let spawnTimer;
-let countdownTimer;
+let currentGame=null,heartTimer,heartClock,clickTimer,clickSpawn,dodgeTimer,dodgeSpawn;
+let musicOn=false,audioCtx=null,musicTimer=null,musicStep=0;
+const melody=[523.25,659.25,783.99,659.25,587.33,698.46,880,698.46,523.25,659.25,783.99,1046.5,880,783.99,659.25,523.25];
 
-const playArea = document.getElementById("playArea");
-const scoreEl = document.getElementById("score");
-const timeEl = document.getElementById("time");
-const bestEl = document.getElementById("best");
-const startScreen = document.getElementById("startScreen");
-const gameOver = document.getElementById("gameOver");
-const finalScore = document.getElementById("finalScore");
-const finalBest = document.getElementById("finalBest");
+function playNote(f,d=.22){if(!audioCtx||!musicOn)return;let o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type="sine";o.frequency.value=f;g.gain.setValueAtTime(.0001,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.05,audioCtx.currentTime+.02);g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+d);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+d+.03)}
+function musicLoop(){if(!musicOn)return;playNote(melody[musicStep++%melody.length]);musicTimer=setTimeout(musicLoop,260)}
+function toggleMusic(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume();musicOn=!musicOn;document.getElementById("musicBtn").textContent=musicOn?"🎵 Music: On":"🎵 Music: Off";clearTimeout(musicTimer);if(musicOn){musicStep=0;musicLoop()}}
 
-bestEl.textContent = best;
+function openGame(id){stopAll();document.getElementById("menu").style.display="none";document.querySelectorAll(".panel").forEach(x=>x.style.display="none");document.getElementById(id).style.display="block";currentGame=id;if(id==="hearts")startHearts();if(id==="memory")startMemory();if(id==="click")startClicker();if(id==="dodge")startDodge()}
+function showMenu(){stopAll();document.querySelectorAll(".panel").forEach(x=>x.style.display="none");document.getElementById("menu").style.display="block";currentGame=null}
+function stopAll(){clearInterval(heartTimer);clearInterval(heartClock);clearInterval(clickTimer);clearInterval(clickSpawn);clearInterval(dodgeTimer);clearInterval(dodgeSpawn);document.querySelectorAll(".heart,.target,.coin").forEach(x=>x.remove())}
 
-function startGame() {
-    score = 0;
-    timeLeft = 30;
-    gameRunning = true;
+let heartScore=0,heartTime=30;
+function startHearts(){let a=document.getElementById("heartArea");a.innerHTML="";heartScore=0;heartTime=30;document.getElementById("hs").textContent=0;document.getElementById("ht").textContent=30;let best=+localStorage.heartBest||0;document.getElementById("hb").textContent=best;
+heartTimer=setInterval(()=>{let h=document.createElement("div");h.className="heart";h.textContent=["💗","💖","💕","💓","💞","💘"][Math.floor(Math.random()*6)];h.style.left=Math.random()*(a.clientWidth-45)+"px";let d=2+Math.random()*2;h.style.animationDuration=d+"s";h.onclick=()=>{heartScore++;document.getElementById("hs").textContent=heartScore;h.remove()};a.appendChild(h);setTimeout(()=>h.remove(),d*1000)},550);
+heartClock=setInterval(()=>{heartTime--;document.getElementById("ht").textContent=heartTime;if(heartTime<=0){clearInterval(heartTimer);clearInterval(heartClock);if(heartScore>best){localStorage.heartBest=heartScore;document.getElementById("hb").textContent=heartScore}alert("Time's up! 💗 You scored "+heartScore+"!")}},1000)}
 
-    scoreEl.textContent = score;
-    timeEl.textContent = timeLeft;
-    bestEl.textContent = best;
+let first=null,lock=false,moves=0;
+function startMemory(){let g=document.getElementById("memoryGrid"),msg=document.getElementById("memoryMsg");g.innerHTML="";msg.textContent="";moves=0;document.getElementById("moves").textContent=0;let best=+localStorage.memoryBest||0;document.getElementById("mb").textContent=best?best:"—";let vals=["🌸","🌸","💗","💗","🎀","🎀","🦋","🦋","🍓","🍓","🌷","🌷","💎","💎","🧁","🧁"].sort(()=>Math.random()-.5);vals.forEach((v,i)=>{let c=document.createElement("button");c.className="card";c.textContent="❓";c.dataset.v=v;c.onclick=()=>flip(c);g.appendChild(c)})}
+function flip(c){if(lock||c.classList.contains("open")||c.classList.contains("matched"))return;c.classList.add("open");c.textContent=c.dataset.v;if(!first){first=c;return}moves++;document.getElementById("moves").textContent=moves;if(first.dataset.v===c.dataset.v){first.classList.add("matched");c.classList.add("matched");first=null;if(document.querySelectorAll(".matched").length===16){let best=+localStorage.memoryBest||999;if(moves<best){localStorage.memoryBest=moves;document.getElementById("mb").textContent=moves}document.getElementById("memoryMsg").textContent="🎉 You matched them all in "+moves+" moves! 🎉"}}else{lock=true;setTimeout(()=>{first.classList.remove("open");c.classList.remove("open");first.textContent="❓";c.textContent="❓";first=null;lock=false},650)}}
 
-    startScreen.style.display = "none";
-    gameOver.style.display = "none";
-    playArea.innerHTML = "";
+let clickScore=0,clickTime=15;
+function startClicker(){let a=document.getElementById("clickArea");a.innerHTML="";clickScore=0;clickTime=15;document.getElementById("cs").textContent=0;document.getElementById("ct").textContent=15;let best=+localStorage.gemBest||0;document.getElementById("cb").textContent=best;clearInterval(clickTimer);clearInterval(clickSpawn);
+clickSpawn=setInterval(()=>{let x=document.createElement("div");x.className="coin";x.textContent=["💎","✨","💠"][Math.floor(Math.random()*3)];x.style.left=Math.random()*(a.clientWidth-40)+"px";x.style.top=Math.random()*(a.clientHeight-50)+"px";x.onclick=()=>{clickScore++;document.getElementById("cs").textContent=clickScore;x.remove()};a.appendChild(x);setTimeout(()=>x.remove(),800)},400);
+clickTimer=setInterval(()=>{clickTime--;document.getElementById("ct").textContent=clickTime;if(clickTime<=0){clearInterval(clickTimer);clearInterval(clickSpawn);a.innerHTML="";if(clickScore>best){localStorage.gemBest=clickScore;document.getElementById("cb").textContent=clickScore}alert("Gem round over! 💎 You got "+clickScore+" gems!")}},1000)}
 
-    clearInterval(spawnTimer);
-    clearInterval(countdownTimer);
-
-    spawnHeart();
-    spawnTimer = setInterval(spawnHeart, 600);
-
-    countdownTimer = setInterval(() => {
-        timeLeft--;
-        timeEl.textContent = timeLeft;
-
-        if (timeLeft <= 0) endGame();
-    }, 1000);
-}
-
-function spawnHeart() {
-    if (!gameRunning) return;
-
-    const heart = document.createElement("div");
-    heart.className = "heart";
-
-    const hearts = ["💗", "💖", "💕", "💓", "💞", "💘", "💝"];
-    heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
-
-    const maxX = Math.max(0, playArea.clientWidth - 50);
-    heart.style.left = Math.random() * maxX + "px";
-
-    const duration = 2.2 + Math.random() * 2.3;
-    heart.style.animationDuration = duration + "s";
-
-    heart.addEventListener("click", (event) => {
-        if (!gameRunning) return;
-
-        score++;
-        scoreEl.textContent = score;
-
-        showPoints(event.clientX, event.clientY);
-        heart.remove();
-    });
-
-    playArea.appendChild(heart);
-
-    setTimeout(() => {
-        if (heart.isConnected) heart.remove();
-    }, duration * 1000 + 100);
-}
-
-function showPoints(x, y) {
-    const pop = document.createElement("div");
-    pop.className = "pop";
-    pop.textContent = "+1 💕";
-
-    const rect = playArea.getBoundingClientRect();
-    pop.style.left = (x - rect.left) + "px";
-    pop.style.top = (y - rect.top) + "px";
-
-    playArea.appendChild(pop);
-
-    setTimeout(() => pop.remove(), 600);
-}
-
-function endGame() {
-    gameRunning = false;
-    clearInterval(spawnTimer);
-    clearInterval(countdownTimer);
-
-    if (score > best) {
-        best = score;
-        localStorage.setItem("raqeebatBest", best);
-    }
-
-    finalScore.textContent = score;
-    finalBest.textContent = best;
-    bestEl.textContent = best;
-    gameOver.style.display = "flex";
-
-    document.querySelectorAll(".heart").forEach(h => h.remove());
-}
+let playerX=.5,dodgeScore=0;
+function startDodge(){let a=document.getElementById("dodgeArea");a.querySelectorAll(".target").forEach(x=>x.remove());dodgeScore=0;playerX=.5;document.getElementById("ds").textContent=0;positionPlayer();clearInterval(dodgeTimer);clearInterval(dodgeSpawn);dodgeSpawn=setInterval(()=>{let x=document.createElement("div");x.className="target";x.textContent=["🎀","💗","🌸"][Math.floor(Math.random()*3)];x.style.left=Math.random()*(a.clientWidth-45)+"px";x.style.top="-45px";a.appendChild(x);dodgeTimer=setInterval(()=>{if(!x.isConnected)return;x.style.top=(parseFloat(x.style.top)+5)+"px";let px=playerX*a.clientWidth,xx=parseFloat(x.style.left)+20,yy=parseFloat(x.style.top);if(yy>a.clientHeight-70&&Math.abs(xx-px)<45){endDodge()}if(yy>a.clientHeight)x.remove()},40);setTimeout(()=>{if(x.isConnected)x.remove()},5000)},700)}
+function positionPlayer(){document.getElementById("player").style.left=(playerX*100)+"%"}
+function movePlayer(dir){playerX=Math.max(.08,Math.min(.92,playerX+dir*.08));positionPlayer()}
+function endDodge(){clearInterval(dodgeSpawn);clearInterval(dodgeTimer);let best=+localStorage.dodgeBest||0;if(dodgeScore>best){localStorage.dodgeBest=dodgeScore;document.getElementById("db").textContent=dodgeScore}alert("Oops! 🎀 You got hit! Score: "+dodgeScore)}
+document.addEventListener("keydown",e=>{if(currentGame==="dodge"&&(e.key==="ArrowLeft"||e.key==="a"))movePlayer(-1);if(currentGame==="dodge"&&(e.key==="ArrowRight"||e.key==="d"))movePlayer(1)});
+setInterval(()=>{if(currentGame==="dodge"){dodgeScore++;document.getElementById("ds").textContent=dodgeScore}},1000);
 </script>
 </body>
 </html>
