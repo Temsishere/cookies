@@ -209,7 +209,7 @@
         <div id="black-timer" class="timer">05:00</div>
       </div>
 
-      <!-- Chessboard -->
+      <!-- Chessboard Container -->
       <div id="myBoard"></div>
 
       <!-- Human Player -->
@@ -247,18 +247,19 @@
     let timerInterval = null;
     let gameStarted = false;
 
-    // Load Stockfish Engine from CDN via Web Worker
-    let stockfish = new Worker('https://cdnjs.cloudflare.com/ajax/libs/stockfish.js/10.0.2/stockfish.js');
+    // Cross-origin safe Stockfish Worker initialization
+    const stockfishBlob = new Blob(
+      [`importScripts('https://cdnjs.cloudflare.com/ajax/libs/stockfish.js/10.0.2/stockfish.js');`],
+      { type: 'application/javascript' }
+    );
+    let stockfish = new Worker(URL.createObjectURL(stockfishBlob));
 
-    // Initialize Stockfish options
     stockfish.postMessage('uci');
     stockfish.postMessage('ucinewgame');
 
-    // Listen to Stockfish engine messages
     stockfish.onmessage = function(event) {
       let line = event.data;
 
-      // Look for the "bestmove" engine output line
       if (line.startsWith('bestmove')) {
         let parts = line.split(' ');
         let bestMove = parts[1];
@@ -323,19 +324,12 @@
 
     function requestStockfishMove() {
       if (game.game_over()) return;
-
-      // Pass the current position (FEN) to Stockfish
       stockfish.postMessage('position fen ' + game.fen());
-
-      // Search depth = 10 moves ahead (hard difficulty)
-      // Increase to depth 15 for extreme difficulty
       stockfish.postMessage('go depth 10');
     }
 
     function onDragStart(source, piece, position, orientation) {
       if (game.game_over()) return false;
-
-      // Only allow White pieces to be dragged
       if (game.turn() === 'b' || piece.search(/^b/) !== -1) {
         return false;
       }
@@ -359,7 +353,6 @@
       updateMoveHistory();
       updateTimerHighlight();
 
-      // Ask Stockfish for a response move
       requestStockfishMove();
     }
 
@@ -430,17 +423,19 @@
       $('#status').text('Your turn (White)');
     }
 
-    // Initialize Chessboard
-    board = Chessboard('myBoard', {
-      draggable: true,
-      position: 'start',
-      onDragStart: onDragStart,
-      onDrop: onDrop,
-      onSnapEnd: onSnapEnd,
-      pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png'
-    });
+    // Initialize Chessboard after page loads
+    $(document).ready(function() {
+      board = Chessboard('myBoard', {
+        draggable: true,
+        position: 'start',
+        onDragStart: onDragStart,
+        onDrop: onDrop,
+        onSnapEnd: onSnapEnd,
+        pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png'
+      });
 
-    $(window).resize(board.resize);
+      $(window).resize(board.resize);
+    });
   </script>
 </body>
 </html>

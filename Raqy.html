@@ -2,328 +2,189 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Raqeebat's Heart Catcher 💗</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Raqeebat's Cute Arcade 💗</title>
 <style>
-    * { box-sizing: border-box; }
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:"Trebuchet MS",Arial,sans-serif;background:linear-gradient(135deg,#ffd8e9,#ffc0dc,#f6a1c5);display:flex;align-items:center;justify-content:center;color:#74304f;overflow:hidden}
+.arcade{width:min(1000px,96vw);height:min(800px,95vh);background:#fff8fc;border:5px solid white;border-radius:32px;box-shadow:0 18px 60px #b94b7a44;overflow:hidden;position:relative}
+header{height:94px;text-align:center;padding:12px;background:#fff0f7;border-bottom:2px solid #ffc5dc;position:relative}h1{margin:0;color:#e83e8c;font-size:clamp(27px,5vw,44px);text-shadow:2px 2px white}.sub{font-size:13px;color:#a64a70}
+.music{position:absolute;right:14px;top:14px;border:0;border-radius:99px;padding:8px 12px;background:white;color:#b33f70;font-weight:bold;cursor:pointer}
+#menu{height:calc(100% - 94px);padding:24px;overflow:auto;text-align:center}h2{color:#e83e8c;margin:5px;font-size:31px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:850px;margin:22px auto}.card{background:white;border:3px solid #ffd1e3;border-radius:22px;padding:16px;box-shadow:0 5px 15px #d75b8a22;cursor:pointer;transition:.2s}.card:hover{transform:translateY(-5px) rotate(-1deg);box-shadow:0 12px 25px #d75b8a33}.icon{font-size:45px}.card h3{color:#e83e8c;margin:6px}.card p{font-size:12px;margin:4px}.play,.start{border:0;border-radius:99px;padding:9px 17px;background:linear-gradient(135deg,#ff63a6,#e83e8c);color:white;font-weight:bold;cursor:pointer}
+.panel{display:none;height:calc(100% - 94px);padding:15px;position:relative}.back{border:0;border-radius:99px;padding:8px 13px;background:white;color:#a43e6b;font-weight:bold;cursor:pointer}.stats{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:8px}.stat{background:white;border-radius:99px;padding:7px 13px;font-weight:bold;box-shadow:0 3px 10px #c75b8722}.area{height:calc(100% - 75px);background:#fff1f7;border:2px dashed #f3a9c8;border-radius:20px;position:relative;overflow:hidden}.center{text-align:center;padding:25px}.big{font-size:65px}
+.heart,.bubble,.star,.berry{position:absolute;cursor:pointer;user-select:none;font-size:38px}.heart{animation:fall linear forwards}@keyframes fall{from{transform:translateY(-60px)}to{transform:translateY(800px)}}.bubble{animation:rise 2s linear forwards}@keyframes rise{from{transform:translateY(100px)}to{transform:translateY(-700px)}}.star{animation:twinkle .8s infinite alternate}@keyframes twinkle{to{transform:scale(1.25) rotate(10deg)}}.berry{font-size:42px}
+.memory-grid{display:grid;grid-template-columns:repeat(4,75px);gap:10px;justify-content:center;padding-top:25px}.mem{width:75px;height:85px;border:0;border-radius:15px;background:#ff72ad;color:white;font-size:30px;cursor:pointer}.mem.open,.mem.match{background:white;color:#e83e8c;border:2px solid #ff9bc2}
+.cafe{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:15px}.order{font-size:42px}.food{font-size:70px}.choice{border:0;background:white;border-radius:18px;padding:12px 20px;margin:5px;cursor:pointer;font-size:25px}.choice:hover{transform:scale(1.08)}
+.dress{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:12px}.character{font-size:110px;background:#ffe1ee;padding:20px 35px;border-radius:40px}.wardrobe button{border:0;background:white;border-radius:15px;padding:12px;margin:4px;font-size:27px;cursor:pointer}
+@media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr)}.card{padding:11px}.memory-grid{grid-template-columns:repeat(4,58px)}.mem{width:58px;height:70px;font-size:25px}}
+@media(max-width:480px){.grid{grid-template-columns:1fr}}
+</style>
 
-    body {
-        margin: 0;
-        min-height: 100vh;
-        font-family: "Trebuchet MS", Arial, sans-serif;
-        background: linear-gradient(135deg, #ffd6e7, #ffb6d5, #f78fbd);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-        color: #7d2450;
-    }
-
-    .game {
-        width: min(900px, 94vw);
-        height: min(700px, 92vh);
-        background: rgba(255,255,255,.72);
-        border: 4px solid #fff;
-        border-radius: 30px;
-        box-shadow: 0 15px 50px rgba(150, 40, 90, .25);
-        overflow: hidden;
-        position: relative;
-        backdrop-filter: blur(8px);
-    }
-
-    .header {
-        height: 105px;
-        padding: 18px 25px;
-        text-align: center;
-        background: rgba(255, 240, 247, .85);
-        border-bottom: 2px solid #ffc3dc;
-        position: relative;
-        z-index: 10;
-    }
-
-    h1 {
-        margin: 0;
-        font-size: clamp(28px, 5vw, 46px);
-        color: #e83e8c;
-        text-shadow: 2px 2px #fff;
-    }
-
-    .subtitle {
-        margin: 3px 0 0;
-        font-size: 14px;
-        color: #a53a6c;
-    }
-
-    .stats {
-        display: flex;
-        justify-content: space-around;
-        gap: 10px;
-        padding: 12px;
-        font-weight: bold;
-        background: #fff0f7;
-        border-bottom: 2px solid #ffc3dc;
-        position: relative;
-        z-index: 10;
-    }
-
-    .stat {
-        background: white;
-        padding: 8px 16px;
-        border-radius: 999px;
-        box-shadow: 0 3px 10px rgba(200, 60, 120, .12);
-    }
-
-    #playArea {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 165px;
-        bottom: 0;
-        overflow: hidden;
-        cursor: crosshair;
-    }
-
-    .heart {
-        position: absolute;
-        user-select: none;
-        cursor: pointer;
-        font-size: 38px;
-        animation: fall linear forwards;
-        filter: drop-shadow(0 5px 5px rgba(170, 40, 90, .2));
-        transition: transform .1s;
-    }
-
-    .heart:hover {
-        transform: scale(1.25);
-    }
-
-    @keyframes fall {
-        from { transform: translateY(-70px) rotate(-10deg); }
-        to { transform: translateY(calc(100vh + 100px)) rotate(20deg); }
-    }
-
-    .start-screen, .game-over {
-        position: absolute;
-        inset: 0;
-        z-index: 20;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        padding: 25px;
-        background: rgba(255, 232, 243, .94);
-    }
-
-    .game-over { display: none; }
-
-    .big-heart {
-        font-size: 80px;
-        animation: pulse 1.2s infinite;
-    }
-
-    @keyframes pulse {
-        50% { transform: scale(1.15); }
-    }
-
-    h2 {
-        color: #e83e8c;
-        font-size: 34px;
-        margin: 8px 0;
-    }
-
-    .instructions {
-        max-width: 500px;
-        line-height: 1.6;
-        color: #87335b;
-    }
-
-    button {
-        border: 0;
-        padding: 14px 32px;
-        border-radius: 999px;
-        background: linear-gradient(135deg, #ff4f9a, #e83e8c);
-        color: white;
-        font-size: 18px;
-        font-weight: bold;
-        cursor: pointer;
-        box-shadow: 0 7px 18px rgba(220, 45, 120, .3);
-        transition: transform .15s, box-shadow .15s;
-    }
-
-    button:hover {
-        transform: translateY(-3px) scale(1.03);
-        box-shadow: 0 10px 22px rgba(220, 45, 120, .4);
-    }
-
-    .pop {
-        position: absolute;
-        pointer-events: none;
-        font-weight: bold;
-        color: #e83e8c;
-        animation: popUp .6s ease-out forwards;
-        z-index: 30;
-    }
-
-    @keyframes popUp {
-        from { opacity: 1; transform: translateY(0) scale(1); }
-        to { opacity: 0; transform: translateY(-45px) scale(1.4); }
-    }
-
-    .footer-note {
-        margin-top: 16px;
-        font-size: 13px;
-        color: #ad4c79;
-    }
+<style>
+#dress .dress-room{height:100%;display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:18px;align-items:center;padding:12px}
+.customizer{background:rgba(255,255,255,.72);border:2px solid #ffd1e3;border-radius:22px;padding:15px;text-align:center;box-shadow:0 5px 15px #d75b8a22}
+.customizer h3{color:#e83e8c;margin:5px 0 12px}
+.option-row{display:flex;flex-wrap:wrap;justify-content:center;gap:7px}
+.option{border:2px solid #ffd1e3;background:white;border-radius:14px;padding:8px 10px;cursor:pointer;font-size:21px}
+.option:hover{transform:scale(1.08);border-color:#f58ab8}
+.option.active{border-color:#e83e8c;background:#fff0f7;box-shadow:0 0 0 2px #ffc2db}
+.doll-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center}
+.doll{position:relative;width:220px;height:360px;background:linear-gradient(#ffe9f2,#fff7fb);border:3px solid #ffd1e3;border-radius:100px 100px 45px 45px;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 30px #ffb8d033}
+.doll-face{font-size:112px;line-height:1}
+.doll-label{margin-top:10px;color:#a43e6b;font-weight:bold}
+.color-preview{display:inline-block;width:28px;height:28px;border-radius:50%;border:2px solid white;box-shadow:0 1px 5px #999;vertical-align:middle}
+.skin1{background:#f7c9a9}.skin2{background:#d99a72}.skin3{background:#a86643}.skin4{background:#70402d}.skin5{background:#4a281e}.skin6{background:#321a16}
+.dress-note{font-size:12px;color:#a64a70;margin:5px}
+@media(max-width:800px){#dress .dress-room{grid-template-columns:1fr;overflow:auto}.doll{height:260px}.doll-face{font-size:85px}}
 </style>
 </head>
-
 <body>
-<div class="game">
+<div class="arcade">
+<header><h1>💗 Raqeebat's Cute Arcade 💗</h1><div class="sub">Pick a game, pick a vibe, have the cutest time ever ✨</div><button class="music" id="musicBtn" onclick="toggleMusic()">🎵 Music: Off</button></header>
 
-    <div class="header">
-        <h1>💗 Raqeebat's Heart Catcher 💗</h1>
-        <div class="subtitle">Catch as many hearts as you can!</div>
+<section id="menu">
+<h2>🌸 Choose Your Game 🌸</h2>
+<p>Every game has its own cute music! 🎀</p>
+<div class="grid">
+<div class="card" onclick="openGame('hearts')"><div class="icon">💖</div><h3>Heart Catcher</h3><p>Catch falling hearts!</p><button class="play">Play 💕</button></div>
+<div class="card" onclick="openGame('memory')"><div class="icon">🧠</div><h3>Pink Memory</h3><p>Match adorable pairs!</p><button class="play">Play ✨</button></div>
+<div class="card" onclick="openGame('gems')"><div class="icon">💎</div><h3>Gem Clicker</h3><p>Grab the sparkly gems!</p><button class="play">Play 💎</button></div>
+<div class="card" onclick="openGame('dodge')"><div class="icon">🎀</div><h3>Ribbon Dodge</h3><p>Dodge the falling bows!</p><button class="play">Play 🎀</button></div>
+<div class="card" onclick="openGame('bubbles')"><div class="icon">🫧</div><h3>Bubble Pop</h3><p>Pop pastel bubbles!</p><button class="play">Pop! 🫧</button></div>
+<div class="card" onclick="openGame('berries')"><div class="icon">🍓</div><h3>Berry Basket</h3><p>Collect strawberries!</p><button class="play">Play 🍓</button></div>
+<div class="card" onclick="openGame('stars')"><div class="icon">🌟</div><h3>Star Collector</h3><p>Catch the twinkly stars!</p><button class="play">Play 🌟</button></div>
+<div class="card" onclick="openGame('cafe')"><div class="icon">🧁</div><h3>Kitty Café</h3><p>Serve the kitty correctly!</p><button class="play">Serve ☕</button></div>
+<div class="card" onclick="openGame('dress')"><div class="icon">👗</div><h3>Raqeebat Dress-Up</h3><p>Create a cute outfit!</p><button class="play">Style 🎀</button></div>
+</div>
+<p>🌷 Made especially for Raqeebat 🌷</p>
+</section>
+
+<section id="hearts" class="panel"><button class="back" onclick="menu()">← Arcade</button><div class="stats"><div class="stat">💖 <span id="hs">0</span></div><div class="stat">⏰ <span id="ht">30</span></div><div class="stat">🏆 <span id="hb">0</span></div></div><div id="heartArea" class="area"></div></section>
+<section id="memory" class="panel"><button class="back" onclick="menu()">← Arcade</button><div class="stats"><div class="stat">🧠 Moves: <span id="moves">0</span></div><div class="stat">🏆 Best: <span id="mb">—</span></div></div><div class="area"><div id="memGrid" class="memory-grid"></div><div id="memMsg" class="center"></div></div></section>
+<section id="gems" class="panel"><button class="back" onclick="menu()">← Arcade</button><div class="stats"><div class="stat">💎 <span id="gs">0</span></div><div class="stat">⏰ <span id="gt">15</span></div><div class="stat">🏆 <span id="gb">0</span></div></div><div id="gemArea" class="area"></div></section>
+<section id="dodge" class="panel"><button class="back" onclick="menu()">← Arcade</button><div class="stats"><div class="stat">🎀 Score: <span id="ds">0</span></div></div><div id="dodgeArea" class="area"><div id="player" style="position:absolute;bottom:10px;left:50%;font-size:48px;transform:translateX(-50%)">🌸</div></div><div class="center"><button class="start" onclick="startDodge()">Restart 🎀</button> Use ⬅️ ➡️ or A/D</div></section>
+<section id="bubbles" class="panel"><button class="back" onclick="menu()">← Arcade</button><div class="stats"><div class="stat">🫧 Pops: <span id="bs">0</span></div><div class="stat">⏰ <span id="bt">20</span></div><div class="stat">🏆 <span id="bb">0</span></div></div><div id="bubbleArea" class="area"></div></section>
+<section id="berries" class="panel"><button class="back" onclick="menu()">← Arcade</button><div class="stats"><div class="stat">🍓 Berries: <span id="rs">0</span></div><div class="stat">⏰ <span id="rt">20</span></div><div class="stat">🏆 <span id="rb">0</span></div></div><div id="berryArea" class="area"></div></section>
+<section id="stars" class="panel"><button class="back" onclick="menu()">← Arcade</button><div class="stats"><div class="stat">🌟 Stars: <span id="ss">0</span></div><div class="stat">⏰ <span id="st">20</span></div><div class="stat">🏆 <span id="sb">0</span></div></div><div id="starArea" class="area"></div></section>
+<section id="cafe" class="panel"><button class="back" onclick="menu()">← Arcade</button><div class="stats"><div class="stat">🧁 Served: <span id="cs">0</span></div><div class="stat">🏆 Best: <span id="cb">0</span></div></div><div class="area"><div class="cafe"><div id="cat" class="order">🐱</div><div id="order" class="order">"I want a cupcake!"</div><div id="foods"></div><div id="cafeMsg"></div></div></div></section>
+<section id="dress" class="panel">
+<button class="back" onclick="menu()">← Arcade</button>
+<div class="dress-room">
+  <div class="customizer">
+    <h3>✨ Skin Tone</h3>
+    <p class="dress-note">Pick any tone you love!</p>
+    <div class="option-row">
+      <button class="option" onclick="setSkin('🧑🏻','skin1')"><span class="color-preview skin1"></span></button>
+      <button class="option" onclick="setSkin('🧑🏼','skin2')"><span class="color-preview skin2"></span></button>
+      <button class="option" onclick="setSkin('🧑🏽','skin3')"><span class="color-preview skin3"></span></button>
+      <button class="option" onclick="setSkin('🧑🏾','skin4')"><span class="color-preview skin4"></span></button>
+      <button class="option" onclick="setSkin('🧑🏿','skin5')"><span class="color-preview skin5"></span></button>
+      <button class="option" onclick="setSkin('🧑🏿','skin6')"><span class="color-preview skin6"></span></button>
     </div>
-
-    <div class="stats">
-        <div class="stat">💖 Score: <span id="score">0</span></div>
-        <div class="stat">⏰ Time: <span id="time">30</span>s</div>
-        <div class="stat">🏆 Best: <span id="best">0</span></div>
+    <h3>💇🏾 Hair</h3>
+    <div class="option-row">
+      <button class="option" onclick="setPart('hair','🧑🏾‍🦱')">🧑🏾‍🦱</button>
+      <button class="option" onclick="setPart('hair','🧑🏾‍🦰')">🧑🏾‍🦰</button>
+      <button class="option" onclick="setPart('hair','🧑🏾‍🦳')">🧑🏾‍🦳</button>
+      <button class="option" onclick="setPart('hair','🧑🏾‍🦲')">🧑🏾‍🦲</button>
+      <button class="option" onclick="setPart('hair','👩🏾')">👩🏾</button>
+      <button class="option" onclick="setPart('hair','👩🏾‍🦱')">👩🏾‍🦱</button>
     </div>
-
-    <div id="playArea"></div>
-
-    <div class="start-screen" id="startScreen">
-        <div class="big-heart">💗</div>
-        <h2>Welcome, Raqeebat!</h2>
-        <p class="instructions">
-            Hearts are falling! Click or tap them before they disappear.
-            Every heart gives you <strong>1 point</strong>.
-            You have <strong>30 seconds</strong> to get the highest score!
-        </p>
-        <button onclick="startGame()">Start Game ✨</button>
-        <div class="footer-note">Made especially for Raqeebat 🎀</div>
+    <h3>💄 Extras</h3>
+    <div class="option-row">
+      <button class="option" onclick="setPart('extra','💖')">💖</button>
+      <button class="option" onclick="setPart('extra','✨')">✨</button>
+      <button class="option" onclick="setPart('extra','🌸')">🌸</button>
+      <button class="option" onclick="setPart('extra','🎀')">🎀</button>
+      <button class="option" onclick="setPart('extra','👑')">👑</button>
     </div>
+  </div>
 
-    <div class="game-over" id="gameOver">
-        <div class="big-heart">💞</div>
-        <h2>Time's Up, Raqeebat!</h2>
-        <p>You caught <strong><span id="finalScore">0</span></strong> hearts!</p>
-        <p>🏆 Best Score: <strong><span id="finalBest">0</span></strong></p>
-        <button onclick="startGame()">Play Again 💕</button>
+  <div class="doll-wrap">
+    <div class="doll">
+      <div id="character" class="doll-face">👩🏾‍🦱</div>
     </div>
+    <div class="doll-label">💗 Raqeebat 💗</div>
+    <p id="styleMsg">Create your own look! 🎀</p>
+  </div>
 
+  <div class="customizer">
+    <h3>👗 Outfit</h3>
+    <div class="option-row">
+      <button class="option" onclick="setPart('outfit','👗')">👗</button>
+      <button class="option" onclick="setPart('outfit','👚')">👚</button>
+      <button class="option" onclick="setPart('outfit','🩰')">🩰</button>
+      <button class="option" onclick="setPart('outfit','👘')">👘</button>
+      <button class="option" onclick="setPart('outfit','🥻')">🥻</button>
+    </div>
+    <h3>👟 Shoes</h3>
+    <div class="option-row">
+      <button class="option" onclick="setPart('shoes','👟')">👟</button>
+      <button class="option" onclick="setPart('shoes','👠')">👠</button>
+      <button class="option" onclick="setPart('shoes','🥿')">🥿</button>
+      <button class="option" onclick="setPart('shoes','🥾')">🥾</button>
+    </div>
+    <h3>👜 Accessories</h3>
+    <div class="option-row">
+      <button class="option" onclick="setPart('accessory','👜')">👜</button>
+      <button class="option" onclick="setPart('accessory','👛')">👛</button>
+      <button class="option" onclick="setPart('accessory','🕶️')">🕶️</button>
+      <button class="option" onclick="setPart('accessory','💎')">💎</button>
+      <button class="option" onclick="setPart('accessory','📿')">📿</button>
+    </div>
+    <button class="start" onclick="randomLook()">🎲 Surprise Me!</button>
+  </div>
+</div>
+</section>
 </div>
 
 <script>
-let score = 0;
-let timeLeft = 30;
-let best = Number(localStorage.getItem("raqeebatBest")) || 0;
-let gameRunning = false;
-let spawnTimer;
-let countdownTimer;
-
-const playArea = document.getElementById("playArea");
-const scoreEl = document.getElementById("score");
-const timeEl = document.getElementById("time");
-const bestEl = document.getElementById("best");
-const startScreen = document.getElementById("startScreen");
-const gameOver = document.getElementById("gameOver");
-const finalScore = document.getElementById("finalScore");
-const finalBest = document.getElementById("finalBest");
-
-bestEl.textContent = best;
-
-function startGame() {
-    score = 0;
-    timeLeft = 30;
-    gameRunning = true;
-
-    scoreEl.textContent = score;
-    timeEl.textContent = timeLeft;
-    bestEl.textContent = best;
-
-    startScreen.style.display = "none";
-    gameOver.style.display = "none";
-    playArea.innerHTML = "";
-
-    clearInterval(spawnTimer);
-    clearInterval(countdownTimer);
-
-    spawnHeart();
-    spawnTimer = setInterval(spawnHeart, 600);
-
-    countdownTimer = setInterval(() => {
-        timeLeft--;
-        timeEl.textContent = timeLeft;
-
-        if (timeLeft <= 0) endGame();
-    }, 1000);
+let current="",timers=[],musicOn=false,audioCtx,musicTimer,musicStep=0;
+const tunes={
+hearts:[523,659,784,659,587,698,880,698],memory:[392,440,494,523,494,440,392,330],
+gems:[784,988,1175,988,1319,1175,988,784],dodge:[330,392,440,392,330,294,330,392],
+bubbles:[659,784,880,1047,880,784,659,587],berries:[523,587,659,784,659,587,523,440],
+stars:[784,880,988,1175,1319,1175,988,880],cafe:[262,330,392,523,392,330,262,330],dress:[523,659,784,1047,880,784,659,523]
+};
+function tone(f){if(!audioCtx||!musicOn)return;let o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type="sine";o.frequency.value=f;g.gain.setValueAtTime(.0001,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.045,audioCtx.currentTime+.02);g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+.23);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+.25)}
+function musicLoop(){if(!musicOn)return;let t=tunes[current]||tunes.hearts;tone(t[musicStep++%t.length]);musicTimer=setTimeout(musicLoop,300)}
+function toggleMusic(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume();musicOn=!musicOn;document.getElementById("musicBtn").textContent=musicOn?"🎵 Music: On":"🎵 Music: Off";clearTimeout(musicTimer);if(musicOn){musicStep=0;musicLoop()}}
+function clearGame(){timers.forEach(clearInterval);timers.forEach(clearTimeout);timers=[];document.querySelectorAll(".heart,.bubble,.berry,.star").forEach(x=>x.remove())}
+function menu(){clearGame();document.querySelectorAll(".panel").forEach(x=>x.style.display="none");document.getElementById("menu").style.display="block";current=""}
+function openGame(id){clearGame();document.getElementById("menu").style.display="none";document.querySelectorAll(".panel").forEach(x=>x.style.display="none");document.getElementById(id).style.display="block";current=id;musicStep=0;if(musicOn){clearTimeout(musicTimer);musicLoop()}({hearts:startHearts,memory:startMemory,gems:startGems,dodge:startDodge,bubbles:startBubbles,berries:startBerries,stars:startStars,cafe:startCafe,dress:startDress})[id]()}
+function round(timeId,scoreId,bestKey,bestId,seconds,finish){let t=seconds;document.getElementById(timeId).textContent=t;let iv=setInterval(()=>{t--;document.getElementById(timeId).textContent=t;if(t<=0){clearInterval(iv);finish()}},1000);timers.push(iv)}
+function startHearts(){let a=document.getElementById("heartArea"),s=0;a.innerHTML="";document.getElementById("hs").textContent=0;document.getElementById("hb").textContent=localStorage.hbest||0;let sp=setInterval(()=>{let x=document.createElement("div");x.className="heart";x.textContent=["💗","💖","💕","💓","💞"][Math.random()*5|0];x.style.left=Math.random()*(a.clientWidth-45)+"px";let d=2+Math.random()*2;x.style.animationDuration=d+"s";x.onclick=()=>{s++;document.getElementById("hs").textContent=s;x.remove()};a.appendChild(x);setTimeout(()=>x.remove(),d*1000)},550);timers.push(sp);round("ht","hs","hbest","hb",30,()=>{if(s>+(localStorage.hbest||0)){localStorage.hbest=s;document.getElementById("hb").textContent=s}alert("Heart round over! 💗 "+s+" hearts!")})}
+let first=null,locked=false,moves=0;
+function startMemory(){let g=document.getElementById("memGrid");g.innerHTML="";document.getElementById("memMsg").textContent="";moves=0;document.getElementById("moves").textContent=0;document.getElementById("mb").textContent=localStorage.mbest||"—";first=null;locked=false;["🌸","🌸","💗","💗","🎀","🎀","🦋","🦋","🍓","🍓","🌷","🌷","💎","💎","🧁","🧁"].sort(()=>Math.random()-.5).forEach(v=>{let b=document.createElement("button");b.className="mem";b.textContent="❓";b.dataset.v=v;b.onclick=()=>flip(b);g.appendChild(b)})}
+function flip(b){if(locked||b.classList.contains("match")||b===first)return;b.classList.add("open");b.textContent=b.dataset.v;if(!first){first=b;return}moves++;document.getElementById("moves").textContent=moves;if(first.dataset.v===b.dataset.v){first.classList.add("match");b.classList.add("match");first=null;if(document.querySelectorAll(".match").length===16){let best=+(localStorage.mbest||999);if(moves<best){localStorage.mbest=moves;document.getElementById("mb").textContent=moves}document.getElementById("memMsg").textContent="🎉 Perfect! "+moves+" moves! 🎉"}}else{locked=true;let old=first;setTimeout(()=>{old.classList.remove("open");b.classList.remove("open");old.textContent=b.textContent="❓";first=null;locked=false},600)}}
+function startGems(){let a=document.getElementById("gemArea"),s=0;a.innerHTML="";document.getElementById("gs").textContent=0;document.getElementById("gb").textContent=localStorage.gbest||0;let sp=setInterval(()=>{let x=document.createElement("div");x.className="star";x.textContent=["💎","✨","💠"][Math.random()*3|0];x.style.left=Math.random()*(a.clientWidth-40)+"px";x.style.top=Math.random()*(a.clientHeight-50)+"px";x.onclick=()=>{s++;document.getElementById("gs").textContent=s;x.remove()};a.appendChild(x);setTimeout(()=>x.remove(),900)},400);timers.push(sp);round("gt","gs","gbest","gb",15,()=>{if(s>+(localStorage.gbest||0)){localStorage.gbest=s;document.getElementById("gb").textContent=s}alert("Gem time! 💎 You got "+s+"!")})}
+let px=.5,ds=0;
+function startDodge(){let a=document.getElementById("dodgeArea");a.querySelectorAll(".target").forEach(x=>x.remove());px=.5;ds=0;document.getElementById("ds").textContent=0;position();let sp=setInterval(()=>{let x=document.createElement("div");x.className="target";x.textContent=["🎀","💗","🌸"][Math.random()*3|0];x.style.left=Math.random()*(a.clientWidth-45)+"px";x.style.top="-45px";a.appendChild(x);let fall=setInterval(()=>{if(!x.isConnected){clearInterval(fall);return}x.style.top=parseFloat(x.style.top)+5+"px";if(parseFloat(x.style.top)>a.clientHeight)x.remove();if(parseFloat(x.style.top)>a.clientHeight-70&&Math.abs(parseFloat(x.style.left)+20-px*a.clientWidth)<45){clearInterval(fall);alert("Oops! 🎀 Score: "+ds);clearGame()}},40)},700);timers.push(sp);let score=setInterval(()=>{ds++;document.getElementById("ds").textContent=ds},1000);timers.push(score)}
+function position(){document.getElementById("player").style.left=px*100+"%"}function move(d){px=Math.max(.08,Math.min(.92,px+d*.08));position()}document.addEventListener("keydown",e=>{if(current==="dodge"&&e.key==="ArrowLeft")move(-1);if(current==="dodge"&&e.key==="ArrowRight")move(1)})
+function startBubbles(){let a=document.getElementById("bubbleArea"),s=0;a.innerHTML="";document.getElementById("bs").textContent=0;document.getElementById("bb").textContent=localStorage.bbest||0;let sp=setInterval(()=>{let x=document.createElement("div");x.className="bubble";x.textContent=["🫧","🩷","💗"][Math.random()*3|0];x.style.left=Math.random()*(a.clientWidth-45)+"px";x.style.bottom="-50px";x.onclick=()=>{s++;document.getElementById("bs").textContent=s;x.remove()};a.appendChild(x);setTimeout(()=>x.remove(),2000)},300);timers.push(sp);round("bt","bs","bbest","bb",20,()=>{if(s>+(localStorage.bbest||0)){localStorage.bbest=s;document.getElementById("bb").textContent=s}alert("Pop party! 🫧 "+s+" pops!")})}
+function startBerries(){let a=document.getElementById("berryArea"),s=0;a.innerHTML="";document.getElementById("rs").textContent=0;document.getElementById("rb").textContent=localStorage.rbest||0;let sp=setInterval(()=>{let x=document.createElement("div");x.className="berry";x.textContent=["🍓","🍒","🫐","🍑"][Math.random()*4|0];x.style.left=Math.random()*(a.clientWidth-45)+"px";x.style.top=Math.random()*(a.clientHeight-50)+"px";x.onclick=()=>{s++;document.getElementById("rs").textContent=s;x.remove()};a.appendChild(x);setTimeout(()=>x.remove(),1000)},450);timers.push(sp);round("rt","rs","rbest","rb",20,()=>{if(s>+(localStorage.rbest||0)){localStorage.rbest=s;document.getElementById("rb").textContent=s}alert("Berry basket! 🍓 "+s+" collected!")})}
+function startStars(){let a=document.getElementById("starArea"),s=0;a.innerHTML="";document.getElementById("ss").textContent=0;document.getElementById("sb").textContent=localStorage.sbest||0;let sp=setInterval(()=>{let x=document.createElement("div");x.className="star";x.textContent=["🌟","⭐","✨","💫"][Math.random()*4|0];x.style.left=Math.random()*(a.clientWidth-50)+"px";x.style.top=Math.random()*(a.clientHeight-55)+"px";x.onclick=()=>{s++;document.getElementById("ss").textContent=s;x.remove()};a.appendChild(x);setTimeout(()=>x.remove(),850)},500);timers.push(sp);round("st","ss","sbest","sb",20,()=>{if(s>+(localStorage.sbest||0)){localStorage.sbest=s;document.getElementById("sb").textContent=s}alert("Starry! 🌟 "+s+" stars!")})}
+let cafeScore=0,cafeAnswer="";
+function startCafe(){cafeScore=0;document.getElementById("cs").textContent=0;document.getElementById("cb").textContent=localStorage.cbest||0;nextOrder()}
+function nextOrder(){let choices=[["🧁","cupcake"],["🍓","strawberry"],["☕","coffee"],["🍪","cookie"],["🍰","cake"]];let q=choices[Math.random()*choices.length|0];cafeAnswer=q[1];document.getElementById("order").textContent="“I want a "+q[1]+"!”";let f=document.getElementById("foods");f.innerHTML="";choices.forEach(c=>{let b=document.createElement("button");b.className="choice";b.textContent=c[0];b.onclick=()=>{if(c[1]===cafeAnswer){cafeScore++;document.getElementById("cs").textContent=cafeScore;document.getElementById("cafeMsg").textContent="YAY! Kitty is happy! 💗"}else document.getElementById("cafeMsg").textContent="Oops! Kitty wanted "+cafeAnswer+" 🥺";setTimeout(nextOrder,450)};f.appendChild(b)})}
+let look={skin:"🧑🏾",hair:"🦱",outfit:"👗",shoes:"👟",accessory:"👜",extra:"🎀"};
+function startDress(){renderLook();document.getElementById("styleMsg").textContent="Pick a skin tone, hair, outfit, shoes and accessories! 💗"}
+function setSkin(face,cls){look.skin=face;renderLook();document.querySelectorAll(".color-preview").forEach(x=>x.parentElement.classList.remove("active"));let el=document.querySelector("."+cls);if(el)el.parentElement.classList.add("active")}
+function setPart(type,value){look[type]=value;renderLook();document.getElementById("styleMsg").textContent=["SO CUTE! 🎀","Princess Raqeebat! 👑","Absolutely adorable! 💕","Fashion icon! ✨","That look is EVERYTHING! 💎"][Math.random()*5|0]}
+function renderLook(){
+  const face=look.skin;
+  const hair=look.hair;
+  document.getElementById("character").textContent=face+" "+hair+" "+look.extra+" "+look.outfit+" "+look.shoes+" "+look.accessory;
 }
-
-function spawnHeart() {
-    if (!gameRunning) return;
-
-    const heart = document.createElement("div");
-    heart.className = "heart";
-
-    const hearts = ["💗", "💖", "💕", "💓", "💞", "💘", "💝"];
-    heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
-
-    const maxX = Math.max(0, playArea.clientWidth - 50);
-    heart.style.left = Math.random() * maxX + "px";
-
-    const duration = 2.2 + Math.random() * 2.3;
-    heart.style.animationDuration = duration + "s";
-
-    heart.addEventListener("click", (event) => {
-        if (!gameRunning) return;
-
-        score++;
-        scoreEl.textContent = score;
-
-        showPoints(event.clientX, event.clientY);
-        heart.remove();
-    });
-
-    playArea.appendChild(heart);
-
-    setTimeout(() => {
-        if (heart.isConnected) heart.remove();
-    }, duration * 1000 + 100);
-}
-
-function showPoints(x, y) {
-    const pop = document.createElement("div");
-    pop.className = "pop";
-    pop.textContent = "+1 💕";
-
-    const rect = playArea.getBoundingClientRect();
-    pop.style.left = (x - rect.left) + "px";
-    pop.style.top = (y - rect.top) + "px";
-
-    playArea.appendChild(pop);
-
-    setTimeout(() => pop.remove(), 600);
-}
-
-function endGame() {
-    gameRunning = false;
-    clearInterval(spawnTimer);
-    clearInterval(countdownTimer);
-
-    if (score > best) {
-        best = score;
-        localStorage.setItem("raqeebatBest", best);
-    }
-
-    finalScore.textContent = score;
-    finalBest.textContent = best;
-    bestEl.textContent = best;
-    gameOver.style.display = "flex";
-
-    document.querySelectorAll(".heart").forEach(h => h.remove());
+function randomLook(){
+  const skins=["🧑🏻","🧑🏼","🧑🏽","🧑🏾","🧑🏿"];
+  const hairs=["🧑🏾‍🦱","👩🏾","👩🏾‍🦱","🧑🏾‍🦲"];
+  const outfits=["👗","👚","🩰","👘","🥻"];
+  const shoes=["👟","👠","🥿","🥾"];
+  const accessories=["👜","👛","🕶️","💎","📿"];
+  const extras=["💖","✨","🌸","🎀","👑"];
+  look={skin:skins[Math.random()*skins.length|0],hair:hairs[Math.random()*hairs.length|0],outfit:outfits[Math.random()*outfits.length|0],shoes:shoes[Math.random()*shoes.length|0],accessory:accessories[Math.random()*accessories.length|0],extra:extras[Math.random()*extras.length|0]};
+  renderLook();
+  document.getElementById("styleMsg").textContent="✨ Surprise look unlocked! ✨";
 }
 </script>
 </body>

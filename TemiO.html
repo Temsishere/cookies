@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐾 Safari Rescue</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    overflow:hidden;
+    background:linear-gradient(#87CEEB,#98FB98);
+    font-family:Arial,sans-serif;
+}
+
+#game{
+    width:100vw;
+    height:100vh;
+    position:relative;
+}
+
+#player{
+    position:absolute;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:60px;
+    user-select:none;
+}
+
+.item{
+    position:absolute;
+    font-size:40px;
+    user-select:none;
+}
+
+#score{
+    position:absolute;
+    top:15px;
+    left:20px;
+    font-size:30px;
+    font-weight:bold;
+}
+
+#gameover{
+    display:none;
+    position:absolute;
+    top:40%;
+    width:100%;
+    text-align:center;
+    font-size:60px;
+    color:red;
+    font-weight:bold;
+}
+
+#gameover button{
+    margin-top:20px;
+    padding:12px 25px;
+    font-size:24px;
+    cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<div id="game">
+
+<div id="score">Animals Saved: 0</div>
+
+<div id="player">🚙</div>
+
+<div id="gameover">
+Game Over!
+<br>
+<button onclick="location.reload()">Play Again</button>
+</div>
+
+</div>
+
+<script>
+
+const animals=["🐶","🐱","🐰","🦊","🐼","🐨","🐸","🐧","🦁","🐯","🐵","🐻"];
+const traps=["💣","🪤"];
+
+const player=document.getElementById("player");
+const scoreText=document.getElementById("score");
+const game=document.getElementById("game");
+const over=document.getElementById("gameover");
+
+let playerX=window.innerWidth/2;
+let score=0;
+let speed=3;
+let playing=true;
+
+player.style.left=playerX+"px";
+
+document.addEventListener("mousemove",(e)=>{
+    if(!playing)return;
+
+    playerX=e.clientX;
+    if(playerX<30)playerX=30;
+    if(playerX>window.innerWidth-30)
+        playerX=window.innerWidth-30;
+
+    player.style.left=playerX+"px";
+});
+
+document.addEventListener("keydown",(e)=>{
+    if(!playing)return;
+
+    if(e.key==="ArrowLeft")
+        playerX-=30;
+
+    if(e.key==="ArrowRight")
+        playerX+=30;
+
+    if(playerX<30)playerX=30;
+    if(playerX>window.innerWidth-30)
+        playerX=window.innerWidth-30;
+
+    player.style.left=playerX+"px";
+});
+
+function spawn(){
+
+    if(!playing)return;
+
+    const obj=document.createElement("div");
+    obj.className="item";
+
+    let good=Math.random()<0.8;
+
+    obj.innerHTML=good ?
+        animals[Math.floor(Math.random()*animals.length)] :
+        traps[Math.floor(Math.random()*traps.length)];
+
+    obj.dataset.good=good;
+
+    obj.style.left=Math.random()*(window.innerWidth-40)+"px";
+    obj.style.top="-50px";
+
+    game.appendChild(obj);
+
+    let y=-50;
+
+    const fall=setInterval(()=>{
+
+        if(!playing){
+            clearInterval(fall);
+            return;
+        }
+
+        y+=speed;
+        obj.style.top=y+"px";
+
+        const x=obj.offsetLeft;
+
+        if(y>window.innerHeight-120){
+
+            if(Math.abs(x-playerX)<50){
+
+                if(obj.dataset.good==="true"){
+
+                    score++;
+                    scoreText.innerHTML="Animals Saved: "+score;
+
+                    if(score%10===0)
+                        speed+=0.4;
+
+                }else{
+
+                    playing=false;
+                    over.style.display="block";
+
+                }
+
+                obj.remove();
+                clearInterval(fall);
+            }
+
+        }
+
+        if(y>window.innerHeight){
+
+            obj.remove();
+            clearInterval(fall);
+
+        }
+
+    },20);
+
+}
+
+setInterval(spawn,700);
+
+</script>
+
+</body>
+</html>
