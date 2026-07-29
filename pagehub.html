@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>webpagehub.html</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,sans-serif}
+body{
+background:#090b14;
+color:#fff;
+overflow-x:hidden;
+}
+
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle at 20% 20%,rgba(0,255,255,.15),transparent 30%),
+radial-gradient(circle at 80% 30%,rgba(255,0,200,.15),transparent 35%),
+radial-gradient(circle at 50% 80%,rgba(0,150,255,.12),transparent 35%);
+animation:bg 14s ease-in-out infinite alternate;
+z-index:-2;
+}
+
+body::after{
+content:"";
+position:fixed;
+inset:0;
+background:
+linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
+linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+background-size:45px 45px;
+z-index:-1;
+}
+
+@keyframes bg{
+from{filter:hue-rotate(0deg);}
+to{filter:hue-rotate(90deg);}
+}
+
+header{
+padding:60px 20px;
+text-align:center;
+}
+
+h1{
+font-size:52px;
+color:#7df9ff;
+text-shadow:0 0 20px cyan;
+}
+
+header p{
+margin-top:15px;
+color:#bfc8d6;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:22px;
+padding:35px;
+max-width:1500px;
+margin:auto;
+}
+
+.card{
+display:block;
+text-decoration:none;
+color:white;
+padding:20px;
+background:rgba(20,25,40,.72);
+border:1px solid rgba(255,255,255,.08);
+border-radius:16px;
+backdrop-filter:blur(10px);
+transition:.25s;
+box-shadow:0 0 20px rgba(0,255,255,.06);
+animation:fade .7s ease both;
+}
+
+.card:hover{
+transform:translateY(-6px) scale(1.03);
+border-color:#58d8ff;
+box-shadow:
+0 0 18px #00bfff,
+0 0 45px rgba(255,0,200,.25);
+}
+
+.card h2{
+font-size:20px;
+margin-bottom:8px;
+}
+
+.card span{
+display:inline-block;
+margin-top:12px;
+padding:5px 10px;
+border-radius:999px;
+font-size:12px;
+background:#1f6feb;
+}
+
+@keyframes fade{
+from{opacity:0;transform:translateY(15px);}
+to{opacity:1;transform:none;}
+}
+
+footer{
+text-align:center;
+padding:45px;
+color:#999;
+}
+
+.small{
+font-size:13px;
+opacity:.8;
+}
+</style>
+</head>
+<body>
+
+<header>
+<h1>🍪 Cookies Project Hub</h1>
+<p>Coolest Fermilab project ever.</p>
+</header>
+
+<div class="grid">
+
+<a class="card" href="classes.html"><h2>📚 Coding Classes</h2><span>Documentation</span></a>
+
+<a class="card" href="Diego.html"><h2>👤 Diego</h2><span>Profile</span></a>
+
+<a class="card" href="PingPong.html"><h2>🏓 Ping Pong</h2><span>Game</span></a>
+
+<a class="card" href="airqualityindex.html"><h2>🌎 Air Quality</h2><span>Utility</span></a>
+
+<a class="card" href="chess.html"><h2>♟ Chess</h2><span>Game</span></a>
+
+<a class="card" href="marco.html"><h2>💼 Marco</h2><span>Profile</span></a>
+
+<a class="card" href="marco_mambelli_portfolio.html"><h2>🤖 Marco AI</h2><span>Portfolio</span></a>
+
+<a class="card" href="shimp.html"><h2>🦐 Josh</h2><span>Profile</span></a>
+
+<a class="card" href="shower scanner.html.html"><h2>🚿 Shower Finder</h2><span>Utility</span></a>
+
+<a class="card" href="platformer.html"><h2>🕹 Platformer</h2><span>Game</span></a>
+
+<a class="card" href="anims.html"><h2>💡 Lights</h2><span>Animation</span></a>
+
+<a class="card" href="expl.html"><h2>📝 HTML Examples</h2><span>Learning</span></a>
+
+<a class="card" href="laserdodge.html"><h2>🔺 Dodge</h2><span>Game</span></a>
+
+<a class="card" href="find711.html"><h2>🥤 Find 7-Eleven</h2><span>Map</span></a>
+
+<a class="card" href="Camryn.html"><h2>⭐ Cammyissocool</h2><span>Profile</span></a>
+
+<a class="card" href="dodge2.html"><h2>💥 Dodge 2</h2><span>Game</span></a>
+
+<a class="card" href="pcs.html"><h2>🖥 PCs</h2><span>Showcase</span></a>
+
+<a class="card" href="pcs2.html"><h2>🎮 Gaming PCs</h2><span>Hardware</span></a>
+
+<a class="card" href="coolwebsite.html"><h2>🌐 Cool Website</h2><span>Demo</span></a>
+
+<a class="card" href="Raqy.html"><h2>👤 Raqeebat</h2><span>Profile</span></a>
+
+<a class="card" href="MAGAME.html"><h2>🎲 MAGAME</h2><span>Game</span></a>
+
+<a class="card" href="ramprices.html"><h2>💾 RAM Listings</h2><span>Hardware</span></a>
+
+<a class="card" href="DinosaurGame.html"><h2>🦖 Dino Game</h2><span>Game</span></a>
+
+<a class="card" href="CrazyCortez.html"><h2>🔥 CrazyCortz</h2><span>Profile</span></a>
+
+<a class="card" href="dodge3.html"><h2>⚡ Dodge 3</h2><span>Newest Game</span></a>
+
+<a class="card" href="https://github.com/mambelli/cookies"><h2>📂 GitHub Repository</h2><span>Source</span></a>
+
+</div>
+
+<footer>
+
+<h3>VALOR JROTC 2026 Cohort</h3>
+<p class="small">Interactive HTML Project Collection</p>
+<br>
+<img src="images/FNALVALORJROTC-QR.png" width="120" alt="QR Code">
+
+</footer>
+
+</body>
+</html>
