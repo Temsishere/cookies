@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Find Showers Near You</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f4f4;
+}
+
+header{
+    background:#1976d2;
+    color:white;
+    text-align:center;
+    padding:40px 20px;
+}
+
+header h1{
+    margin:0;
+    font-size:42px;
+}
+
+header p{
+    font-size:18px;
+}
+
+nav{
+    background:#0d47a1;
+    text-align:center;
+    padding:15px;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin:20px;
+    font-weight:bold;
+}
+
+nav a:hover{
+    text-decoration:underline;
+}
+
+.hero{
+    text-align:center;
+    padding:50px 20px;
+}
+
+.search{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:25px;
+}
+
+.search input{
+    width:350px;
+    padding:14px;
+    font-size:16px;
+    border:2px solid #1976d2;
+    border-radius:6px;
+}
+
+.search button{
+    padding:14px 22px;
+    background:#1976d2;
+    color:white;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.search button:hover{
+    background:#0d47a1;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+    padding:20px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:white;
+    border-radius:10px;
+    box-shadow:0 3px 10px rgba(0,0,0,.15);
+    padding:20px;
+}
+
+.card h2{
+    color:#1976d2;
+}
+
+.card ul{
+    padding-left:20px;
+}
+
+.card a{
+    display:inline-block;
+    margin-top:15px;
+    background:#1976d2;
+    color:white;
+    text-decoration:none;
+    padding:10px 18px;
+    border-radius:5px;
+}
+
+.card a:hover{
+    background:#0d47a1;
+}
+
+footer{
+    background:#222;
+    color:white;
+    text-align:center;
+    padding:20px;
+    margin-top:40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+<h1>Find Showers Near You</h1>
+<p>Locate public showers, truck stops, campgrounds, gyms, and recreation centers.</p>
+</header>
+
+<nav>
+<a href="#search">Search</a>
+<a href="#locations">Locations</a>
+<a href="#about">About</a>
+</nav>
+
+<section class="hero" id="search">
+<h2>Search for Nearby Showers</h2>
+
+<p>Enter your city or ZIP code.</p>
+
+<div class="search">
+<input id="location" type="text" placeholder="City, State or ZIP Code">
+<button onclick="searchShowers()">Search</button>
+</div>
+
+<p id="status"></p>
+
+</section>
+
+<div class="container" id="locations">
+
+<div class="grid">
+
+<div class="card">
+<h2>🚿 Truck Stops</h2>
+
+<ul>
+<li>Love's Travel Stops</li>
+<li>Pilot Flying J</li>
+<li>TA Travel Centers</li>
+<li>Petro Travel Centers</li>
+</ul>
+
+<a href="https://www.google.com/maps/search/truck+stop+showers" target="_blank">
+Find Nearby
+</a>
+
+</div>
+
+<div class="card">
+
+<h2>🏕 Campgrounds</h2>
+
+<ul>
+<li>State Parks</li>
+<li>KOA Campgrounds</li>
+<li>National Parks</li>
+<li>RV Parks</li>
+</ul>
+
+<a href="https://www.google.com/maps/search/campground+showers" target="_blank">
+Find Nearby
+</a>
+
+</div>
+
+<div class="card">
+
+<h2>💪 Gyms</h2>
+
+<ul>
+<li>Planet Fitness</li>
+<li>YMCA</li>
+<li>LA Fitness</li>
+<li>Community Centers</li>
+</ul>
+
+<a href="https://www.google.com/maps/search/gym+with+showers" target="_blank">
+Find Nearby
+</a>
+
+</div>
+
+<div class="card">
+
+<h2>🏊 Recreation Centers</h2>
+
+<ul>
+<li>City Recreation Centers</li>
+<li>Aquatic Centers</li>
+<li>Sports Complexes</li>
+<li>Community Pools</li>
+</ul>
+
+<a href="https://www.google.com/maps/search/public+showers" target="_blank">
+Find Nearby
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+<section class="hero" id="about">
+
+<h2>About</h2>
+
+<p>
+This website helps users quickly locate places that commonly provide showers,
+including truck stops, campgrounds, gyms, and public recreation facilities.
+</p>
+
+</section>
+
+<footer>
+
+<p>Find Showers Near You</p>
+<p>Educational HTML Project</p>
+
+</footer>
+
+<script>
+
+function searchShowers(){
+
+let location=document.getElementById("location").value.trim();
+
+if(location===""){
+document.getElementById("status").innerHTML="Please enter a location.";
+return;
+}
+
+document.getElementById("status").innerHTML="Searching near <b>"+location+"</b>...";
+
+let url="https://www.google.com/maps/search/showers+near+"+encodeURIComponent(location);
+
+setTimeout(function(){
+window.open(url,"_blank");
+},800);
+
+}
+
+document.getElementById("location").addEventListener("keypress",function(e){
+
+if(e.key==="Enter"){
+searchShowers();
+}
+
+});
+
+</script>
+
+</body>
+</html>
