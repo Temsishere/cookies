@@ -29,6 +29,9 @@ List of pages:
 - [Very cool Dino Game](DinosaurGame.html)
 - [CrazyCortz](CrazyCortez.html)
 
+## Dodge3 dropped!
+- [Dodge 3!!](dodge3.html)
+
 [These pages on GitHub](https://github.com/mambelli/cookies)
 
 by VALOR JROTC 2026 cohort
