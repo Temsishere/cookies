@@ -27,6 +27,7 @@ List of pages:
 - [MAGAME](MAGAME.html)
 - Buy some RAM here!!!!!  [RAM Listings](ramprices.html)
 - [Very cool Dino Game](DinosaurGame.html)
+- [CrazyCortz](CrazyCortez.html)
 
 [These pages on GitHub](https://github.com/mambelli/cookies)
 
