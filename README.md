@@ -25,6 +25,9 @@ List of pages:
 - [My Cool Website](coolwebsite.html)
 - [Raqeebat's page](Raqy.html)
 
+## Buy some RAM here!!!!!
+- [RAM Listings](ramprices.html)
+
 [These pages on GitHub](https://github.com/mambelli/cookies)
 
 by VALOR JROTC 2026 cohort
