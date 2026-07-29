@@ -9,6 +9,7 @@ List of pages:
 - [Diego's page](Diego.html)
 - [PingPong Game](PingPong.html)
 - [Fermilab Air Quality Index](airqualityindex.html)
+- [Chess](chess.html)
 - [Marco's page](marco.html) and [the one ChatGPT geneated for marco](marco_mambelli_portfolio.html)
 - [Josh's page (best page)](shimp.html)
 - [FIND SHOWER ASAP](shower%20scanner.html.html)
