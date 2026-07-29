@@ -5,7 +5,9 @@ Coolest Fermilab project ever.
 [Notes for the coding classes](classes.html)
 
 List of pages:
+
 - [Diego's page](Diego.html)
+- [PingPong Game](PingPong.html)
 - [Fermilab Air Quality Index](airqualityindex.html)
 - [Marco's page](marco.html) and [the one ChatGPT geneated for marco](marco_mambelli_portfolio.html)
 - [Josh's page (best page)](shimp.html)
