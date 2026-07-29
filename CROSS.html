@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Animal Adventure</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#88d97d;
+overflow:hidden;
+}
+
+#menu{
+position:absolute;
+width:100%;
+height:100%;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+background:linear-gradient(#5ac85a,#95e67d);
+z-index:10;
+}
+
+h1{
+font-size:60px;
+margin-bottom:20px;
+color:white;
+text-shadow:3px 3px #2c5b2c;
+}
+
+input{
+padding:15px;
+font-size:22px;
+width:250px;
+text-align:center;
+margin:15px;
+}
+
+button{
+padding:15px 40px;
+font-size:24px;
+cursor:pointer;
+border:none;
+border-radius:10px;
+background:orange;
+}
+
+button:hover{
+background:gold;
+}
+
+#hud{
+position:absolute;
+top:10px;
+left:10px;
+font-size:25px;
+font-weight:bold;
+display:none;
+}
+
+canvas{
+display:block;
+background:#7ddc6d;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="menu">
+
+<h1>🐾 Animal Adventure</h1>
+
+<input id="playerName" placeholder="Enter Name">
+
+<button onclick="startGame()">Play</button>
+
+</div>
+
+<div id="hud">
+
+Coins: <span id="coins">0</span>
+
+</div>
+
+<canvas id="game"></canvas>
+
+<script>
+
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let player={
+x:canvas.width/2,
+y:canvas.height-120,
+size:28,
+emoji:"🐰"
+};
+
+let coins=0;
+let playerName="";
+
+function startGame(){
+
+playerName=document.getElementById("playerName").value;
+
+if(playerName==""){
+
+alert("Enter your name!");
+
+return;
+
+}
+
+document.getElementById("menu").style.display="none";
+
+document.getElementById("hud").style.display="block";
+
+animate();
+
+}
+
+document.addEventListener("keydown",e=>{
+
+const step=55;
+
+if(e.key=="ArrowLeft")player.x-=step;
+
+if(e.key=="ArrowRight")player.x+=step;
+
+if(e.key=="ArrowUp")player.y-=step;
+
+if(e.key=="ArrowDown")player.y+=step;
+
+});
+
+let offset=0;
+
+function drawGround(){
+
+offset+=2;
+
+for(let y=-60;y<canvas.height+60;y+=60){
+
+ctx.fillStyle=((Math.floor((y+offset)/60)%2)==0)
+?"#74c365"
+:"#6ab95d";
+
+ctx.fillRect(0,(y+offset)%60,canvas.width,60);
+
+}
+
+}
+
+function drawPlayer(){
+
+ctx.font="40px serif";
+
+ctx.fillText(player.emoji,player.x,player.y);
+
+}
+
+function animate(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+drawGround();
+
+drawPlayer();
+
+requestAnimationFrame(animate);
+
+}
+
+</script>
+
+</body>
+</html>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const TILE = 60;
+
+let playerName = "";
+let coins = 0;
+let gameRunning = false;
+
+const player = {
+    x: Math.floor(canvas.width / 2 / TILE) * TILE,
+    y: canvas.height - TILE * 2,
+    emoji: "🐰"
+};
+
+let rows = [];
+
+function randomType() {
+    const r = Math.random();
+
+    if (r < 0.45) return "grass";
+    if (r < 0.70) return "road";
+    if (r < 0.90) return "river";
+    return "forest";
+}
+
+function createRow(y) {
+
+    const row = {
+        y,
+        type: randomType(),
+        objects: []
+    };
+
+    if (row.type === "road") {
+
+        for (let i = 0; i < 4; i++) {
+
+            row.objects.push({
+                x: Math.random() * canvas.width,
+                speed: 2 + Math.random() * 3,
+                emoji: "🚗"
+            });
+
+        }
+
+    }
+
+    if (row.type === "river") {
+
+        for (let i = 0; i < 3; i++) {
+
+            row.objects.push({
+                x: Math.random() * canvas.width,
+                speed: 1.5,
+                emoji: "🪵"
+            });
+
+        }
+
+    }
+
+    if (row.type === "forest") {
+
+        for (let i = 0; i < 6; i++) {
+
+            row.objects.push({
+                x: Math.floor(Math.random() * (canvas.width / TILE)) * TILE,
+                emoji: "🌳"
+            });
+
+        }
+
+    }
+
+    return row;
+}
+
+for (let y = -TILE; y < canvas.height + TILE; y += TILE) {
+    rows.push(createRow(y));
+}
+
+function startGame() {
+
+    playerName = document.getElementById("playerName").value.trim();
+
+    if (!playerName) {
+        alert("Enter your name!");
+        return;
+    }
+
+    document.getElementById("menu").style.display = "none";
+    document.getElementById("hud").style.display = "block";
+
+    gameRunning = true;
+
+    requestAnimationFrame(gameLoop);
+
+}
+
+document.addEventListener("keydown", e => {
+
+    if (!gameRunning) return;
+
+    if (e.key === "ArrowLeft") player.x -= TILE;
+    if (e.key === "ArrowRight") player.x += TILE;
+    if (e.key === "ArrowUp") {
+
+        player.y -= TILE;
+
+        rows.forEach(r => r.y += TILE);
+
+        while (rows[0].y > -TILE)
+            rows.unshift(createRow(rows[0].y - TILE));
+
+        while (rows[rows.length - 1].y > canvas.height + TILE)
+            rows.pop();
+
+    }
+
+    if (e.key === "ArrowDown") player.y += TILE;
+
+});
+
+function drawRows() {
+
+    rows.forEach(row => {
+
+        if (row.type === "grass")
+            ctx.fillStyle = "#78d95d";
+
+        if (row.type === "road")
+            ctx.fillStyle = "#666";
+
+        if (row.type === "river")
+            ctx.fillStyle = "#4ba3ff";
+
+        if (row.type === "forest")
+            ctx.fillStyle = "#5cb85c";
+
+        ctx.fillRect(0, row.y, canvas.width, TILE);
+
+        row.objects.forEach(o => {
+
+            ctx.font = "40px serif";
+
+            ctx.fillText(o.emoji, o.x, row.y + 42);
+
+        });
+
+    });
+
+}
+
+function updateObjects() {
+
+    rows.forEach(row => {
+
+        row.objects.forEach(o => {
+
+            if (row.type === "road" || row.type === "river") {
+
+                o.x += o.speed;
+
+                if (o.x > canvas.width + 100)
+                    o.x = -100;
+
+            }
+
+        });
+
+    });
+
+}
+
+function checkCollision() {
+
+    for (const row of rows) {
+
+        if (Math.abs(player.y - row.y) > 25)
+            continue;
+
+        if (row.type === "road") {
+
+            for (const car of row.objects) {
+
+                if (Math.abs(player.x - car.x) < 40) {
+
+                    gameOver();
+
+                }
+
+            }
+
+        }
+
+        if (row.type === "forest") {
+
+            for (const tree of row.objects) {
+
+                if (Math.abs(player.x - tree.x) < 25 &&
+                    Math.abs(player.y - row.y) < 25) {
+
+                    gameOver();
+
+                }
+
+            }
+
+        }
+
+        if (row.type === "river") {
+
+            let onLog = false;
+
+            for (const log of row.objects) {
+
+                if (Math.abs(player.x - log.x) < 40) {
+
+                    onLog = true;
+                    player.x += log.speed;
+
+                }
+
+            }
+
+            if (!onLog)
+                gameOver();
+
+        }
+
+    }
+
+}
+
+function gameOver() {
+
+    gameRunning = false;
+
+    alert("Game Over!\nPlayer: " + playerName);
+
+}
+
+function drawPlayer() {
+
+    ctx.font = "42px serif";
+
+    ctx.fillText(player.emoji, player.x, player.y);
+
+}
+
+function gameLoop() {
+
+    if (!gameRunning) return;
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    updateObjects();
+
+    drawRows();
+
+    drawPlayer();
+
+    checkCollision();
+
+    requestAnimationFrame(gameLoop);
+
+}
+Animal-Adventure/
+│
+├── index.html
+├── style.css
+├── game.js
+├── world.js
+├── player.js
+├── shop.js
+├── save.js
+├── leaderboard.js
+└── assets/
