@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>RAM Price Explorer</title>
+
+<style>
+*{box-sizing:border-box;font-family:Segoe UI,Arial,sans-serif}
+body{
+    margin:0;
+    background:#0d1117;
+    color:#e6edf3;
+}
+header{
+    background:#161b22;
+    padding:25px;
+    border-bottom:1px solid #30363d;
+}
+h1{margin:0;font-size:34px}
+header p{margin-top:8px;color:#8b949e}
+
+.controls{
+    display:flex;
+    gap:10px;
+    padding:20px;
+    flex-wrap:wrap;
+    background:#0d1117;
+    position:sticky;
+    top:0;
+}
+
+input,select{
+    background:#161b22;
+    color:white;
+    border:1px solid #30363d;
+    border-radius:6px;
+    padding:10px;
+}
+
+table{
+    width:98%;
+    margin:20px auto;
+    border-collapse:collapse;
+    background:#161b22;
+    border:1px solid #30363d;
+}
+
+th{
+    background:#21262d;
+    cursor:pointer;
+    padding:14px;
+    text-align:left;
+    position:sticky;
+    top:74px;
+}
+
+td{
+    padding:12px;
+    border-top:1px solid #30363d;
+}
+
+tr:hover{
+    background:#1c2128;
+}
+
+.badge{
+    display:inline-block;
+    padding:4px 9px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.ddr5{background:#1f6feb;}
+.ddr4{background:#8250df;}
+
+.lowest{
+    color:#3fb950;
+    font-weight:bold;
+}
+
+footer{
+    padding:30px;
+    text-align:center;
+    color:#8b949e;
+}
+
+</style>
+</head>
+<body>
+
+<header>
+<h1>RAM Price Explorer</h1>
+<p>Gaming Desktop Memory Comparison</p>
+</header>
+
+<div class="controls">
+
+<input id="search" placeholder="Search RAM...">
+
+<select id="filter">
+<option value="ALL">All</option>
+<option value="DDR5">DDR5</option>
+<option value="DDR4">DDR4</option>
+</select>
+
+</div>
+
+<table id="ramTable">
+
+<thead>
+
+<tr>
+<th onclick="sortTable(0)">Memory Kit</th>
+<th onclick="sortTable(1)">Type</th>
+<th onclick="sortTable(2)">Capacity</th>
+<th onclick="sortTable(3)">Speed</th>
+<th onclick="sortTable(4)">Amazon</th>
+<th onclick="sortTable(5)">Newegg</th>
+<th onclick="sortTable(6)">Best Buy</th>
+<th onclick="sortTable(7)">Micro Center</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td>Corsair Vengeance RGB</td>
+<td><span class="badge ddr5">DDR5</span></td>
+<td>32GB</td>
+<td>6000</td>
+<td>$429.37</td>
+<td class="lowest">$419.99</td>
+<td>$439.99</td>
+<td>$424.99</td>
+</tr>
+
+<tr>
+<td>G.Skill Trident Z5 Neo</td>
+<td><span class="badge ddr5">DDR5</span></td>
+<td>32GB</td>
+<td>6000</td>
+<td>$549.99</td>
+<td>$529.99</td>
+<td>$599.99</td>
+<td class="lowest">$519.99</td>
+</tr>
+
+<tr>
+<td>Kingston Fury Beast</td>
+<td><span class="badge ddr5">DDR5</span></td>
+<td>32GB</td>
+<td>6000</td>
+<td>$479.99</td>
+<td>$469.99</td>
+<td>$489.99</td>
+<td class="lowest">$459.99</td>
+</tr>
+
+<tr>
+<td>Crucial Pro</td>
+<td><span class="badge ddr5">DDR5</span></td>
+<td>32GB</td>
+<td>5600</td>
+<td>$349.99</td>
+<td>$339.99</td>
+<td>$359.99</td>
+<td class="lowest">$334.99</td>
+</tr>
+
+<tr>
+<td>ADATA XPG Lancer RGB</td>
+<td><span class="badge ddr5">DDR5</span></td>
+<td>32GB</td>
+<td>6000</td>
+<td>$399.99</td>
+<td>$389.99</td>
+<td>$419.99</td>
+<td class="lowest">$384.99</td>
+</tr>
+
+<tr>
+<td>TeamGroup Delta RGB</td>
+<td><span class="badge ddr5">DDR5</span></td>
+<td>32GB</td>
+<td>6400</td>
+<td>$449.99</td>
+<td>$439.99</td>
+<td>$469.99</td>
+<td class="lowest">$429.99</td>
+</tr>
+
+<tr>
+<td>Corsair Vengeance LPX</td>
+<td><span class="badge ddr4">DDR4</span></td>
+<td>32GB</td>
+<td>3600</td>
+<td>$149.99</td>
+<td class="lowest">$144.99</td>
+<td>$154.99</td>
+<td>$147.99</td>
+</tr>
+
+<tr>
+<td>G.Skill Ripjaws V</td>
+<td><span class="badge ddr4">DDR4</span></td>
+<td>32GB</td>
+<td>3600</td>
+<td>$139.99</td>
+<td class="lowest">$134.99</td>
+<td>$145.99</td>
+<td>$136.99</td>
+</tr>
+
+<tr>
+<td>Kingston Fury Renegade</td>
+<td><span class="badge ddr4">DDR4</span></td>
+<td>32GB</td>
+<td>3600</td>
+<td>$154.99</td>
+<td>$149.99</td>
+<td>$159.99</td>
+<td class="lowest">$147.99</td>
+</tr>
+
+<tr>
+<td>Patriot Viper Steel</td>
+<td><span class="badge ddr4">DDR4</span></td>
+<td>32GB</td>
+<td>3200</td>
+<td>$124.99</td>
+<td class="lowest">$119.99</td>
+<td>$129.99</td>
+<td>$122.99</td>
+</tr>
+
+<tr>
+<td>Silicon Power Zenith</td>
+<td><span class="badge ddr5">DDR5</span></td>
+<td>32GB</td>
+<td>6000</td>
+<td>$369.99</td>
+<td class="lowest">$359.99</td>
+<td>$389.99</td>
+<td>$364.99</td>
+</tr>
+
+<tr>
+<td>Lexar ARES RGB</td>
+<td><span class="badge ddr5">DDR5</span></td>
+<td>32GB</td>
+<td>6400</td>
+<td>$409.99</td>
+<td class="lowest">$399.99</td>
+<td>$429.99</td>
+<td>$404.99</td>
+</tr>
+
+<tr>
+<td>TEAMGROUP Elite</td>
+<td><span class="badge ddr4">DDR4</span></td>
+<td>16GB</td>
+<td>3200</td>
+<td>$69.99</td>
+<td class="lowest">$64.99</td>
+<td>$74.99</td>
+<td>$66.99</td>
+</tr>
+
+<tr>
+<td>Crucial DDR4 Pro</td>
+<td><span class="badge ddr4">DDR4</span></td>
+<td>16GB</td>
+<td>3200</td>
+<td>$74.99</td>
+<td class="lowest">$69.99</td>
+<td>$79.99</td>
+<td>$71.99</td>
+</tr>
+
+<tr>
+<td>G.Skill Flare X5</td>
+<td><span class="badge ddr5">DDR5</span></td>
+<td>32GB</td>
+<td>6000</td>
+<td>$459.99</td>
+<td>$449.99</td>
+<td>$469.99</td>
+<td class="lowest">$439.99</td>
+</tr>
+
+</tbody>
+
+</table>
+
+<footer>
+RAM Price Explorer • Search • Filter • Sort
+</footer>
+
+<script>
+
+const search=document.getElementById("search");
+const filter=document.getElementById("filter");
+const rows=document.querySelectorAll("#ramTable tbody tr");
+
+function update(){
+
+const term=search.value.toLowerCase();
+
+rows.forEach(r=>{
+
+const txt=r.innerText.toLowerCase();
+
+const type=r.cells[1].innerText;
+
+const okSearch=txt.includes(term);
+
+const okFilter=filter.value==="ALL"||type.includes(filter.value);
+
+r.style.display=(okSearch&&okFilter)?"":"none";
+
+});
+
+}
+
+search.oninput=update;
+filter.onchange=update;
+
+function sortTable(n){
+
+const table=document.getElementById("ramTable");
+
+let switching=true;
+
+while(switching){
+
+switching=false;
+
+let rows=table.rows;
+
+for(let i=1;i<rows.length-1;i++){
+
+let x=rows[i].cells[n];
+let y=rows[i+1].cells[n];
+
+let a=x.innerText.replace("$","");
+let b=y.innerText.replace("$","");
+
+if(!isNaN(a)&&!isNaN(b)){
+a=parseFloat(a);
+b=parseFloat(b);
+}
+
+if(a>b){
+
+rows[i].parentNode.insertBefore(rows[i+1],rows[i]);
+
+switching=true;
+
+break;
+
+}
+
+}
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
