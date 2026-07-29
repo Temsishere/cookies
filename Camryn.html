@@ -2,499 +2,65 @@
 <html>
 <head>
 
-<title>Stompy Stomp 🐰💗</title>
+<title>Pink Zombie Survival 🩷</title>
 
 <style>
 
-*{
-box-sizing:border-box;
-}
-
 body{
+    margin:0;
+    overflow:hidden;
+    background:#ffd9ee;
+    font-family:"Comic Sans MS",cursive;
+    text-align:center;
+}
 
-margin:0;
 
-background:#ffd8eb;
+canvas{
 
-font-family:"Comic Sans MS", Arial, sans-serif;
-
-overflow:hidden;
+    background:#bdefff;
+    border:8px solid #ff8fcf;
+    border-radius:25px;
+    box-shadow:0 0 30px pink;
 
 }
 
 
-
-/* GAME */
-
-#game{
-
-width:900px;
-
-max-width:100%;
-
-height:450px;
-
-margin:20px auto;
-
-position:relative;
-
-overflow:hidden;
-
-background:
-linear-gradient(
-#ffc7df,
-#fff2f8
-);
-
-border-radius:30px;
-
-border-bottom:75px solid #ff9fc8;
-
-box-shadow:
-0 15px 30px rgba(255,80,150,.3);
-
-}
-
-
-
-/* SCORE */
-
-#score{
+#ui{
 
 position:absolute;
-
 top:15px;
-
 left:20px;
 
 font-size:22px;
-
 font-weight:bold;
 
-color:#d94f8a;
-
-z-index:20;
+color:#ff4fa3;
 
 }
 
 
+button{
 
-/* CLOUDS */
+background:#ff8fcf;
+border:none;
+border-radius:30px;
 
-.cloud{
+padding:12px 25px;
 
-position:absolute;
+font-size:18px;
+color:white;
 
-font-size:60px;
-
-opacity:.8;
-
-animation:
-cloudMove linear infinite;
-
-}
-
-
-.cloud1{
-
-top:40px;
-
-animation-duration:18s;
+cursor:pointer;
 
 }
 
 
-.cloud2{
+button:hover{
 
-top:100px;
-
-font-size:45px;
-
-animation-duration:25s;
-
-animation-delay:5s;
+background:#ff5cad;
 
 }
 
-
-.cloud3{
-
-top:70px;
-
-font-size:35px;
-
-animation-duration:30s;
-
-animation-delay:10s;
-
-}
-
-
-
-@keyframes cloudMove{
-
-from{
-
-left:100%;
-
-}
-
-to{
-
-left:-200px;
-
-}
-
-}
-
-
-
-
-
-/* BUNNY */
-
-
-#bunny{
-
-position:absolute;
-
-left:120px;
-
-bottom:70px;
-
-width:70px;
-
-height:65px;
-
-background:white;
-
-border-radius:50%;
-
-z-index:10;
-
-box-shadow:
-0 5px 12px rgba(0,0,0,.15);
-
-animation:
-run .25s infinite alternate;
-
-}
-
-
-
-@keyframes run{
-
-from{
-
-transform:translateY(0);
-
-}
-
-to{
-
-transform:translateY(-5px);
-
-}
-
-}
-
-
-
-.jumping{
-
-animation:none!important;
-
-}
-
-
-
-
-/* EARS */
-
-.ear{
-
-position:absolute;
-
-width:20px;
-
-height:50px;
-
-background:white;
-
-border-radius:50%;
-
-top:-40px;
-
-}
-
-
-.ear.left{
-
-left:12px;
-
-}
-
-
-.ear.right{
-
-right:12px;
-
-}
-
-
-
-.innerEar{
-
-position:absolute;
-
-width:10px;
-
-height:32px;
-
-background:#ff9fc8;
-
-border-radius:50%;
-
-left:5px;
-
-top:8px;
-
-}
-
-
-
-/* FACE */
-
-
-.eye{
-
-position:absolute;
-
-width:9px;
-
-height:9px;
-
-background:#333;
-
-border-radius:50%;
-
-top:28px;
-
-}
-
-
-.eye.left{
-
-left:18px;
-
-}
-
-
-.eye.right{
-
-right:18px;
-
-}
-
-
-
-.nose{
-
-position:absolute;
-
-width:9px;
-
-height:7px;
-
-background:#ff7fae;
-
-border-radius:50%;
-
-top:40px;
-
-left:31px;
-
-}
-
-
-
-.cheek{
-
-position:absolute;
-
-width:14px;
-
-height:8px;
-
-background:#ffb6d9;
-
-border-radius:50%;
-
-top:42px;
-
-}
-
-
-.cheek.left{
-
-left:7px;
-
-}
-
-
-.cheek.right{
-
-right:7px;
-
-}
-
-
-
-
-.tail{
-
-position:absolute;
-
-width:28px;
-
-height:28px;
-
-background:white;
-
-border-radius:50%;
-
-right:-20px;
-
-bottom:10px;
-
-}
-
-
-
-
-/* DUCK */
-
-
-.duck{
-
-height:40px!important;
-
-width:80px!important;
-
-animation:none!important;
-
-}
-
-
-
-
-/* SPIKES */
-
-
-.spike{
-
-position:absolute;
-
-bottom:70px;
-
-font-size:60px;
-
-color:#ff6f9f;
-
-text-shadow:
-0 5px #c94d78;
-
-}
-
-
-
-
-/* BIRD */
-
-
-.bird{
-
-position:absolute;
-
-width:50px;
-
-height:38px;
-
-background:#55c9ff;
-
-border-radius:50%;
-
-z-index:5;
-
-animation:
-birdMove .3s infinite alternate;
-
-}
-
-
-.bird:before{
-
-content:"";
-
-position:absolute;
-
-width:30px;
-
-height:16px;
-
-background:#9de4ff;
-
-border-radius:50%;
-
-top:-5px;
-
-left:8px;
-
-}
-
-
-
-.bird:after{
-
-content:"";
-
-position:absolute;
-
-width:7px;
-
-height:7px;
-
-background:black;
-
-border-radius:50%;
-
-right:10px;
-
-top:10px;
-
-}
-
-
-
-@keyframes birdMove{
-
-from{
-
-transform:translateY(0);
-
-}
-
-to{
-
-transform:translateY(-8px);
-
-}
-
-}
-
-
-
-/* GAME OVER */
 
 
 #gameOver{
@@ -502,80 +68,14 @@ transform:translateY(-8px);
 display:none;
 
 position:absolute;
-
-top:140px;
-
+top:220px;
 width:100%;
 
-text-align:center;
+font-size:45px;
 
-background:#fff0f7;
-
-padding:25px;
-
-font-size:35px;
-
-color:#d94f8a;
-
-z-index:50;
-
-}
-
-
-
-
-/* BUTTONS */
-
-
-button{
-
-padding:12px 25px;
-
-border:none;
-
-border-radius:20px;
-
-background:#ff78b4;
-
-color:white;
-
-font-size:18px;
+color:#ff4fa3;
 
 font-weight:bold;
-
-cursor:pointer;
-
-margin:5px;
-
-}
-
-
-
-button:hover{
-
-background:#ff4f98;
-
-}
-
-
-
-
-.controls{
-
-text-align:center;
-
-}
-
-
-#game:fullscreen{
-
-width:100vw;
-
-height:100vh;
-
-border-radius:0;
-
-margin:0;
 
 }
 
@@ -588,325 +88,113 @@ margin:0;
 <body>
 
 
-<div id="game">
+<div id="ui">
 
+💗 Health:
+<span id="health">5</span>
 
-<div id="score">
-Score: 0
-</div>
+&nbsp;
 
+⭐ Score:
+<span id="score">0</span>
 
-<div class="cloud cloud1">
-☁️
-</div>
+&nbsp;
 
-<div class="cloud cloud2">
-☁️
-</div>
+🌸 Wave:
+<span id="wave">1</span>
 
-<div class="cloud cloud3">
-☁️
-</div>
+&nbsp;
 
-
-<div id="bunny">
-
-
-<div class="ear left">
-<div class="innerEar"></div>
-</div>
-
-
-<div class="ear right">
-<div class="innerEar"></div>
-</div>
-
-
-<div class="eye left"></div>
-
-<div class="eye right"></div>
-
-
-<div class="nose"></div>
-
-
-<div class="cheek left"></div>
-
-<div class="cheek right"></div>
-
-
-<div class="tail"></div>
-
+🏆 High:
+<span id="high">0</span>
 
 </div>
+
+
+
+<canvas id="game" width="900" height="600"></canvas>
+
+
+<br>
+
+<button onclick="paused=!paused">
+🌸 Pause
+</button>
 
 
 
 <div id="gameOver">
 
-GAME OVER 🐰💔
+Game Over 💔
 
-<br><br>
+<br>
 
-<button onclick="restart()">
-Play Again
+<button onclick="restartGame()">
+Restart
 </button>
 
 </div>
 
 
 
-</div>
 
-
-
-<div class="controls">
-
-<button onclick="jump()">
-🐰 Jump
-</button>
-
-
-<button onclick="duck()">
-🌸 Duck
-</button>
-
-
-<button onclick="fullscreenGame()">
-⛶ Fullscreen
-</button>
-
-
-</div>
 <script>
 
 
-// ===============================
-// ELEMENTS
-// ===============================
+const canvas=document.getElementById("game");
 
+const ctx=canvas.getContext("2d");
 
-const bunny = document.getElementById("bunny");
 
-const game = document.getElementById("game");
 
-const scoreText =
-document.getElementById("score");
+let score=0;
 
-const gameOver =
-document.getElementById("gameOver");
+let health=5;
 
+let wave=1;
 
+let gameRunning=true;
 
+let paused=false;
 
-// ===============================
-// GAME VARIABLES
-// ===============================
 
 
-let score = 0;
+let highScore=
+localStorage.getItem("pinkZombieHighScore") || 0;
 
-let highScore =
-localStorage.getItem("stompyHigh") || 0;
 
+document.getElementById("high").innerHTML=highScore;
 
-let speed = 7;
 
-let playing = true;
 
+let player={
 
+x:450,
 
-// bunny physics
+y:350,
 
-let bunnyY = 0;
+size:35,
 
-let velocity = 0;
+speed:5,
 
-let gravity = .8;
+cooldown:0
 
-let jumping = false;
+};
 
-let groundHeight = 70;
 
 
+let keys={};
 
-// ===============================
-// SOUND SYSTEM
-// ===============================
 
 
-let audioContext;
+document.addEventListener("keydown",e=>{
 
+keys[e.key.toLowerCase()]=true;
 
 
-function startAudio(){
+if(e.code==="Space"){
 
-if(!audioContext){
-
-audioContext =
-new(window.AudioContext ||
-window.webkitAudioContext)();
-
-}
-
-}
-
-
-
-
-function playSound(type){
-
-startAudio();
-
-
-let oscillator =
-audioContext.createOscillator();
-
-
-let gain =
-audioContext.createGain();
-
-
-oscillator.connect(gain);
-
-gain.connect(audioContext.destination);
-
-
-
-if(type==="jump"){
-
-oscillator.frequency.value=600;
-
-}
-
-
-if(type==="hit"){
-
-oscillator.frequency.value=120;
-
-}
-
-
-
-gain.gain.value=.12;
-
-
-oscillator.start();
-
-
-oscillator.stop(
-audioContext.currentTime+.15
-);
-
-
-}
-
-
-
-
-
-// ===============================
-// SIMPLE MUSIC
-// ===============================
-
-
-let musicPlaying=false;
-
-
-function playMusic(){
-
-if(musicPlaying)
-return;
-
-
-musicPlaying=true;
-
-
-function note(){
-
-
-if(!playing)
-return;
-
-
-startAudio();
-
-
-let osc =
-audioContext.createOscillator();
-
-
-let gain =
-audioContext.createGain();
-
-
-
-osc.connect(gain);
-
-gain.connect(audioContext.destination);
-
-
-
-osc.frequency.value =
-220 + Math.random()*100;
-
-
-gain.gain.value=.025;
-
-
-osc.start();
-
-
-osc.stop(
-audioContext.currentTime+.4
-);
-
-
-
-setTimeout(note,1200);
-
-
-}
-
-
-note();
-
-
-}
-
-
-
-
-
-// ===============================
-// CONTROLS
-// ===============================
-
-
-
-document.addEventListener(
-"keydown",
-function(e){
-
-
-if(e.code==="Space" ||
-e.code==="ArrowUp"){
-
-jump();
-
-}
-
-
-if(e.code==="ArrowDown"){
-
-duck();
-
-}
-
-
-if(e.code==="KeyR"){
-
-restart();
+shoot();
 
 }
 
@@ -915,339 +203,62 @@ restart();
 
 
 
+document.addEventListener("keyup",e=>{
 
+keys[e.key.toLowerCase()]=false;
 
-function jump(){
+});
 
 
-if(!jumping && playing){
 
 
-velocity = 14;
 
+// SOUND SYSTEM
 
-jumping=true;
 
+let audioCtx;
 
-bunny.classList.add(
-"jumping"
-);
 
+function sound(freq,time){
 
-playSound("jump");
 
+if(!audioCtx)
 
-playMusic();
+audioCtx=new AudioContext();
 
 
-}
 
+let osc=audioCtx.createOscillator();
 
-}
+let gain=audioCtx.createGain();
 
 
 
+osc.frequency.value=freq;
 
-function duck(){
 
+osc.connect(gain);
 
-if(!playing)
-return;
+gain.connect(audioCtx.destination);
 
 
-bunny.classList.add(
-"duck"
-);
 
+osc.start();
 
 
-setTimeout(()=>{
 
+gain.gain.exponentialRampToValueAtTime(
 
-bunny.classList.remove(
-"duck"
-);
+0.001,
 
-
-},400);
-
-
-}
-
-
-
-
-
-
-// ===============================
-// JUMP PHYSICS
-// ===============================
-
-
-function physics(){
-
-
-if(!playing)
-return;
-
-
-
-bunnyY += velocity;
-
-
-velocity -= gravity;
-
-
-
-if(bunnyY <= 0){
-
-
-bunnyY=0;
-
-
-velocity=0;
-
-
-jumping=false;
-
-
-bunny.classList.remove(
-"jumping"
-);
-
-
-}
-
-
-
-bunny.style.bottom =
-(groundHeight+bunnyY)+"px";
-
-
-
-requestAnimationFrame(
-physics
-);
-
-
-}
-
-
-physics();
-
-
-
-
-
-// ===============================
-// CREATE OBSTACLES
-// ===============================
-
-
-function spawnObstacle(){
-
-
-if(!playing)
-return;
-
-
-
-let obstacle =
-document.createElement("div");
-
-
-
-let isBird =
-Math.random()>.65;
-
-
-
-if(isBird){
-
-
-obstacle.className="bird";
-
-
-
-// lower birds for ducking
-
-if(Math.random()>.5){
-
-
-obstacle.style.bottom =
-"95px";
-
-
-}
-
-else{
-
-
-obstacle.style.bottom =
-"180px";
-
-
-}
-
-
-}
-
-else{
-
-
-obstacle.className="spike";
-
-
-
-let amount =
-Math.floor(Math.random()*3)+1;
-
-
-
-obstacle.innerHTML =
-"▲".repeat(amount);
-
-
-
-}
-
-
-
-obstacle.style.left="900px";
-
-
-game.appendChild(obstacle);
-
-
-
-moveObstacle(obstacle);
-
-
-}
-
-
-
-
-function moveObstacle(obstacle){
-
-
-let position=900;
-
-
-
-let timer=setInterval(()=>{
-
-
-if(!playing){
-
-clearInterval(timer);
-
-return;
-
-}
-
-
-
-position-=speed;
-
-
-
-obstacle.style.left =
-position+"px";
-
-
-
-if(checkCollision(obstacle)){
-
-
-endGame();
-
-
-}
-
-
-
-if(position < -150){
-
-
-obstacle.remove();
-
-
-clearInterval(timer);
-
-
-}
-
-
-
-},20);
-
-
-}
-
-
-
-
-
-function obstacleLoop(){
-
-
-if(!playing)
-return;
-
-
-
-spawnObstacle();
-
-
-
-setTimeout(
-
-obstacleLoop,
-
-1800+
-Math.random()*1200
+audioCtx.currentTime+time
 
 );
 
 
-}
-  // ===============================
-// COLLISION
-// ===============================
 
-
-function checkCollision(obstacle){
-
-
-let bunnyBox =
-bunny.getBoundingClientRect();
-
-
-let obstacleBox =
-obstacle.getBoundingClientRect();
-
-
-
-// forgiving hitbox
-
-return(
-
-bunnyBox.left + 15 <
-obstacleBox.right &&
-
-
-bunnyBox.right - 15 >
-obstacleBox.left &&
-
-
-bunnyBox.top + 15 <
-obstacleBox.bottom &&
-
-
-bunnyBox.bottom - 10 >
-obstacleBox.top
-
+osc.stop(
+audioCtx.currentTime+time
 );
 
 
@@ -1257,95 +268,673 @@ obstacleBox.top
 
 
 
-// ===============================
-// SCORE
-// ===============================
-
-
-function scoreLoop(){
-
-
-if(!playing)
-return;
+// BACKGROUND
 
 
 
-score++;
+let clouds=[
+
+{x:100,y:80},
+
+{x:450,y:120},
+
+{x:750,y:70}
+
+];
 
 
-
-scoreText.innerHTML =
-
-"Score: " +
-score +
-" | Best: " +
-highScore;
+let flowers=[];
 
 
+for(let i=0;i<60;i++){
 
 
-// increase difficulty
+flowers.push({
 
-if(score % 500 === 0){
+x:Math.random()*900,
 
-speed += .5;
+y:150+Math.random()*450
+
+});
+
 
 }
 
 
 
 
+function drawBackground(){
 
-requestAnimationFrame(
-scoreLoop
+
+
+ctx.fillStyle="#8edcff";
+
+ctx.fillRect(0,0,900,150);
+
+
+
+// clouds
+
+
+ctx.fillStyle="white";
+
+
+clouds.forEach(c=>{
+
+
+ctx.beginPath();
+
+ctx.arc(c.x,c.y,25,0,Math.PI*2);
+
+ctx.arc(c.x+30,c.y,20,0,Math.PI*2);
+
+ctx.arc(c.x-30,c.y,20,0,Math.PI*2);
+
+ctx.fill();
+
+
+
+c.x+=0.2;
+
+
+if(c.x>950)
+
+c.x=-50;
+
+
+});
+
+
+
+// grass
+
+
+ctx.fillStyle="#b9f7b0";
+
+ctx.fillRect(0,150,900,450);
+
+
+
+// flowers
+
+
+flowers.forEach(f=>{
+
+
+ctx.fillStyle="#ff69b4";
+
+ctx.beginPath();
+
+ctx.arc(f.x,f.y,5,0,Math.PI*2);
+
+ctx.fill();
+
+
+
+ctx.fillStyle="#ffd700";
+
+ctx.beginPath();
+
+ctx.arc(f.x,f.y,2,0,Math.PI*2);
+
+ctx.fill();
+
+
+
+});
+
+
+}
+
+
+
+
+// PLAYER
+
+
+
+function drawPlayer(){
+
+
+ctx.fillStyle="#ff69b4";
+
+
+ctx.beginPath();
+
+ctx.arc(
+
+player.x,
+
+player.y,
+
+player.size,
+
+0,
+
+Math.PI*2
+
+);
+
+ctx.fill();
+
+
+
+// bunny ears
+
+
+ctx.fillRect(
+
+player.x-22,
+
+player.y-60,
+
+14,
+
+35
+
 );
 
 
+ctx.fillRect(
+
+player.x+10,
+
+player.y-60,
+
+14,
+
+35
+
+);
+
+
+
+// eyes
+
+
+ctx.fillStyle="black";
+
+
+ctx.beginPath();
+
+ctx.arc(player.x-10,player.y-5,5,0,Math.PI*2);
+
+ctx.fill();
+
+
+ctx.beginPath();
+
+ctx.arc(player.x+10,player.y-5,5,0,Math.PI*2);
+
+ctx.fill();
+
+
+// smile
+
+
+ctx.strokeStyle="black";
+
+ctx.beginPath();
+
+ctx.arc(player.x,player.y+10,12,0,Math.PI);
+
+ctx.stroke();
+
+
+
+}
+
+
+
+
+function movePlayer(){
+
+
+if(keys["w"]||keys["arrowup"])
+
+player.y-=player.speed;
+
+
+if(keys["s"]||keys["arrowdown"])
+
+player.y+=player.speed;
+
+
+if(keys["a"]||keys["arrowleft"])
+
+player.x-=player.speed;
+
+
+if(keys["d"]||keys["arrowright"])
+
+player.x+=player.speed;
+
+
+
+player.x=Math.max(40,Math.min(860,player.x));
+
+player.y=Math.max(190,Math.min(560,player.y));
+
+
+
+if(player.cooldown>0)
+
+player.cooldown--;
+
+
+}
+
+// =====================
+// ZOMBIES
+// =====================
+
+
+let zombies=[];
+
+
+function spawnZombie(){
+
+
+let z={
+
+x:Math.random()*900,
+
+y:200+Math.random()*400,
+
+size:30,
+
+speed:1+wave*.15,
+
+health:1,
+
+color:"#9ee69b"
+
+};
+
+
+
+let chance=Math.random();
+
+
+if(chance<0.15){
+
+z.size=60;
+
+z.health=5;
+
+z.speed=.5;
+
+z.color="#d6a7ff";
+
+}
+
+
+
+else if(chance<0.35){
+
+z.size=22;
+
+z.speed=2.5;
+
+z.color="#ffe89a";
+
+}
+
+
+
+zombies.push(z);
+
+
+}
+
+
+
+
+setInterval(()=>{
+
+
+if(gameRunning && !paused){
+
+
+for(let i=0;i<wave;i++){
+
+spawnZombie();
+
+}
+
+
+}
+
+
+},3000);
+
+
+
+
+
+
+
+function drawZombies(){
+
+
+zombies.forEach(z=>{
+
+
+ctx.fillStyle=z.color;
+
+
+ctx.beginPath();
+
+ctx.arc(
+z.x,
+z.y,
+z.size,
+0,
+Math.PI*2
+);
+
+ctx.fill();
+
+
+
+// eyes
+
+ctx.fillStyle="white";
+
+
+ctx.beginPath();
+
+ctx.arc(z.x-10,z.y-5,8,0,Math.PI*2);
+
+ctx.fill();
+
+
+ctx.beginPath();
+
+ctx.arc(z.x+10,z.y-5,8,0,Math.PI*2);
+
+ctx.fill();
+
+
+
+// pupils
+
+ctx.fillStyle="black";
+
+
+ctx.beginPath();
+
+ctx.arc(z.x-10,z.y-5,3,0,Math.PI*2);
+
+ctx.fill();
+
+
+ctx.beginPath();
+
+ctx.arc(z.x+10,z.y-5,3,0,Math.PI*2);
+
+ctx.fill();
+
+
+// silly smile
+
+ctx.strokeStyle="black";
+
+ctx.beginPath();
+
+ctx.arc(z.x,z.y+10,12,0,Math.PI);
+
+ctx.stroke();
+
+
+
+});
+
 }
 
 
 
 
 
-// ===============================
-// GAME OVER
-// ===============================
+function moveZombies(){
 
 
-function endGame(){
+zombies.forEach(z=>{
 
 
-if(!playing)
-return;
+let dx=player.x-z.x;
+
+let dy=player.y-z.y;
 
 
-
-playing=false;
-
-
-playSound("hit");
+let dist=Math.sqrt(dx*dx+dy*dy);
 
 
 
-if(score > highScore){
+z.x+=(dx/dist)*z.speed;
+
+z.y+=(dy/dist)*z.speed;
 
 
-highScore = score;
+
+if(dist<player.size+z.size){
+
+
+health--;
+
+
+document.getElementById("health").innerHTML=health;
+
+
+sound(150,.2);
+
+
+
+z.x=Math.random()*900;
+
+z.y=200+Math.random()*300;
+
+
+
+if(health<=0){
+
+
+gameRunning=false;
+
+
+document.getElementById("gameOver").style.display="block";
+
+
+}
+
+
+
+}
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+
+// =====================
+// BUBBLE WEAPON
+// =====================
+
+
+let bubbles=[];
+
+
+function shoot(){
+
+
+if(player.cooldown>0)return;
+
+
+
+bubbles.push({
+
+x:player.x,
+
+y:player.y,
+
+size:12,
+
+speed:8
+
+});
+
+
+
+player.cooldown=15;
+
+
+sound(600,.08);
+
+
+}
+
+
+
+
+
+
+function updateBubbles(){
+
+
+bubbles.forEach(b=>{
+
+
+b.x+=b.speed;
+
+
+});
+
+
+
+bubbles=bubbles.filter(b=>b.x<900);
+
+
+}
+
+
+
+
+
+function drawBubbles(){
+
+
+bubbles.forEach(b=>{
+
+
+ctx.fillStyle="white";
+
+
+ctx.beginPath();
+
+ctx.arc(
+b.x,
+b.y,
+b.size,
+0,
+Math.PI*2
+);
+
+ctx.fill();
+
+
+
+ctx.strokeStyle="#ff8fcf";
+
+ctx.stroke();
+
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+
+// =====================
+// COLLISIONS
+// =====================
+
+
+function checkHits(){
+
+
+bubbles.forEach((b,bi)=>{
+
+
+zombies.forEach((z,zi)=>{
+
+
+let dx=b.x-z.x;
+
+let dy=b.y-z.y;
+
+
+let d=Math.sqrt(dx*dx+dy*dy);
+
+
+
+if(d<z.size){
+
+
+z.health--;
+
+
+bubbles.splice(bi,1);
+
+
+
+if(z.health<=0){
+
+
+sparkle(z.x,z.y);
+
+sound(300,.15);
+
+
+zombies.splice(zi,1);
+
+
+
+score+=10;
+
+
+document.getElementById("score").innerHTML=score;
+
+
+
+if(score>highScore){
+
+
+highScore=score;
 
 
 localStorage.setItem(
-"stompyHigh",
+"pinkZombieHighScore",
 highScore
 );
 
 
-}
-
-
-
-gameOver.style.display =
-"block";
-
+document.getElementById("high").innerHTML=highScore;
 
 
 }
@@ -1353,60 +942,263 @@ gameOver.style.display =
 
 
 
+if(score%100===0){
+
+
+wave++;
+
+
+document.getElementById("wave").innerHTML=wave;
+
+
+}
 
 
 
-// ===============================
-// RESTART
-// ===============================
-
-
-function restart(){
+}
 
 
 
-document.querySelectorAll(
-".spike,.bird"
-)
+}
 
-.forEach(
-object=>object.remove()
+
+
+});
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+// =====================
+// POWERUPS
+// =====================
+
+
+let powerups=[];
+
+
+function spawnPowerup(){
+
+
+let list=["💗","🧁","⭐","💎"];
+
+
+
+powerups.push({
+
+x:Math.random()*850+25,
+
+y:200+Math.random()*350,
+
+type:list[Math.floor(Math.random()*list.length)]
+
+});
+
+
+}
+
+
+
+setInterval(()=>{
+
+
+if(gameRunning)
+
+spawnPowerup();
+
+
+},8000);
+
+
+
+
+
+
+function drawPowerups(){
+
+
+powerups.forEach(p=>{
+
+
+ctx.font="30px Arial";
+
+
+ctx.fillText(
+p.type,
+p.x,
+p.y
+);
+
+
+});
+
+
+}
+
+
+
+
+function collectPowerups(){
+
+
+powerups.forEach((p,i)=>{
+
+
+let dx=player.x-p.x;
+
+let dy=player.y-p.y;
+
+
+let d=Math.sqrt(dx*dx+dy*dy);
+
+
+
+if(d<40){
+
+
+sound(800,.1);
+
+
+
+if(p.type==="💗")
+
+health=Math.min(5,health+1);
+
+
+
+if(p.type==="🧁")
+
+score+=50;
+
+
+
+if(p.type==="⭐")
+
+score+=100;
+
+
+
+if(p.type==="💎"){
+
+
+player.speed=8;
+
+
+setTimeout(()=>{
+
+player.speed=5;
+
+},5000);
+
+
+}
+
+
+
+document.getElementById("health").innerHTML=health;
+
+document.getElementById("score").innerHTML=score;
+
+
+
+powerups.splice(i,1);
+
+
+}
+
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+
+// =====================
+// SPARKLES
+// =====================
+
+
+let particles=[];
+
+
+
+function sparkle(x,y){
+
+
+for(let i=0;i<15;i++){
+
+
+particles.push({
+
+x:x,
+
+y:y,
+
+dx:(Math.random()-0.5)*5,
+
+dy:(Math.random()-0.5)*5,
+
+life:30
+
+});
+
+
+}
+
+
+}
+
+
+
+function drawParticles(){
+
+
+particles.forEach((p,i)=>{
+
+
+ctx.fillStyle="#fff";
+
+
+ctx.fillRect(
+p.x,
+p.y,
+5,
+5
 );
 
 
 
-score=0;
+p.x+=p.dx;
+
+p.y+=p.dy;
 
 
-speed=7;
-
-
-playing=true;
-
-
-
-bunnyY=0;
-
-velocity=0;
-
-jumping=false;
+p.life--;
 
 
 
-bunny.style.bottom =
-groundHeight+"px";
+if(p.life<=0)
+
+particles.splice(i,1);
 
 
 
-gameOver.style.display =
-"none";
-
-
-
-obstacleLoop();
-
-scoreLoop();
-
+});
 
 
 }
@@ -1416,30 +1208,72 @@ scoreLoop();
 
 
 
-// ===============================
-// FULLSCREEN
-// ===============================
 
 
-function fullscreenGame(){
+// =====================
+// GAME LOOP
+// =====================
+
+
+function gameLoop(){
+
+
+if(!gameRunning)return;
 
 
 
-if(!document.fullscreenElement){
+if(!paused){
 
 
-game.requestFullscreen();
+ctx.clearRect(
+0,
+0,
+900,
+600
+);
+
+
+
+drawBackground();
+
+
+movePlayer();
+
+
+moveZombies();
+
+
+updateBubbles();
+
+
+checkHits();
+
+
+collectPowerups();
+
+
+
+drawPlayer();
+
+
+drawZombies();
+
+
+drawBubbles();
+
+
+drawPowerups();
+
+
+drawParticles();
+
 
 
 }
 
-else{
 
 
-document.exitFullscreen();
-
-
-}
+requestAnimationFrame(gameLoop);
 
 
 
@@ -1447,17 +1281,22 @@ document.exitFullscreen();
 
 
 
+gameLoop();
 
 
-// ===============================
-// START GAME
-// ===============================
 
 
-obstacleLoop();
 
 
-scoreLoop();
+
+function restartGame(){
+
+
+location.reload();
+
+
+}
+
 
 
 </script>
