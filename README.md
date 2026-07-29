@@ -14,6 +14,7 @@ List of pages:
 - [Lights](anims.html)
 - [HTML Examples](expl.html)
 - [Dodge](laserdodge.html)
+- [Find a 7-Eleven](find711.html)
 
 [These pages on GitHub](https://github.com/mambelli/cookies)
 
