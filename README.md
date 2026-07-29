@@ -26,6 +26,7 @@ List of pages:
 - [Raqeebat's page](Raqy.html)
 - [MAGAME](MAGAME.html)
 - Buy some RAM here!!!!!  [RAM Listings](ramprices.html)
+- [Very cool Dino Game](DinosaurGame.html)
 
 [These pages on GitHub](https://github.com/mambelli/cookies)
 
