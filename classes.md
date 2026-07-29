@@ -12,6 +12,7 @@ The slides used during the classes:
 * [Scripts, Modules and Variables](docs/Class2-ScriptsModulesAndVariables.pdf)
 * [Programming Styles And OOP (Objects and Classes)](Class3-ProgrammingStylesAndObjects.pdf)
 * [Git concepts](git_notes.pdf)
+* [Edit your GitHub profile](https://docs.github.com/en/account-and-profile/how-tos/profile-customization)
 
 Some links with additional material:
 
